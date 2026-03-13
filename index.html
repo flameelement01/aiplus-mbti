@@ -9,9 +9,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
-  --bg:#f5f2eb;--dark:#0a0a0f;--card:#ffffff;--accent:#c8f03c;--accent2:#a8d020;
+  --bg:#f0f4f8;--dark:#1472c2;--card:#ffffff;--accent:#faa318;--accent2:#f1ac3f;
   --muted:#777;--border:rgba(0,0,0,.08);--radius:18px;
-  --shadow:0 2px 20px rgba(0,0,0,.06);
+  --shadow:0 2px 20px rgba(0,0,0,.06);--dark-bg:#193b53;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -19,10 +19,10 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
   min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
 
 /* TOPBAR */
-.topbar{background:var(--dark);color:#fff;padding:13px 20px;display:flex;
+.topbar{background:var(--dark-bg);color:#fff;padding:10px 20px;display:flex;
   align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
-.logo{font-family:'Syne',sans-serif;font-weight:900;font-size:20px;letter-spacing:-1px}
-.logo span{color:var(--accent)}
+.logo{display:flex;align-items:center;gap:8px}
+.logo img{height:32px}
 .badge{background:var(--accent);color:#000;font-size:10px;font-weight:700;
   padding:4px 11px;border-radius:20px;letter-spacing:.4px}
 
@@ -31,20 +31,20 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 
 /* PROGRESS */
 .prog{height:4px;background:rgba(0,0,0,.07);border-radius:4px;margin:16px 0 4px}
-.prog-bar{height:4px;background:var(--dark);border-radius:4px;transition:width .4s ease}
+.prog-bar{height:4px;background:var(--accent);border-radius:4px;transition:width .4s ease}
 .prog-info{font-size:11px;color:var(--muted);font-weight:600;display:flex;
   justify-content:space-between;margin-bottom:14px}
 
 /* BUTTONS */
-.btn{background:var(--dark);color:var(--accent);border:none;padding:17px 40px;
+.btn{background:var(--dark);color:#fff;border:none;padding:17px 40px;
   border-radius:50px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
   cursor:pointer;transition:transform .2s,box-shadow .2s;display:inline-block;text-align:center}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.15)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,114,194,.3)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .btn-outline{background:transparent;border:2px solid var(--dark);color:var(--dark);
   padding:14px 32px;border-radius:50px;font-family:'Syne',sans-serif;font-size:13px;
   font-weight:700;cursor:pointer;transition:all .2s}
-.btn-outline:hover{background:var(--dark);color:var(--accent)}
+.btn-outline:hover{background:var(--dark);color:#fff}
 .btn-accent{background:var(--accent);color:#000;border:none;padding:16px 36px;
   border-radius:50px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 
@@ -60,12 +60,12 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 
 /* WELCOME */
 .hero{padding:44px 0 28px;text-align:center}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--dark);
-  color:var(--accent);font-size:10px;font-weight:700;padding:6px 14px;
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--dark-bg);
+  color:#fff;font-size:10px;font-weight:700;padding:6px 14px;
   border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px}
 .hero-title{font-family:'Syne',sans-serif;font-size:clamp(34px,7vw,60px);
   font-weight:900;line-height:1.02;letter-spacing:-2px;margin-bottom:18px}
-.hero-title .hl{color:var(--accent);background:var(--dark);padding:2px 14px;
+.hero-title .hl{color:#fff;background:var(--dark);padding:2px 14px;
   border-radius:10px;display:inline-block}
 .hero-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:440px;
   margin:0 auto 30px}
@@ -84,7 +84,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .trust-card h4{font-size:13px;font-weight:700;margin-bottom:3px}
 .trust-card p{font-size:11px;color:var(--muted);line-height:1.6}
 
-.why{background:var(--dark);color:#fff;border-radius:18px;padding:24px;margin:20px 0}
+.why{background:var(--dark-bg);color:#fff;border-radius:18px;padding:24px;margin:20px 0}
 .why h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;
   margin-bottom:14px;color:var(--accent)}
 .why-item{display:flex;align-items:flex-start;gap:9px;font-size:12px;
@@ -124,9 +124,9 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
   font-size:14px;font-weight:600;color:var(--dark);transition:all .18s;
   display:flex;align-items:center;gap:11px}
 .opt:hover{border-color:var(--dark);background:#fff;transform:translateX(4px)}
-.opt:active{background:var(--dark);color:var(--accent)}
+.opt:active{background:var(--dark);color:#fff}
 .opt-let{display:flex;align-items:center;justify-content:center;background:var(--dark);
-  color:var(--accent);border-radius:8px;width:28px;height:28px;font-size:11px;
+  color:#fff;border-radius:8px;width:28px;height:28px;font-size:11px;
   font-weight:900;flex-shrink:0}
 
 /* LOADER */
@@ -142,7 +142,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .result{animation:fadeUp .5s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-.share-bar{background:var(--dark);border-radius:14px;padding:14px 18px;
+.share-bar{background:var(--dark-bg);border-radius:14px;padding:14px 18px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   flex-wrap:wrap;margin-bottom:16px}
 .share-bar .lbl{color:#fff;font-size:12px;font-weight:600;flex:1;min-width:140px}
@@ -201,7 +201,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .pair.top{border-color:var(--dark);background:#fafafa}
 .pair-hdr{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px}
 .pair-tag{font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px}
-.pair-tag.main{background:var(--dark);color:var(--accent)}
+.pair-tag.main{background:var(--dark);color:#fff}
 .pair-tag.alt{background:#eee;color:#666}
 .pair-subj{font-size:13px;font-weight:700}
 .pair-plus{font-size:14px;color:#bbb}
@@ -218,7 +218,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .score-pills{display:flex;flex-direction:column;gap:3px;align-items:flex-end}
 .pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .pill-t{background:#fff3d0;color:#7a4800}
-.pill-g{background:var(--dark);color:var(--accent)}
+.pill-g{background:var(--dark);color:#fff}
 .uni-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .uni-tag{font-size:10px;background:#f0f0f0;color:#555;padding:3px 8px;
   border-radius:20px;font-weight:600}
@@ -237,7 +237,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .z-blue{background:#e0eeff;color:#003090}
 
 /* AI */
-.ai{background:var(--dark);color:#fff;border-radius:var(--radius);padding:22px;
+.ai{background:var(--dark-bg);color:#fff;border-radius:var(--radius);padding:22px;
   margin-bottom:16px}
 .ai-hdr{display:flex;align-items:center;gap:9px;margin-bottom:12px}
 .ai-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;
@@ -252,7 +252,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .cta h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:900;
   letter-spacing:-.5px;margin-bottom:6px}
 .cta p{font-size:13px;color:#333;margin-bottom:16px;line-height:1.6}
-.cta a{background:var(--dark);color:var(--accent);text-decoration:none;
+.cta a{background:var(--dark-bg);color:#fff;text-decoration:none;
   padding:14px 28px;border-radius:50px;font-family:'Syne',sans-serif;
   font-size:12px;font-weight:800;display:inline-block;transition:transform .2s}
 .cta a:hover{transform:translateY(-2px)}
@@ -296,12 +296,18 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .ent-unis b{color:var(--dark)}
 .ent-uni{display:block;padding-left:8px}
 
+/* ALL PROFESSIONS + SUBJECTS BLOCK */
+.pro-subj-card{border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:8px;background:#fff}
+.pro-subj-name{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--dark-bg)}
+.pro-subj-pair{font-size:12px;font-weight:600;color:var(--dark);margin-bottom:2px}
+.pro-subj-label{font-size:11px;color:var(--muted)}
+
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="logo">AI<span>PLUS</span></div>
+  <div class="logo"><img src="https://static.tildacdn.pro/tild6138-6238-4632-b230-313838323361/logo.svg" alt="Aiplus"></div>
   <div class="badge">MBTI × ЕНТ 2025</div>
 </div>
 
@@ -1196,7 +1202,7 @@ const UNIS = {
 // STATE
 // ============================================================
 let S = {
-  screen:"welcome", lang:"ru", idx:0,
+  screen:"welcome", lang:"kz", idx:0,
   scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0},
   user:{}, resultId:null, aiText:"", sharedData:null
 };
@@ -1456,7 +1462,10 @@ function finishTest(){
   fetch(saveUrl).then(r=>r.json()).then(sd=>{
     if(sd.id){
       S.resultId=sd.id;
-      history.replaceState({},"",SITE_URL+"?r="+sd.id);
+      const fullUrl=SITE_URL+"?r="+sd.id;
+      history.replaceState({},"",fullUrl);
+      // Обновить все WA-кнопки с правильной ссылкой
+      updateWAButtons(type,fullUrl);
       // AI в фоне после получения ID
       fetch(SHEETS_URL+"?type=generate&prompt="+encodeURIComponent(prompt))
         .then(r=>r.json()).then(ad=>{
@@ -1487,11 +1496,13 @@ function rResult(a){
   const info=MBTI[type]||MBTI.INTP;
   const s=S.scores;
   const unis=UNIS[info.uniKey]||UNIS.default;
-  const url=SITE_URL+(S.resultId?"?r="+S.resultId:"");
+  const hasId=!!S.resultId;
+  const url=hasId?SITE_URL+"?r="+S.resultId:SITE_URL;
   const desc=S.lang==='kz'?info.desc_kz:info.desc_ru;
-  const waText=encodeURIComponent(S.lang==='kz'?
+  const waText=hasId?encodeURIComponent(S.lang==='kz'?
     `Сәлем! Менің балам Aiplus профориентация тестін тапсырды. Тұлға типі: ${type}. Нәтижені қараңыз: ${url}`:
-    `Привет! Мой ребёнок прошёл тест Aiplus. Тип личности: ${type}. Результат: ${url}`);
+    `Привет! Мой ребёнок прошёл тест Aiplus. Тип личности: ${type}. Результат: ${url}`):'';
+  const waDisabled=hasId?'':'style="opacity:.5;pointer-events:none"';
 
   a.innerHTML=`<div class="result">
 
@@ -1499,7 +1510,7 @@ function rResult(a){
     <div class="lbl">${t('shareLabel')}</div>
     <div class="share-btns">
       <button class="btn-sm btn-copy" id="cb1" onclick="copyL('${url}','cb1');">${t('copyBtn')}</button>
-      <a class="btn-sm btn-wa" href="https://wa.me/?text=${waText}" target="_blank">${t('waBtn')}</a>
+      <a class="btn-sm btn-wa" href="https://wa.me/?text=${waText}" target="_blank" ${waDisabled}>${t('waBtn')}</a>
       <button class="btn-sm btn-pdf" onclick="genPDF()">${t('pdfBtn')}</button>
     </div>
   </div>
@@ -1556,20 +1567,6 @@ function rResult(a){
     </div>
   </div>
 
-  <div class="sec">
-    <div class="sec-title">${t('scaleTitle')}</div>
-    <div class="sec-sub">${t('scaleSub')}</div>
-    <div style="background:#eee;border-radius:7px;height:12px;overflow:hidden;margin:8px 0 3px">
-      <div style="height:100%;width:100%;background:linear-gradient(90deg,#ff6b35 0%,#ffd700 46%,#7bc67e 70%,#4a90d9 100%);border-radius:7px"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;margin-bottom:10px"><span>0</span><span>65</span><span>80</span><span>100</span><span>140</span></div>
-    <div class="zones">
-      <div class="zone z-red"><b>0–64</b><small>${S.lang==='kz'?'Шек астында':'Ниже порога'}</small></div>
-      <div class="zone z-orange"><b>65–79</b><small>${S.lang==='kz'?'Қатысу шегі':'Порог'}</small></div>
-      <div class="zone z-green"><b>80–99</b><small>${S.lang==='kz'?'Жақсы грант':'Хороший грант'}</small></div>
-      <div class="zone z-blue"><b>100–140</b><small>${S.lang==='kz'?'Үздік ЖОО':'Топ-вузы'}</small></div>
-    </div>
-  </div>
 
   <div class="sec">
     <div class="sec-title">${t('uniTitle')}</div>
@@ -1604,6 +1601,15 @@ function rResult(a){
     <div id="ent-results" style="max-height:400px;overflow-y:auto"></div>
   </div>
 
+  <div class="sec" id="all-pro-sec">
+    <div class="sec-title">${S.lang==='kz'?'📋 Барлық мамандықтар мен бейінді пәндер':'📋 Все профессии и профильные предметы'}</div>
+    <div class="sec-sub">${S.lang==='kz'?'Сіздің типіңізге сай мамандықтар мен ЕНТ пән жұптары':'Профессии вашего типа и пары предметов ЕНТ для каждой'}</div>
+    ${info.pro.map((p,i)=>{
+      const pair=info.entPairs[i%info.entPairs.length];
+      return '<div class="pro-subj-card"><div class="pro-subj-name">'+p+'</div><div class="pro-subj-pair">'+pair.s1+' + '+pair.s2+'</div><div class="pro-subj-label">→ '+pair.label+'</div></div>';
+    }).join('')}
+  </div>
+
   <div class="ai">
     <div class="ai-hdr"><div class="ai-dot"></div><h3>${t('aiTitle')}</h3></div>
     <div id="ai-block" class="ai-body">${S.aiText||(S.lang==='kz'?'Жүктелуде...':'Загружается...')}</div>
@@ -1619,7 +1625,7 @@ function rResult(a){
     <div class="lbl">${S.lang==='kz'?'Нәтижені <span>ата-анаңызға</span> жіберіңіз':'Поделись с <span>родителями</span>'}</div>
     <div class="share-btns">
       <button class="btn-sm btn-copy" id="cb2" onclick="copyL('${url}','cb2')">${t('copyBtn')}</button>
-      <a class="btn-sm btn-wa" href="https://wa.me/?text=${waText}" target="_blank">${t('waBtn')}</a>
+      <a class="btn-sm btn-wa" href="https://wa.me/?text=${waText}" target="_blank" ${waDisabled}>${t('waBtn')}</a>
     </div>
   </div>
 
@@ -1636,7 +1642,7 @@ function renderBars(s){
         <span>${p.l} ${p.ln} ${lp}%</span><span>${100-lp}% ${p.rn} ${p.r}</span>
       </div>
       <div style="background:#eee;border-radius:4px;height:7px;overflow:hidden">
-        <div style="height:100%;width:${lp}%;background:#1a1a1a;border-radius:4px"></div>
+        <div style="height:100%;width:${lp}%;background:#1472c2;border-radius:4px"></div>
       </div>
     </div>`;
   }).join('');
@@ -1721,6 +1727,22 @@ function filterENT(q){
   }).join('');
 }
 
+// ── UPDATE WA BUTTONS ──
+function updateWAButtons(type,url){
+  const waText=encodeURIComponent(S.lang==='kz'?
+    'Сәлем! Менің балам Aiplus профориентация тестін тапсырды. Тұлға типі: '+type+'. Нәтижені қараңыз: '+url:
+    'Привет! Мой ребёнок прошёл тест Aiplus. Тип личности: '+type+'. Результат: '+url);
+  document.querySelectorAll('.btn-wa').forEach(function(el){
+    el.href='https://wa.me/?text='+waText;
+    el.classList.remove('btn-wa-disabled');
+    el.style.opacity='1';
+    el.style.pointerEvents='auto';
+  });
+  document.querySelectorAll('.btn-copy').forEach(function(el){
+    el.onclick=function(){copyL(url,el.id)};
+  });
+}
+
 // ── COPY LINK ──
 function copyL(url,btnId){
   navigator.clipboard.writeText(url).then(()=>{
@@ -1737,8 +1759,8 @@ function genPDF(){
   const w=210,margin=20;let y=25;
 
   // Header
-  doc.setFillColor(10,10,15);doc.rect(0,0,w,40,	'F');
-  doc.setTextColor(200,240,60);doc.setFontSize(22);doc.text('AIPLUS',margin,y);
+  doc.setFillColor(25,59,83);doc.rect(0,0,w,40,'F');
+  doc.setTextColor(250,163,24);doc.setFontSize(22);doc.text('AIPLUS',margin,y);
   doc.setTextColor(255,255,255);doc.setFontSize(10);doc.text('MBTI × ЕНТ 2025',w-margin,y,{align:'right'});
   y+=12;doc.setFontSize(9);doc.setTextColor(180,180,180);
   doc.text(S.user.name+(S.user.grade?' · '+S.user.grade+' класс':'')+' · '+new Date().toLocaleDateString('ru'),margin,y);
@@ -1760,7 +1782,7 @@ function genPDF(){
     doc.setFontSize(8);doc.setTextColor(100,100,100);
     doc.text(p.l+' '+lp+'%',margin,y);doc.text((100-lp)+'% '+p.r,w-margin,y,{align:'right'});
     doc.setFillColor(230,230,230);doc.rect(margin,y+1,w-2*margin,3,'F');
-    doc.setFillColor(10,10,15);doc.rect(margin,y+1,(w-2*margin)*lp/100,3,'F');
+    doc.setFillColor(20,114,194);doc.rect(margin,y+1,(w-2*margin)*lp/100,3,'F');
     y+=8;
   });
   y+=4;
@@ -1803,7 +1825,7 @@ function genPDF(){
 
   // Footer
   doc.setFontSize(7);doc.setTextColor(150,150,150);
-  doc.text('Aiplus Шымкент · aiplus.kz · '+new Date().toLocaleDateString('ru'),margin,290);
+  doc.text('Aiplus · mektep.aiplus.kz · '+new Date().toLocaleDateString('ru'),margin,290);
 
   doc.save('Aiplus_MBTI_'+type+'_'+S.user.name.replace(/\s/g,'_')+'.pdf');
 }
