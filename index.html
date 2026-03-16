@@ -282,9 +282,11 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .pro-card-name{font-size:14px;font-weight:700}
 .pro-card-arrow{font-size:12px;color:var(--muted)}
 .pro-card-body{padding:14px 18px;border-top:1px solid var(--border)}
-.pro-card-section{margin-bottom:10px;font-size:12px;line-height:1.7}
-.pro-card-section b{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.pro-card-section p{color:#555;margin:0}
+.pro-card-section{margin-bottom:14px;font-size:12px;line-height:1.7}
+.pro-sec-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:6px;color:var(--dark);border-bottom:1px solid var(--border);padding-bottom:4px}
+.pro-line{color:#444;margin-bottom:6px;padding-left:8px;border-left:2px solid var(--border)}
+.pro-line b{color:#222;font-weight:700}
 /* ENT CARDS */
 .ent-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;background:#fff}
 .ent-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
@@ -1752,6 +1754,16 @@ function initCareerGuide(type){
   if(!subEl||!cardsEl)return;
   if(titleEl)titleEl.textContent=lang==='kz'?'💼 Мансаптық гид — сенің ТОП мамандықтарың':'💼 Карьерный гид — топ профессии для тебя';
   subEl.textContent=lang==='kz'?'Мамандықты таңдаңыз':'Нажми на профессию, чтобы узнать подробнее';
+  function fmtLines(text){
+    if(!text)return '';
+    return text.split('\n').map(function(line){
+      var idx=line.indexOf(':');
+      if(idx>0&&idx<80){
+        return '<div class="pro-line"><b>'+line.substring(0,idx+1)+'</b> '+line.substring(idx+1).trim()+'</div>';
+      }
+      return '<div class="pro-line">'+line+'</div>';
+    }).join('');
+  }
   cardsEl.innerHTML=pros.map(function(p,i){
     return '<div class="pro-card" onclick="toggleCareer('+i+')">'+
       '<div class="pro-card-hdr">'+
@@ -1759,8 +1771,8 @@ function initCareerGuide(type){
         '<span class="pro-card-arrow" id="pa-'+i+'">▼</span>'+
       '</div>'+
       '<div class="pro-card-body" id="pb-'+i+'" style="display:none">'+
-        (p.where?'<div class="pro-card-section"><b>'+(lang==="kz"?"📍 Қайда жұмыс жасайсыз?":"📍 Где сможете работать?")+'</b><p style="white-space:pre-line">'+p.where+'</p></div>':'')+
-        (p.what?'<div class="pro-card-section"><b>'+(lang==="kz"?"⚙️ Немен айналысасыз?":"⚙️ Чем будете заниматься?")+'</b><p style="white-space:pre-line">'+p.what+'</p></div>':'')+
+        (p.where?'<div class="pro-card-section"><div class="pro-sec-title">'+(lang==="kz"?"📍 ҚАЙДА ЖҰМЫС ЖАСАЙСЫЗ?":"📍 ГДЕ СМОЖЕТЕ РАБОТАТЬ?")+'</div>'+fmtLines(p.where)+'</div>':'')+
+        (p.what?'<div class="pro-card-section"><div class="pro-sec-title">'+(lang==="kz"?"⚙️ НЕМЕН АЙНАЛЫСАСЫЗ?":"⚙️ ЧЕМ БУДЕТЕ ЗАНИМАТЬСЯ?")+'</div>'+fmtLines(p.what)+'</div>':'')+
       '</div>'+
     '</div>';
   }).join('');
