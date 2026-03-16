@@ -1568,8 +1568,8 @@ function rResult(a){
         </div>
       </div>
       <div class="slide-r">
-        <span class="pro-label" style="background:${info.color}">${t('topPro')}</span>
-        <div class="pro-list">${info.pro.map(p=>`<div class="pro-item">· ${p}</div>`).join('')}</div>
+        <span class="pro-label" style="background:${info.color}">${S.lang==='kz'?'МЫҚТЫ ТҰСТАРЫ':'СИЛЬНЫЕ СТОРОНЫ'}</span>
+        <div class="strengths-list" style="font-size:12px;line-height:1.7;color:#444;white-space:pre-line">${(S.lang==='kz'?info.strengths_kz:info.strengths_ru)||''}</div>
         <div class="bars">
           <div class="bars-title">${t('profileBars')}</div>
           ${renderBars(s)}
