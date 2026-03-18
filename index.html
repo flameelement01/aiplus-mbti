@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Aiplus — Профориентация MBTI × ЕНТ 2025</title>
 <meta name="description" content="Бесплатный профориентационный тест MBTI. 70 вопросов, 16 типов личности, профессии + вузы РК с проходными баллами ЕНТ 2025.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
@@ -38,16 +38,16 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 
 /* BUTTONS */
 .btn{background:var(--dark);color:#fff;border:none;padding:17px 40px;
-  border-radius:50px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;
   cursor:pointer;transition:transform .2s,box-shadow .2s;display:inline-block;text-align:center}
 .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,114,194,.3)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .btn-outline{background:transparent;border:2px solid var(--dark);color:var(--dark);
-  padding:14px 32px;border-radius:50px;font-family:'Syne',sans-serif;font-size:13px;
+  padding:14px 32px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;
   font-weight:700;cursor:pointer;transition:all .2s}
 .btn-outline:hover{background:var(--dark);color:#fff}
 .btn-accent{background:var(--accent);color:#000;border:none;padding:16px 36px;
-  border-radius:50px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
+  border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;cursor:pointer}
 
 /* CARDS */
 .card{background:var(--card);border-radius:var(--radius);padding:36px 28px;
@@ -64,21 +64,19 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--dark-bg);
   color:#fff;font-size:10px;font-weight:700;padding:6px 14px;
   border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px}
-.hero-title{font-family:'Syne',sans-serif;font-size:clamp(34px,7vw,60px);
+.hero-title{font-family:'DM Sans',sans-serif;font-size:clamp(34px,7vw,60px);
   font-weight:900;line-height:1.02;letter-spacing:-2px;margin-bottom:18px}
 .hero-title .hl{color:#fff;background:var(--dark);padding:2px 14px;
   border-radius:10px;display:inline-block}
 .hero-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:440px;
   margin:0 auto 20px}
-.hero-slogan{font-family:'Syne',sans-serif;font-size:clamp(13px,3vw,16px);font-weight:800;
-  color:var(--dark);line-height:1.5;max-width:520px;margin:0 auto 30px;
-  background:linear-gradient(135deg,var(--dark),var(--accent));-webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;background-clip:text}
+.hero-slogan{font-family:'DM Sans',sans-serif;font-size:clamp(12px,2.5vw,14px);font-weight:600;
+  color:var(--muted);line-height:1.6;max-width:500px;margin:0 auto 30px;letter-spacing:.3px}
 
 .stats{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:30px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;
   padding:11px 18px;text-align:center;min-width:80px}
-.stat b{font-family:'Syne',sans-serif;font-size:22px;font-weight:900;display:block}
+.stat b{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:900;display:block}
 .stat small{font-size:10px;color:var(--muted);font-weight:600}
 
 .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -88,9 +86,12 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .trust-card .ic{font-size:20px;margin-bottom:8px}
 .trust-card h4{font-size:13px;font-weight:700;margin-bottom:3px}
 .trust-card p{font-size:11px;color:var(--muted);line-height:1.6}
+.trust-item{font-size:11px;color:var(--dark);font-weight:600;padding:4px 0 4px 14px;
+  position:relative;line-height:1.4}
+.trust-item::before{content:'•';position:absolute;left:2px;color:var(--accent);font-weight:900}
 
 .why{background:var(--dark-bg);color:#fff;border-radius:18px;padding:24px;margin:20px 0}
-.why h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;
+.why h3{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;
   margin-bottom:14px;color:var(--accent)}
 .why-item{display:flex;align-items:flex-start;gap:9px;font-size:12px;
   line-height:1.6;color:#bbb;margin-bottom:8px}
@@ -99,7 +100,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 
 /* LANGUAGE SELECT */
 .lang-wrap{text-align:center;padding:60px 0}
-.lang-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;margin-bottom:8px}
+.lang-title{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:900;margin-bottom:8px}
 .lang-sub{color:var(--muted);font-size:14px;margin-bottom:32px}
 .lang-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .lang-btn{background:var(--card);border:2px solid var(--border);border-radius:16px;
@@ -107,13 +108,13 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .lang-btn:hover{border-color:var(--dark);transform:translateY(-3px);
   box-shadow:0 8px 24px rgba(0,0,0,.1)}
 .lang-btn .flag{font-size:36px;margin-bottom:8px}
-.lang-btn .lbl{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}
+.lang-btn .lbl{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800}
 
 /* REGISTER FORM */
 .reg-card{max-width:440px;margin:0 auto}
 .reg-tag{display:inline-block;background:#e6f4d7;color:#2d7d46;font-size:10px;
   font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:14px}
-.reg-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:900;
+.reg-title{font-family:'DM Sans',sans-serif;font-size:24px;font-weight:900;
   letter-spacing:-.5px;margin-bottom:6px}
 .reg-sub{color:var(--muted);margin-bottom:22px;font-size:13px;line-height:1.6}
 .privacy{font-size:10px;color:var(--muted);margin-top:10px;text-align:center}
@@ -121,7 +122,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 /* QUESTION */
 .q-dim{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
   letter-spacing:2px;margin-bottom:8px}
-.q-text{font-family:'Syne',sans-serif;font-size:clamp(17px,3vw,22px);font-weight:800;
+.q-text{font-family:'DM Sans',sans-serif;font-size:clamp(17px,3vw,22px);font-weight:800;
   line-height:1.35;margin-bottom:26px;letter-spacing:-.3px}
 .opts{display:flex;flex-direction:column;gap:9px}
 .opt{background:#f0ede5;border:2px solid transparent;border-radius:13px;
@@ -140,7 +141,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
   border-top-color:var(--dark);border-radius:50%;animation:spin .8s linear infinite;
   margin:0 auto 22px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loader h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:5px}
+.loader h2{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:800;margin-bottom:5px}
 .loader p{color:var(--muted);font-size:13px}
 
 /* RESULT */
@@ -168,7 +169,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .slide-l{flex:0 0 240px;padding:26px 22px;background:#fafafa;
   border-right:1px solid var(--border)}
 .slide-r{flex:1;min-width:240px;padding:26px 22px}
-.mbti-big{font-family:'Syne',sans-serif;font-size:62px;font-weight:900;
+.mbti-big{font-family:'DM Sans',sans-serif;font-size:62px;font-weight:900;
   line-height:1;letter-spacing:-3px;margin-bottom:4px}
 .mbti-name{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
   letter-spacing:1px;margin-bottom:12px;border-bottom:1px solid var(--border);
@@ -194,7 +195,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 /* SECTION CARDS */
 .sec{background:var(--card);border-radius:var(--radius);padding:22px;
   border:1px solid var(--border);margin-bottom:16px;box-shadow:var(--shadow)}
-.sec-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;
+.sec-title{font-family:'DM Sans',sans-serif;font-size:17px;font-weight:800;
   letter-spacing:-.3px;margin-bottom:3px}
 .sec-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
 
@@ -235,7 +236,7 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
   gap:7px;margin-top:12px}
 .zone{border-radius:9px;padding:10px;text-align:center}
-.zone b{font-family:'Syne',sans-serif;font-size:15px;font-weight:900;display:block}
+.zone b{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:900;display:block}
 .zone small{font-size:10px;font-weight:600}
 .z-red{background:#ffe8e0;color:#c03000}
 .z-orange{background:#fff3d0;color:#7a4800}
@@ -249,17 +250,17 @@ body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;
 .ai-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;
   animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.ai h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:800}
+.ai h3{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800}
 .ai-body{font-size:13px;line-height:1.8;color:#ccc;white-space:pre-wrap}
 
 /* CTA */
 .cta{background:var(--accent);border-radius:var(--radius);padding:24px;
   text-align:center;margin-bottom:16px}
-.cta h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:900;
+.cta h2{font-family:'DM Sans',sans-serif;font-size:20px;font-weight:900;
   letter-spacing:-.5px;margin-bottom:6px}
 .cta p{font-size:13px;color:#333;margin-bottom:16px;line-height:1.6}
 .cta a{background:var(--dark-bg);color:#fff;text-decoration:none;
-  padding:14px 28px;border-radius:50px;font-family:'Syne',sans-serif;
+  padding:14px 28px;border-radius:50px;font-family:'DM Sans',sans-serif;
   font-size:12px;font-weight:800;display:inline-block;transition:transform .2s}
 .cta a:hover{transform:translateY(-2px)}
 
@@ -1331,7 +1332,7 @@ const T = {
     s1:"70",s1l:"Сұрақ",s2:"16",s2l:"Тип",s3:"12",s3l:"Минут",
     startBtn:"Тестті бастау →",
     t1t:"Мақсатыңа бір қадам жақында!",t1d:"Нәтижені ата-анаңа жібер.",
-    t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың: Грант саны - Грантқа түсудің max/min балдары - 1 орынға неше оқушы бәсекелес болғанын білу.",
+    t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың:",t2items:["Грант саны","Грантқа түсудің max/min балдары","1 орынға неше оқушы бәсекелес болғанын білу"],
     t3t:"ҰБТ таңдау пәндері",t3d:"Бейінді пәндердегі мамандықтар бойынша ақпарат",
     whyTitle:"Неге MBTI тесті?",
     w1:"Ғылыми стандарт: 70 сұрақ 4 шкала бойынша нақты нәтиже береді.",
@@ -1378,9 +1379,9 @@ async function loadShared(id){
       S.user={name:d.result.name,phone:"",grade:d.result.grade};
       S.aiText=d.result.aiText||"";S.screen="result";render()
     }else{
-      app().innerHTML=`<div class="error-card"><div style="font-size:48px;margin-bottom:16px">🔍</div><h2 style="font-family:Syne;font-weight:900">${t('notFound')}</h2><p style="color:var(--muted);margin:12px 0 24px">${t('notFoundSub')}</p><button class="btn" onclick="restart()">${t('startBtn')}</button></div>`
+      app().innerHTML=`<div class="error-card"><div style="font-size:48px;margin-bottom:16px">🔍</div><h2 style="font-family:'DM Sans',sans-serif;font-weight:900">${t('notFound')}</h2><p style="color:var(--muted);margin:12px 0 24px">${t('notFoundSub')}</p><button class="btn" onclick="restart()">${t('startBtn')}</button></div>`
     }
-  }catch(e){app().innerHTML=`<div class="error-card"><h2 style="font-family:Syne;font-weight:900">Ошибка</h2><button class="btn" onclick="restart()" style="margin-top:20px">${t('startBtn')}</button></div>`}
+  }catch(e){app().innerHTML=`<div class="error-card"><h2 style="font-family:'DM Sans',sans-serif;font-weight:900">Ошибка</h2><button class="btn" onclick="restart()" style="margin-top:20px">${t('startBtn')}</button></div>`}
 }
 
 function render(){
@@ -1411,7 +1412,7 @@ function rWelcome(a){
     <button class="btn" onclick="S.screen='lang';render()">${t('startBtn')}</button>
     <div class="trust">
       <div class="trust-card"><div class="ic">🔗</div><h4>${t('t1t')}</h4><p>${t('t1d')}</p></div>
-      <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p></div>
+      <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p>${(T[S.lang].t2items||[]).map(x=>'<div class="trust-item">'+x+'</div>').join('')}</div>
       <div class="trust-card"><div class="ic">📚</div><h4>${t('t3t')}</h4><p>${t('t3d')}</p></div>
     </div>
     <div class="why">
