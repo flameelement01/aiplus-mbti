@@ -1605,7 +1605,7 @@ function rResult(a){
       </div>
       <div class="slide-r">
         <span class="pro-label" style="background:${info.color}">${S.lang==='kz'?'МЫҚТЫ ТҰСТАРЫ':'СИЛЬНЫЕ СТОРОНЫ'}</span>
-        <div class="strengths-list">${fmtStrengths(S.lang==='kz'?info.strengths_kz:info.strengths_ru)}</div>
+        <div class="strengths-list">${fmtStrengths((S.lang==='kz'&&info.strengths_kz)?info.strengths_kz:info.strengths_ru)}</div>
         <div class="bars">
           <div class="bars-title">${t('profileBars')}</div>
           ${renderBars(s)}
