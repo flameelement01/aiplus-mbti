@@ -1473,6 +1473,7 @@ function submitReg(){
 
 // ── QUIZ ──
 function rQuiz(a){
+  if(S.idx>=QUESTIONS.length){finishTest();return}
   const q=QUESTIONS[S.idx];
   const pct=Math.round(S.idx/QUESTIONS.length*100);
   const dim=DIM_LABELS[S.lang][q.s]||q.s;
@@ -1959,7 +1960,7 @@ function restart(){
 
 // ── INIT ──
 checkShared();
-if(S.screen==="welcome")render();
+if(S.screen!=="loading")render();
 </script>
 </body>
 </html>
