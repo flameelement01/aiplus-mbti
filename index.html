@@ -1620,17 +1620,6 @@ function rResult(a){
     </div>
   
 
-  <div class="sec mbti-ref">
-    <div class="sec-title">${S.lang==='kz'?'📋 MBTI әріптер түсініктемесі':'📋 Расшифровка MBTI типов'}</div>
-    <div class="sec-sub">${S.lang==='kz'?'Барлық 16 тұлға типі':'Все 16 типов личности'}</div>
-    <div class="mbti-ref-grid">
-      ${Object.keys(MBTI).map(k=>{
-        const m=MBTI[k];
-        return '<div class="mbti-ref-item"><span class="mbti-ref-code" style="color:'+m.color+'">'+k+'</span><span class="mbti-ref-name">'+(S.lang==='kz'?(m.kz_name||m.ru):m.ru)+'</span></div>';
-      }).join('')}
-    </div>
-  </div>
-
   <div class="sec" id="career-guide">
     <div class="sec-title" id="cg-title">💼 Карьерный гид — топ профессии для тебя</div>
     <div class="sec-sub" id="cg-sub">Выбери профессию, чтобы узнать подробнее</div>
