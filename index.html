@@ -1279,11 +1279,10 @@ const UNIS = {
 // ============================================================
 // STATE
 // ============================================================
-let S = {
-  screen:"welcome", lang:"kz", idx:0,
-  scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0},
-  user:{}, resultId:null, aiText:"", sharedData:null
-};
+let S = (function(){
+  try{var saved=sessionStorage.getItem('mbti_state');if(saved){var p=JSON.parse(saved);if(p&&p.screen)return p}}catch(e){}
+  return {screen:"welcome", lang:"kz", idx:0, scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, user:{}, resultId:null, aiText:"", sharedData:null};
+})();
 
 const $=id=>document.getElementById(id);
 const app=()=>$("app");
@@ -1399,6 +1398,7 @@ function render(){
     case"result":rResult(a);initCareerGuide(calcType());initENTTable(calcType());initENTSearch();break;
   }
   window.scrollTo({top:0,behavior:'smooth'});
+  try{sessionStorage.setItem('mbti_state',JSON.stringify(S))}catch(e){}
 }
 
 // ── WELCOME ──
@@ -1545,6 +1545,18 @@ function rLoader(a){
     <h2>${shared?t('loadingShared'):t('analyzing')}</h2>
     <p>${shared?'':t('analyzingSub')}</p>
   </div>`;
+}
+
+// ── HELPERS ──
+function fmtStrengths(text){
+  if(!text)return '';
+  return text.split('\n').filter(function(l){return l.trim()}).map(function(line){
+    var idx=line.indexOf('.');
+    if(idx>0&&idx<60){
+      return '<div class="str-item"><b>'+line.substring(0,idx+1)+'</b> '+line.substring(idx+1).trim()+'</div>';
+    }
+    return '<div class="str-item">'+line+'</div>';
+  }).join('');
 }
 
 // ── RESULT ──
@@ -1730,16 +1742,6 @@ function initCareerGuide(type){
   if(!subEl||!cardsEl)return;
   if(titleEl)titleEl.textContent=lang==='kz'?'💼 Мансаптық гид — сенің ТОП мамандықтарың':'💼 Карьерный гид — топ профессии для тебя';
   subEl.textContent=lang==='kz'?'Мамандықты таңдаңыз':'Нажми на профессию, чтобы узнать подробнее';
-  function fmtStrengths(text){
-    if(!text)return '';
-    return text.split('\n').filter(function(l){return l.trim()}).map(function(line){
-      var idx=line.indexOf('.');
-      if(idx>0&&idx<60){
-        return '<div class="str-item"><b>'+line.substring(0,idx+1)+'</b> '+line.substring(idx+1).trim()+'</div>';
-      }
-      return '<div class="str-item">'+line+'</div>';
-    }).join('');
-  }
   function fmtLines(text){
     if(!text)return '';
     return text.split('\n').map(function(line){
@@ -1950,6 +1952,7 @@ function genPDF(){
 // ── RESTART ──
 function restart(){
   history.pushState({},"",location.pathname);
+  try{sessionStorage.removeItem('mbti_state')}catch(e){}
   S={screen:"welcome",lang:S.lang,idx:0,scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0},user:{},resultId:null,aiText:"",sharedData:null};
   render();
 }
