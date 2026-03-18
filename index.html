@@ -288,6 +288,10 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
   margin-bottom:6px;color:var(--dark);border-bottom:1px solid var(--border);padding-bottom:4px}
 .pro-line{color:#444;margin-bottom:6px;padding-left:8px;border-left:2px solid var(--border)}
 .pro-line b{color:#222;font-weight:700}
+.strengths-list{margin-top:10px}
+.str-item{font-size:13px;line-height:1.7;color:#444;margin-bottom:10px;padding-left:10px;
+  border-left:3px solid var(--accent)}
+.str-item b{color:#222;font-weight:700}
 /* ENT CARDS */
 .ent-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;background:#fff}
 .ent-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
@@ -1588,7 +1592,7 @@ function rResult(a){
       </div>
       <div class="slide-r">
         <span class="pro-label" style="background:${info.color}">${S.lang==='kz'?'МЫҚТЫ ТҰСТАРЫ':'СИЛЬНЫЕ СТОРОНЫ'}</span>
-        <div class="strengths-list" style="font-size:12px;line-height:1.7;color:#444;white-space:pre-line">${(S.lang==='kz'?info.strengths_kz:info.strengths_ru)||''}</div>
+        <div class="strengths-list">${fmtStrengths(S.lang==='kz'?info.strengths_kz:info.strengths_ru)}</div>
         <div class="bars">
           <div class="bars-title">${t('profileBars')}</div>
           ${renderBars(s)}
@@ -1726,6 +1730,16 @@ function initCareerGuide(type){
   if(!subEl||!cardsEl)return;
   if(titleEl)titleEl.textContent=lang==='kz'?'💼 Мансаптық гид — сенің ТОП мамандықтарың':'💼 Карьерный гид — топ профессии для тебя';
   subEl.textContent=lang==='kz'?'Мамандықты таңдаңыз':'Нажми на профессию, чтобы узнать подробнее';
+  function fmtStrengths(text){
+    if(!text)return '';
+    return text.split('\n').filter(function(l){return l.trim()}).map(function(line){
+      var idx=line.indexOf('.');
+      if(idx>0&&idx<60){
+        return '<div class="str-item"><b>'+line.substring(0,idx+1)+'</b> '+line.substring(idx+1).trim()+'</div>';
+      }
+      return '<div class="str-item">'+line+'</div>';
+    }).join('');
+  }
   function fmtLines(text){
     if(!text)return '';
     return text.split('\n').map(function(line){
