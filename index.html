@@ -1325,20 +1325,19 @@ const T = {
   },
   kz:{
     heroTag:"🧠 Халықаралық MBTI әдістемесі",
-    heroTitle:'Кім болатыныңды<br>біл және<br><span class="hl">қайда түсесің</span>',
-    heroSub:"70 сұрақ · 16 тұлға типі · Мамандықтар + ЕНТ пәндері + ҚР ЖОО-лары балдарымен",
+    heroTitle:'Өзіңді таны -<br>болашағыңды<br><span class="hl">жоспарла!</span>',
+    heroSub:"70 сұрақ · 16 тұлға типі · Мамандықтар · Грант статистикасы",
     slogan:"АЙПЛЮСПЕН БІРГЕ ӨЗ ТҰЛҒАҢДЫ ТАНЫ, ҚАБІЛЕТІҢДІ АШ ЖӘНЕ БОЛАШАҚ МАМАНДЫҒЫҢДЫ САНАЛЫ ТҮРДЕ ТАҢДА",
-    s1:"70",s1l:"Сұрақ",s2:"16",s2l:"Тип",s3:"~12",s3l:"Минут",s4:"30+",s4l:"Мамандық",s5:"ҚР",s5l:"ЕНТ базасы",
+    s1:"70",s1l:"Сұрақ",s2:"16",s2l:"Тип",s3:"12",s3l:"Минут",
     startBtn:"Тестті бастау →",
-    t1t:"Сақталатын нәтиже",t1d:"Ата-анаңызға жіберіңіз немесе кейін қайта оралыңыз",
-    t2t:"ҚР ЖОО-лары балдарымен",t2d:"ЕНТ 2024 деректері бойынша грант балы",
-    t3t:"ЕНТ пән жұптары",t3d:"Мамандыққа сай 2 бейінді пәнді таңдау",
-    t4t:"Aiplus ИИ-талдауы",t4d:"Нейрожелінің жеке ұсыныстары",
-    whyTitle:"Неге 70 сұрақ — бұл дәл?",
-    w1:"MBTI 4 шкаланы өлшейді — әрқайсысына 10–20 сұрақ. Бұл ғылыми стандарт",
-    w2:"Тест Карл Юнг әдістемесіне негізделген, миллиондаған адамдарға тексерілген",
-    w3:"MBTI-ды Google, Apple және McKinsey команда құру үшін пайдаланады",
-    w4:"Нәтиже сілтеме бойынша сақталады — ата-анаңызға жіберуге болады",
+    t1t:"Мақсатыңа бір қадам жақында!",t1d:"Нәтижені ата-анаңа жібер.",
+    t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың: Грант саны - Грантқа түсудің max/min балдары - 1 орынға неше оқушы бәсекелес болғанын білу.",
+    t3t:"ҰБТ таңдау пәндері",t3d:"Бейінді пәндердегі мамандықтар бойынша ақпарат",
+    whyTitle:"Неге MBTI тесті?",
+    w1:"Ғылыми стандарт: 70 сұрақ 4 шкала бойынша нақты нәтиже береді.",
+    w2:"Юнг әдістемесі: Миллиондаған адам тексерген сенімді психологиялық негіз.",
+    w3:"Әлемдік деңгей: Google, Apple және McKinsey команда құру үшін пайдаланады.",
+    w4:"Ыңғайлы бөлісу: Нәтиже сілтемемен сақталады - ата-анаңызға жіберуге дайын.",
     langTitle:"Тілді таңдаңыз / Выберите язык",langSub:"",
     regTag:"📋 Тіркелу",regTitle:"Мәліметтерді толтырыңыз",
     regSub:"Тестті бастау үшін мәліметтерді көрсетіңіз. Aiplus тегін кеңес беру үшін хабарласады.",
@@ -1408,15 +1407,12 @@ function rWelcome(a){
       <div class="stat"><b>${t('s1')}</b><small>${t('s1l')}</small></div>
       <div class="stat"><b>${t('s2')}</b><small>${t('s2l')}</small></div>
       <div class="stat"><b>${t('s3')}</b><small>${t('s3l')}</small></div>
-      <div class="stat"><b>${t('s4')}</b><small>${t('s4l')}</small></div>
-      <div class="stat"><b>${t('s5')}</b><small>${t('s5l')}</small></div>
     </div>
     <button class="btn" onclick="S.screen='lang';render()">${t('startBtn')}</button>
     <div class="trust">
       <div class="trust-card"><div class="ic">🔗</div><h4>${t('t1t')}</h4><p>${t('t1d')}</p></div>
       <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p></div>
       <div class="trust-card"><div class="ic">📚</div><h4>${t('t3t')}</h4><p>${t('t3d')}</p></div>
-      <div class="trust-card"><div class="ic">🤖</div><h4>${t('t4t')}</h4><p>${t('t4d')}</p></div>
     </div>
     <div class="why">
       <h3>${t('whyTitle')}</h3>
@@ -1524,16 +1520,6 @@ function finishTest(){
     "&mbti="+encodeURIComponent(type)+
     "&scores="+encodeURIComponent(JSON.stringify(S.scores));
 
-  const prompt=`Студент: ${S.user.name}, класс: ${S.user.grade||'не указан'}, тип MBTI: ${type} (${info?.ru||''}).
-Профессии: ${info?.pro?.slice(0,5).join(', ')}.
-ЕНТ = 3 обязательных (Грамотность чтения, Мат. грамотность, История Казахстана) + 2 профильных.
-Дай рекомендации:
-1. Какие 2 ПРОФИЛЬНЫХ предмета выбрать
-2. На какой балл целиться (минимум 65, хорошо 80+)
-3. Топ-2 вуза РК с проходным баллом
-4. Мотивирующий совет для этого типа
-Пиши без markdown, коротко, на ${S.lang==='kz'?'казахском':'русском'}.`;
-
   // Фоновые запросы — не влияют на отображение
   fetch(saveUrl).then(r=>r.json()).then(sd=>{
     if(sd.id){
@@ -1542,16 +1528,6 @@ function finishTest(){
       history.replaceState({},"",fullUrl);
       // Обновить все WA-кнопки с правильной ссылкой
       updateWAButtons(type,fullUrl);
-      // AI в фоне после получения ID
-      fetch(SHEETS_URL+"?type=generate&prompt="+encodeURIComponent(prompt))
-        .then(r=>r.json()).then(ad=>{
-          if(ad.success&&ad.result){
-            S.aiText=ad.result;
-            const aiBlock=document.getElementById('ai-block');
-            if(aiBlock)aiBlock.innerHTML='<p style="white-space:pre-wrap">'+ad.result+'</p>';
-            try{fetch(SHEETS_URL+"?type=saveai&id="+encodeURIComponent(sd.id)+"&aitext="+encodeURIComponent(ad.result))}catch(e){}
-          }
-        }).catch(()=>{});
     }
   }).catch(()=>{});
 }
@@ -1685,11 +1661,6 @@ function rResult(a){
       const pair=info.entPairs[i%info.entPairs.length];
       return '<div class="pro-subj-card"><div class="pro-subj-name">'+p+'</div><div class="pro-subj-pair">'+pair.s1+' + '+pair.s2+'</div><div class="pro-subj-label">→ '+pair.label+'</div></div>';
     }).join('')}
-  </div>
-
-  <div class="ai">
-    <div class="ai-hdr"><div class="ai-dot"></div><h3>${t('aiTitle')}</h3></div>
-    <div id="ai-block" class="ai-body">${S.aiText||(S.lang==='kz'?'Жүктелуде...':'Загружается...')}</div>
   </div>
 
   <div class="sec" id="ent-table-sec">
