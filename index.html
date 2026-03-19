@@ -1599,8 +1599,6 @@ function rResult(a){
       <div class="slide-l">
         <div class="mbti-big" style="color:${info.color}">${type}</div>
         <div class="mbti-name">${info.name} · ${S.lang==='kz'?(info.kz_name||info.ru):info.ru}</div>
-        <div class="mbti-desc">${desc}</div>
-        ${(S.lang==='kz'?info.extra_kz:info.extra_ru)?'<div class="mbti-extra">'+(S.lang==='kz'?info.extra_kz:info.extra_ru)+'</div>':''}
         <div class="trait-grid">
           ${info.traits.map(tr=>`<div class="trait">
             <div class="en" style="color:${info.color}">${tr.en}</div>
