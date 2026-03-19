@@ -1745,7 +1745,7 @@ function initCareerGuide(type){
   var subEl=document.getElementById('cg-sub');
   var cardsEl=document.getElementById('career-cards');
   if(!subEl||!cardsEl)return;
-  if(titleEl)titleEl.textContent=lang==='kz'?'💼 Мансаптық гид — сенің ТОП мамандықтарың':'💼 Карьерный гид — топ профессии для тебя';
+  if(titleEl)titleEl.textContent=lang==='kz'?'💼 Тұлғалық типіңізге сай мамандықтар':'💼 Профессии, подходящие вашему типу личности';
   subEl.textContent=lang==='kz'?'Мамандықты таңдаңыз':'Нажми на профессию, чтобы узнать подробнее';
   function fmtLines(text){
     if(!text)return '';
@@ -1855,8 +1855,12 @@ function initENTSearch(){
   var titleEl=document.getElementById('ent-sec-title');
   var subEl=document.getElementById('ent-sec-sub');
   var inp=document.getElementById('ent-inp');
-  if(titleEl)titleEl.textContent=lang==='kz'?'🎓 ЕНТ статистикасы — мамандықты тап':'🎓 Статистика ЕНТ — найди свою специальность';
-  if(subEl)subEl.textContent=lang==='kz'?'Мамандықты іздеңіз, грант және балл туралы біліңіз':'Найди специальность и узнай гранты, проходные баллы и топ ВУЗы';
+  if(titleEl){
+    titleEl.textContent=lang==='kz'?'🎓 ҰБТ статистикасы: Мамандығыңды таңда да, мүмкіндігіңді біл!':'🎓 Статистика ЕНТ: Выбери специальность и узнай свои возможности!';
+  }
+  if(subEl){
+    subEl.innerHTML=lang==='kz'?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:<br>• Грант саны<br>• Грантқа түсудің max/min балдары<br>• Конкурс кезінде 1 орынға бәсекелес болған оқушылар саны<br>• 2025 жылы ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Анализируй данные за последние 3 года по выбранной специальности:<br>• Количество грантов<br>• Max/min баллы для гранта<br>• Конкурс на 1 место<br>• ТОП-3 университета по выбору 100 лучших абитуриентов 2025';
+  }
   if(inp)inp.placeholder=lang==='kz'?'Мамандықты іздеңіз...':'Введите название специальности...';
   filterENT('');
 }
