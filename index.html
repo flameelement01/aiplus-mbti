@@ -1660,6 +1660,32 @@ function rResult(a){
 
 
 
+
+  <div class="sec">
+    <div class="sec-title">${t('uniTitle')}</div>
+    <div class="sec-sub">${t('uniSub')}</div>
+    ${unis.map(u=>u.t===0?`
+    <div class="uni">
+      <div class="uni-top">
+        <div><div class="uni-name">${u.name}</div><div class="uni-city">📍 ${u.city}</div></div>
+        <div style="background:#555;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">${S.lang==='kz'?'Жеке іріктеу':'Отд. отбор'}</div>
+      </div>
+      <div class="uni-tags">${u.fac.map(f=>`<span class="uni-tag">${f}</span>`).join('')}</div>
+      ${u.tip?`<div class="uni-tip">💡 ${u.tip}</div>`:''}
+    </div>`:`
+    <div class="uni">
+      <div class="uni-top">
+        <div><div class="uni-name">${u.name}</div><div class="uni-city">📍 ${u.city}</div></div>
+        <div class="score-pills">
+          <div class="pill pill-t">📋 ${S.lang==='kz'?'Шек':'Порог'}: ${u.t}+</div>
+          <div class="pill pill-g">🏆 ~${S.lang==='kz'?'Грант':'Грант'}: ${u.g}+</div>
+        </div>
+      </div>
+      <div class="uni-tags">${u.fac.map(f=>`<span class="uni-tag">${f}</span>`).join('')}</div>
+      ${u.tip?`<div class="uni-tip">💡 ${u.tip}</div>`:''}
+    </div>`).join('')}
+  </div>
+
   <div class="sec" id="ent-search-sec">
     <div class="sec-title" id="ent-sec-title">${S.lang==='kz'?'🎓 ҰБТ статистикасы: Мамандығыңды таңда да, мүмкіндігіңді біл!':'🎓 Статистика ЕНТ — найди свою специальность'}</div>
     <div class="sec-sub" id="ent-sec-sub">${S.lang==='kz'?'Тандаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса':'Найди специальность и узнай гранты, проходные баллы и топ ВУЗы'}</div>
