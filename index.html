@@ -299,9 +299,9 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .mbti-ref-code{font-weight:900;font-size:14px;letter-spacing:.5px}
 .mbti-ref-name{font-size:12px;color:#555;font-weight:600}
 /* SPEC BROWSER */
-.spec-subj-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.spec-subj-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card);
-  font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.spec-subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.spec-subj-btn{padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);
+  font-size:12px;font-weight:600;cursor:pointer;transition:.2s;text-align:center}
 .spec-subj-btn:hover,.spec-subj-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .spec-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
 .spec-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;
@@ -1668,8 +1668,8 @@ function rResult(a){
   </div>
 
   <div class="sec" id="spec-browser">
-    <div class="sec-title">${S.lang==='kz'?'📋 Мамандықтар. Таңдау пәндері мамандықтар тізімі':'📋 Список специальностей'}</div>
-    <div class="sec-sub">${S.lang==='kz'?'Таңдау пәндерін таңдаңыз — сәйкес мамандықтар шығады':'Выберите пару предметов — появятся подходящие специальности'}</div>
+    <div class="sec-title">${S.lang==='kz'?'📋 Мамандықтар':'📋 Специальности'}</div>
+    <div class="sec-sub">${S.lang==='kz'?'Таңдау пәндеріндегі мамандықтар тізімі':'Список специальностей по профильным предметам'}</div>
     <div id="spec-subj-btns" class="spec-subj-grid"></div>
     <div id="spec-list" class="spec-list"></div>
   </div>
