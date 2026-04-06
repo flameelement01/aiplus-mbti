@@ -349,6 +349,7 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .ent-card-name{font-size:13px;font-weight:700;margin-bottom:2px}
 .ent-card-code{font-size:11px;color:var(--muted)}
 .ent-grants{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.ent-g-label{font-size:11px;font-weight:700;color:var(--dark);margin-bottom:2px}
 .ent-g-year{font-size:10px;color:#555}
 .ent-g-year b{color:var(--dark);font-size:12px}
 .ent-scores{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
@@ -1939,7 +1940,8 @@ function filterENT(q){
       '<div class="ent-card-hdr">'+
         '<div><div class="ent-card-name">'+(lang==='kz'&&d.nameKz?d.nameKz:d.name)+'</div><div class="ent-card-code">'+d.code+' · '+d.s1+' + '+d.s2+'</div></div>'+
         '<div class="ent-grants">'+
-          '<span class="ent-g-year">2025: <b>'+d.grants.y25+'</b> '+gl+'</span>'+
+          '<span class="ent-g-label">'+gl+'</span>'+
+          '<span class="ent-g-year">2025: <b>'+d.grants.y25+'</b></span>'+
           '<span class="ent-g-year">2024: <b>'+d.grants.y24+'</b></span>'+
           '<span class="ent-g-year">2023: <b>'+d.grants.y23+'</b></span>'+
         '</div>'+
