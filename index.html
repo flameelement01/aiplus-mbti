@@ -340,6 +340,9 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .uni-card{padding:10px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:6px;background:#fff}
 .uni-card b{font-size:13px;color:#333}
 .uni-card small{font-size:11px;color:var(--muted)}
+.ent-features{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.ent-features span{font-size:12px;font-weight:600;color:var(--dark);background:#f0f6fc;
+  padding:8px 12px;border-radius:8px;line-height:1.4}
 /* ENT CARDS */
 .ent-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;background:#fff}
 .ent-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
@@ -1708,7 +1711,15 @@ function rResult(a){
 
   <div class="sec" id="ent-search-sec">
     <div class="sec-title" id="ent-sec-title">${S.lang==='kz'?'🎓 ҰБТ статистикасы: Мамандығыңды таңда да, мүмкіндігіңді біл!':'🎓 Статистика ЕНТ — найди свою специальность'}</div>
-    <div class="sec-sub" id="ent-sec-sub">${S.lang==='kz'?'Тандаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса':'Найди специальность и узнай гранты, проходные баллы и топ ВУЗы'}</div>
+    <div class="sec-sub" id="ent-sec-sub" style="text-align:left;max-width:600px;margin:0 auto 16px">
+      ${S.lang==='kz'
+        ?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:'
+        :'Анализируй данные за последние 3 года по выбранной специальности:'}
+      <div class="ent-features">${S.lang==='kz'
+        ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>👥 1 орынға бәсекелес болған оқушылар саны</span><span>🏆 2025ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
+        :'<span>📊 Количество грантов</span><span>📈 Max/min баллы для гранта</span><span>👥 Конкурс на 1 место</span><span>🏆 ТОП-3 ВУЗа, выбранных 100 лучшими абитуриентами 2025г.</span>'
+      }</div>
+    </div>
     <input id="ent-inp" class="inp" placeholder="${S.lang==='kz'?'Мамандығыңызды іздеңіз...':'Введите название специальности...'}" oninput="filterENT(this.value)" style="margin-bottom:12px">
     <div id="ent-results" style="max-height:400px;overflow-y:auto"></div>
   </div>
