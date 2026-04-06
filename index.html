@@ -1928,7 +1928,7 @@ function filterENT(q){
     return d.name.toLowerCase().indexOf(s)!==-1||(d.nameKz&&d.nameKz.toLowerCase().indexOf(s)!==-1)||d.code.toLowerCase().indexOf(s)!==-1||d.s1.toLowerCase().indexOf(s)!==-1||d.s2.toLowerCase().indexOf(s)!==-1;
   });
   if(!filtered.length){container.innerHTML='<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center">'+(lang==='kz'?'Табылмады':'Ничего не найдено')+'</div>';return;}
-  var gl=lang==='kz'?'Грант':'Грантов';
+  var gl=lang==='kz'?'Бөлінген грант саны':'Кол-во выделенных грантов';
   var ul=lang==='kz'?'Ең жоғары балл жинаған оқушылар таңдаған ТОП-3 ЖОО':'ТОП-3 ВУЗа';
   container.innerHTML=filtered.map(function(d){
     var s25=d.scores.y25,s24=d.scores.y24,s23=d.scores.y23;
