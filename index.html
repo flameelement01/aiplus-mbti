@@ -451,6 +451,27 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .gc-reg-title{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px}
 .gc-reg-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
 .gc-reg-warn .inp{display:block;width:100%;box-sizing:border-box}
+
+/* INDIVIDUAL EDUCATION PLAN */
+.iop-wrap{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin:20px 0;border:1px solid var(--border)}
+.iop-title{font-size:20px;font-weight:800;color:var(--dark);margin-bottom:4px}
+.iop-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.iop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.iop-field{display:flex;flex-direction:column;gap:5px}
+.iop-field label{font-size:12px;font-weight:600;color:#555}
+.iop-field select,.iop-field input{padding:11px 13px;border:1.5px solid #e0e6ed;border-radius:10px;font-size:13px;font-family:inherit;background:#fafbfc;transition:border-color .15s}
+.iop-field select:focus,.iop-field input:focus{outline:none;border-color:var(--dark);background:#fff}
+.iop-field.full{grid-column:1/-1}
+.iop-btn{display:block;width:100%;padding:14px;background:var(--dark);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.iop-btn:hover{background:#0f5a9c}
+.iop-preview{margin-top:20px;padding:16px;background:#f7f9fc;border-radius:12px;border:1px solid #d0e2f5;display:none}
+.iop-preview-title{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:12px}
+.iop-preview-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid #e8f0f8;font-size:13px}
+.iop-preview-row:last-child{border-bottom:none}
+.iop-preview-key{color:#555;font-weight:500}
+.iop-preview-val{color:var(--dark);font-weight:700;text-align:right;max-width:60%}
+.iop-dl-btn{display:block;width:100%;margin-top:14px;padding:13px;background:linear-gradient(135deg,#1472c2,#0f5a9c);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px}
+@media(max-width:600px){.iop-grid{grid-template-columns:1fr}.iop-field.full{grid-column:1}}
 @media(max-width:600px){.gc-form{grid-template-columns:1fr}.gc-counters{grid-template-columns:1fr;gap:8px}.gc-counter{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}.gc-counter-num{font-size:22px}.gc-counter-lbl{margin-top:0}}
 
 </style>
@@ -1531,7 +1552,7 @@ function render(){
     case"register":rRegister(a);break;
     case"quiz":rQuiz(a);break;
     case"loading":rLoader(a);break;
-    case"result":rResult(a);initCareerGuide(calcType());initSpecBrowser();initUniBrowser();initENTTable(calcType());initENTSearch();initGrantCalc();break;
+    case"result":rResult(a);initCareerGuide(calcType());initSpecBrowser();initUniBrowser();initENTTable(calcType());initENTSearch();initGrantCalc();initIOP();break;
   }
   updateTopbarLang();
   window.scrollTo({top:0,behavior:'smooth'});
@@ -1838,6 +1859,8 @@ function rResult(a){
     <div class="sec-sub">${S.lang==='kz'?'Мамандықты таңдаңыз — сол мамандық бойынша оқытатын ЖОО-лар тізімін көріңіз':'Выберите специальность — увидите список ВУЗов, где её преподают'}</div>
     <div id="uni-browser-content"></div>
   </div>
+
+  <div id="iop-sec"></div>
 
   <div class="cta">
     <h2>${t('ctaTitle')}</h2>
@@ -2334,6 +2357,336 @@ function genPDF(){
     console.error('PDF error:',err);
     if(btn){btn.disabled=false;btn.textContent=S.lang==='kz'?'📄 PDF жүктеу':'📄 Скачать PDF';}
   });
+}
+
+// ── INDIVIDUAL EDUCATION PLAN ──
+var MBTI_16=['INTJ','INTP','INFJ','INFP','ISTJ','ISTP','ISFJ','ISFP','ENTJ','ENTP','ENFJ','ENFP','ESTJ','ESTP','ESFJ','ESFP'];
+var MONTHS_KZ=['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
+var MONTHS_RU=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+function initIOP(){
+  var sec=document.getElementById('iop-sec');
+  if(!sec)return;
+  var isKz=S.lang==='kz';
+  var pairs=getENTSubjectPairs();
+  var pairOpts='<option value="">'+(isKz?'Таңдаңыз...':'Выберите...')+'</option>'+
+    pairs.map(function(p){return '<option value="'+p.key+'">'+localizeSubj(p.s1)+' + '+localizeSubj(p.s2)+'</option>';}).join('');
+  var mbtiOpts='<option value="">'+(isKz?'Таңдаңыз...':'Выберите...')+'</option>'+
+    MBTI_16.map(function(m){return '<option value="'+m+'">'+m+'</option>';}).join('');
+  var yearOpts='<option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>';
+  var prefilled=S.user&&S.user.name?S.user.name:'';
+  var preMbti=calcType&&calcType()?calcType():'';
+  sec.innerHTML='<div class="iop-wrap">'+
+    '<div class="iop-title">📋 '+(isKz?'Жеке оқу жоспарым':'Мой индивидуальный план обучения')+'</div>'+
+    '<div class="iop-sub">'+(isKz?'Деректерді толтырыңыз — PDF форматында жеке оқу жоспарыңызды жүктеп алыңыз':'Заполните поля — скачайте персональный план обучения в PDF')+'</div>'+
+    '<div class="iop-grid">'+
+      '<div class="iop-field full"><label>'+(isKz?'Аты-жөні':'ФИО')+'</label>'+
+        '<input id="iop-name" type="text" placeholder="'+(isKz?'Толық атыңызды енгізіңіз':'Введите полное имя')+'" value="'+prefilled+'"></div>'+
+      '<div class="iop-field"><label>MBTI '+(isKz?'типі':'тип')+'</label>'+
+        '<select id="iop-mbti">'+mbtiOpts.replace('value="'+preMbti+'"','value="'+preMbti+'" selected')+'</select></div>'+
+      '<div class="iop-field"><label>'+(isKz?'Оқу жылы':'Год поступления')+'</label>'+
+        '<select id="iop-year">'+yearOpts+'</select></div>'+
+      '<div class="iop-field full"><label>'+(isKz?'Бейіндік пәндер':'Профильные предметы')+'</label>'+
+        '<select id="iop-pair" onchange="iopUpdateSpecs()">'+pairOpts+'</select></div>'+
+      '<div class="iop-field full"><label>'+(isKz?'Мамандық':'Специальность')+'</label>'+
+        '<select id="iop-spec"><option value="">'+(isKz?'Алдымен пәндерді таңдаңыз':'Сначала выберите предметы')+'</option></select></div>'+
+      '<div class="iop-field"><label>'+(isKz?'ҰБТ балы':'Балл ЕНТ')+' (50–140)</label>'+
+        '<input id="iop-score" type="number" min="50" max="140" placeholder="'+(isKz?'Мысалы: 110':'Например: 110')+'"></div>'+
+      '<div class="iop-field"><label>'+(isKz?'Мақсатты университет':'Целевой университет')+'</label>'+
+        '<select id="iop-uni"><option value="">'+(isKz?'Мамандықты таңдаңыз':'Выберите специальность')+'</option></select></div>'+
+    '</div>'+
+    '<button class="iop-btn" onclick="iopPreview()">'+
+      (isKz?'📄 Жоспарды қарап шығу':'📄 Предварительный просмотр')+'</button>'+
+    '<div class="iop-preview" id="iop-preview"></div>'+
+  '</div>';
+}
+
+function iopUpdateSpecs(){
+  var isKz=S.lang==='kz';
+  var pair=document.getElementById('iop-pair').value;
+  var specSel=document.getElementById('iop-spec');
+  var uniSel=document.getElementById('iop-uni');
+  if(!pair){
+    specSel.innerHTML='<option value="">'+(isKz?'Алдымен пәндерді таңдаңыз':'Сначала выберите предметы')+'</option>';
+    uniSel.innerHTML='<option value="">'+(isKz?'Мамандықты таңдаңыз':'Выберите специальность')+'</option>';
+    return;
+  }
+  var specs=ENT_DATA.filter(function(d){return (d.s1+' + '+d.s2)===pair;});
+  specSel.innerHTML='<option value="">'+(isKz?'Таңдаңыз...':'Выберите...')+'</option>'+
+    specs.map(function(d){return '<option value="'+d.code+'">'+(isKz&&d.nameKz?d.nameKz:d.name)+'</option>';}).join('');
+  uniSel.innerHTML='<option value="">'+(isKz?'Мамандықты таңдаңыз':'Выберите специальность')+'</option>';
+  specSel.onchange=function(){iopUpdateUnis();};
+}
+
+function iopUpdateUnis(){
+  var isKz=S.lang==='kz';
+  var code=document.getElementById('iop-spec').value;
+  var uniSel=document.getElementById('iop-uni');
+  if(!code){uniSel.innerHTML='<option value="">'+(isKz?'Мамандықты таңдаңыз':'Выберите специальность')+'</option>';return;}
+  var spec=ENT_DATA.find(function(d){return d.code===code;});
+  if(!spec||!spec.top3||!spec.top3.length){uniSel.innerHTML='<option value="">'+(isKz?'Деректер жоқ':'Нет данных')+'</option>';return;}
+  uniSel.innerHTML='<option value="">'+(isKz?'Таңдаңыз...':'Выберите...')+'</option>'+
+    spec.top3.map(function(u){return '<option value="'+u+'">'+u+'</option>';}).join('');
+}
+
+function iopPreview(){
+  var isKz=S.lang==='kz';
+  var name=(document.getElementById('iop-name')||{}).value||'';
+  var mbti=(document.getElementById('iop-mbti')||{}).value||'';
+  var year=(document.getElementById('iop-year')||{}).value||'2026';
+  var pair=(document.getElementById('iop-pair')||{}).value||'';
+  var code=(document.getElementById('iop-spec')||{}).value||'';
+  var scoreRaw=(document.getElementById('iop-score')||{}).value||'';
+  var uni=(document.getElementById('iop-uni')||{}).value||'';
+  name=name.trim();
+  if(!name){alert(isKz?'Атыңызды енгізіңіз':'Введите ваше имя');return;}
+  if(!pair){alert(isKz?'Бейіндік пәндерді таңдаңыз':'Выберите профильные предметы');return;}
+  if(!code){alert(isKz?'Мамандықты таңдаңыз':'Выберите специальность');return;}
+  var score=parseInt(scoreRaw,10);
+  if(isNaN(score)||score<50||score>140){alert(isKz?'Балыңды 50–140 аралығында енгіз':'Введите балл от 50 до 140');return;}
+  var spec=ENT_DATA.find(function(d){return d.code===code;});
+  var specName=spec?(isKz&&spec.nameKz?spec.nameKz:spec.name):'—';
+  // Grant chance
+  var chance='—';
+  if(spec){
+    var years=[spec.scores.y23,spec.scores.y24,spec.scores.y25];
+    var ok=0,has=0;
+    years.forEach(function(y){if(y&&y.min!=null){has++;if(score>=y.min)ok++;}});
+    if(has>0){
+      if(ok===has)chance=isKz?'🟢 Жоғары мүмкіндік':'🟢 Высокий шанс';
+      else if(ok/has>=0.5)chance=isKz?'🟡 Орташа мүмкіндік':'🟡 Средний шанс';
+      else chance=isKz?'🔴 Төмен мүмкіндік':'🔴 Низкий шанс';
+    }
+  }
+  var prev=document.getElementById('iop-preview');
+  var rows=[
+    [isKz?'Аты-жөні':'ФИО', name],
+    ['MBTI', mbti||'—'],
+    [isKz?'Оқу жылы':'Год поступления', year],
+    [isKz?'Бейіндік пәндер':'Профильные предметы', pair],
+    [isKz?'Мамандық':'Специальность', specName+' ('+code+')'],
+    [isKz?'ҰБТ балы':'Балл ЕНТ', score],
+    [isKz?'Университет':'Университет', uni||'—'],
+    [isKz?'Грантқа түсу мүмкіндігі':'Шанс на грант', chance]
+  ];
+  prev.style.display='block';
+  prev.innerHTML='<div class="iop-preview-title">'+(isKz?'✅ Деректер расталды — жоспарды жүктеп алыңыз':'✅ Данные подтверждены — скачайте план')+'</div>'+
+    rows.map(function(r){return '<div class="iop-preview-row"><span class="iop-preview-key">'+r[0]+'</span><span class="iop-preview-val">'+r[1]+'</span></div>';}).join('')+
+    '<button class="iop-dl-btn" onclick="genIOPpdf()">📥 '+(isKz?'PDF жүктеу — Жеке оқу жоспары':'Скачать PDF — Индивидуальный план обучения')+'</button>';
+}
+
+function genIOPpdf(){
+  var isKz=S.lang==='kz';
+  var name=(document.getElementById('iop-name')||{}).value||'';
+  var mbti=(document.getElementById('iop-mbti')||{}).value||'';
+  var year=(document.getElementById('iop-year')||{}).value||'2026';
+  var pair=(document.getElementById('iop-pair')||{}).value||'';
+  var code=(document.getElementById('iop-spec')||{}).value||'';
+  var score=parseInt((document.getElementById('iop-score')||{}).value||'0',10);
+  var uni=(document.getElementById('iop-uni')||{}).value||'';
+  var spec=ENT_DATA.find(function(d){return d.code===code;});
+  var specName=spec?(isKz&&spec.nameKz?spec.nameKz:spec.name):'—';
+  var mbtiInfo=MBTI&&MBTI[mbti]?MBTI[mbti]:null;
+  var today=new Date();
+  var dateStr=today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
+  var {jsPDF}=window.jspdf;
+  var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var W=210,H=297,mg=18,cw=W-2*mg;
+  function hex(c){return c}
+  // ── PAGE 1: ТИТУЛ ──
+  doc.setFillColor(25,59,83);doc.rect(0,0,W,45,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(10);doc.setFont('helvetica','normal');
+  doc.text('AIPLUS — '+(isKz?'БІЛІМ ОРТАЛЫҒЫ':'ОБРАЗОВАТЕЛЬНЫЙ ЦЕНТР'), mg, 18);
+  doc.setFontSize(18);doc.setFont('helvetica','bold');
+  doc.text(isKz?'ЖЕКЕ ОҚУ ЖОСПАРЫ':'ИНДИВИДУАЛЬНЫЙ ПЛАН ОБУЧЕНИЯ', mg, 30);
+  doc.setFontSize(10);doc.setFont('helvetica','normal');
+  doc.text(isKz?('Жасалды: '+dateStr):('Составлен: '+dateStr), mg, 40);
+  doc.setTextColor(0,0,0);
+  // Student card
+  var y=60;
+  doc.setFillColor(240,246,252);doc.roundedRect(mg,y,cw,55,4,4,'F');
+  doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+  doc.text(isKz?'ОҚУШЫ ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ ОБ УЧЕНИКЕ', mg+8, y+12);
+  doc.setTextColor(0,0,0);doc.setFont('helvetica','normal');doc.setFontSize(11);
+  doc.text((isKz?'Аты-жөні: ':'ФИО: ')+name, mg+8, y+24);
+  doc.text('MBTI: '+(mbti||'—'), mg+8, y+34);
+  doc.text((isKz?'Мақсатты жыл: ':'Год поступления: ')+year, mg+8, y+44);
+  doc.text((isKz?'Жасалған күні: ':'Дата составления: ')+dateStr, mg+cw/2, y+24);
+  doc.text((isKz?'Бейіндік пәндер: ':'Профильные предметы: ')+pair.split(' + ').map(localizeSubj).join(' + '), mg+cw/2, y+34);
+  doc.text((isKz?'ҰБТ балы: ':'Балл ЕНТ: ')+score, mg+cw/2, y+44);
+  // MBTI description
+  if(mbtiInfo){
+    y=130;
+    doc.setFillColor(255,255,255);doc.roundedRect(mg,y,cw,70,4,4,'FD');
+    doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+    doc.text('MBTI — '+mbti+(mbtiInfo.ru?' · '+mbtiInfo.ru:''), mg+8, y+12);
+    doc.setTextColor(0,0,0);doc.setFont('helvetica','normal');doc.setFontSize(9.5);
+    var desc=isKz&&mbtiInfo.desc_kz?mbtiInfo.desc_kz:mbtiInfo.desc_ru||'';
+    if(desc){var lines=doc.splitTextToSize(desc,cw-16);doc.text(lines.slice(0,5),mg+8,y+22);}
+  }
+  // Footer p1
+  doc.setFontSize(8);doc.setTextColor(150,150,150);
+  doc.text('1 / 4 — Aiplus © '+today.getFullYear(), W/2, H-10, {align:'center'});
+
+  // ── PAGE 2: СПЕЦИАЛЬНОСТЬ ──
+  doc.addPage();
+  doc.setFillColor(25,59,83);doc.rect(0,0,W,28,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+  doc.text(isKz?'2. МАМАНДЫҚ СТАТИСТИКАСЫ':'2. СТАТИСТИКА СПЕЦИАЛЬНОСТИ', mg, 18);
+  doc.setTextColor(0,0,0);y=40;
+  if(spec){
+    // Spec header
+    doc.setFillColor(240,246,252);doc.roundedRect(mg,y,cw,32,4,4,'F');
+    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+    doc.text(specName, mg+8, y+12);
+    doc.setTextColor(0,0,0);doc.setFont('helvetica','normal');doc.setFontSize(10);
+    doc.text(isKz?'Коды: ':'Код: '+code, mg+8, y+22);
+    doc.text(isKz?'Пәндер: ':'Предметы: '+(spec.s1+' + '+spec.s2), mg+80, y+22);
+    y+=42;
+    // Grants table
+    doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+    doc.text(isKz?'Грант саны':'Количество грантов', mg, y+8);y+=14;
+    var cols=[isKz?'Жыл':'Год', isKz?'Грант':'Грант', isKz?'Min балл':'Min балл', isKz?'Max балл':'Max балл'];
+    var colW=[30,45,55,55];var cx=mg;
+    doc.setFillColor(20,114,194);doc.rect(mg,y,cw,10,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(9);doc.setFont('helvetica','bold');
+    cols.forEach(function(c,i){doc.text(c,cx+4,y+7);cx+=colW[i];});y+=10;
+    var tableRows=[
+      ['2023', spec.grants.y23||'—', spec.scores.y23?spec.scores.y23.min:'—', spec.scores.y23?spec.scores.y23.max:'—'],
+      ['2024', spec.grants.y24||'—', spec.scores.y24?spec.scores.y24.min:'—', spec.scores.y24?spec.scores.y24.max:'—'],
+      ['2025', spec.grants.y25||'—', spec.scores.y25?spec.scores.y25.min:'—', spec.scores.y25?spec.scores.y25.max:'—'],
+    ];
+    tableRows.forEach(function(row,ri){
+      doc.setFillColor(ri%2===0?248:255,ri%2===0?251:255,ri%2===0?255:255);
+      doc.rect(mg,y,cw,10,'F');doc.setTextColor(0,0,0);doc.setFont('helvetica','normal');
+      cx=mg;row.forEach(function(v,i){doc.text(String(v),cx+4,y+7);cx+=colW[i];});y+=10;
+    });
+    // Grant chance
+    y+=8;
+    var years2=[spec.scores.y23,spec.scores.y24,spec.scores.y25];
+    var ok2=0,has2=0;
+    years2.forEach(function(yy){if(yy&&yy.min!=null){has2++;if(score>=yy.min)ok2++;}});
+    var chColor=[0,0,0];var chText='—';
+    if(has2>0){
+      if(ok2===has2){chColor=[59,109,17];chText=isKz?'✓ Жоғары мүмкіндік ('+ok2+'/'+has2+' жылда)':'✓ Высокий шанс ('+ok2+'/'+has2+' лет)';}
+      else if(ok2/has2>=0.5){chColor=[133,79,11];chText=isKz?'~ Орташа мүмкіндік ('+ok2+'/'+has2+' жылда)':'~ Средний шанс ('+ok2+'/'+has2+' лет)';}
+      else{chColor=[163,45,45];chText=isKz?'✗ Төмен мүмкіндік ('+ok2+'/'+has2+' жылда)':'✗ Низкий шанс ('+ok2+'/'+has2+' лет)';}
+    }
+    doc.setFillColor(chColor[0]===59?232:chColor[0]===133?255:252,chColor[0]===59?245:chColor[0]===133?244:232,chColor[0]===59?224:chColor[0]===133?224:232);
+    doc.roundedRect(mg,y,cw,16,3,3,'F');
+    doc.setTextColor(chColor[0],chColor[1],chColor[2]);doc.setFontSize(11);doc.setFont('helvetica','bold');
+    doc.text((isKz?'Сіздің балыңызға байланысты грантқа түсу мүмкіндігі: ':'Ваши шансы на грант с баллом '+score+': ')+chText, mg+6, y+11);
+    // Competition
+    if(spec.comp!=null){
+      y+=22;doc.setTextColor(100,100,100);doc.setFont('helvetica','normal');doc.setFontSize(10);
+      doc.text((isKz?'1 орынға бәсекелестік: '+spec.comp+' оқушы ('+spec.apps+' өтініш)':'Конкурс на 1 место: '+spec.comp+' чел. ('+spec.apps+' заявок)'), mg, y);
+    }
+    // Top3 unis
+    if(spec.top3&&spec.top3.length){
+      y+=18;doc.setFontSize(11);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+      doc.text(isKz?'ТОП-3 ЖОО (2025ж. үздік 100 оқушының таңдауы)':'ТОП-3 ВУЗа (выбор топ-100 абитуриентов 2025)', mg, y);y+=8;
+      spec.top3.forEach(function(u,i){
+        doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(0,0,0);
+        var lines2=doc.splitTextToSize((i+1)+'. '+u, cw);doc.text(lines2,mg,y);y+=lines2.length*5+2;
+      });
+    }
+  }
+  doc.setFontSize(8);doc.setTextColor(150,150,150);
+  doc.text('2 / 4 — Aiplus © '+today.getFullYear(), W/2, H-10, {align:'center'});
+
+  // ── PAGE 3: УНИВЕРСИТЕТ + РЕКОМЕНДАЦИИ ──
+  doc.addPage();
+  doc.setFillColor(25,59,83);doc.rect(0,0,W,28,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+  doc.text(isKz?'3. УНИВЕРСИТЕТ ЖӘНЕ ҰСЫНЫМДАР':'3. УНИВЕРСИТЕТ И РЕКОМЕНДАЦИИ', mg, 18);
+  doc.setTextColor(0,0,0);y=40;
+  // Uni block
+  if(uni){
+    doc.setFillColor(240,246,252);doc.roundedRect(mg,y,cw,24,4,4,'F');
+    doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+    doc.text(isKz?'Таңдалған университет:':'Выбранный университет:', mg+8, y+10);
+    doc.setTextColor(0,0,0);doc.setFont('helvetica','normal');doc.setFontSize(10);
+    var uniLines=doc.splitTextToSize(uni,cw-16);doc.text(uniLines,mg+8,y+18);
+    y+=30+uniLines.length*4;
+  }
+  // Recommendations
+  y+=6;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(20,114,194);
+  doc.text(isKz?'Дайындалу бойынша ұсынымдар:':'Рекомендации по подготовке:', mg, y);y+=10;
+  var recs=isKz?[
+    '1. Профильді пәндеріңізге күн сайын 2–3 сағат уақыт бөліңіз',
+    '2. Пробный ҰБТ-ны ай сайын тапсырып, динамиканы бақылаңыз',
+    '3. '+spec.s1+' пәні бойынша соңғы 5 жылдың сұрақтарын шешіңіз',
+    '4. '+spec.s2+' пәні бойынша формулалар мен теориялық базаны нығайтыңыз',
+    '5. Міндетті пәндерді (ҚР тарихы, оқу сауаттылығы, мат. сауаттылық) ұмытпаңыз',
+    '6. Aiplus білім орталығында ақылы немесе тегін консультация алыңыз',
+  ]:[
+    '1. Уделяйте профильным предметам 2–3 часа в день',
+    '2. Ежемесячно проходите пробный ЕНТ и отслеживайте прогресс',
+    '3. По предмету '+spec.s1+' решите задания за последние 5 лет',
+    '4. По предмету '+spec.s2+' укрепите формулы и теоретическую базу',
+    '5. Не забывайте об обязательных предметах (история РК, грамотность)',
+    '6. Запишитесь на консультацию в образовательный центр Aiplus',
+  ];
+  recs.forEach(function(r){
+    doc.setFontSize(9.5);doc.setFont('helvetica','normal');doc.setTextColor(0,0,0);
+    var rLines=doc.splitTextToSize(r,cw);doc.text(rLines,mg,y);y+=rLines.length*5.5+2;
+  });
+  doc.setFontSize(8);doc.setTextColor(150,150,150);
+  doc.text('3 / 4 — Aiplus © '+today.getFullYear(), W/2, H-10, {align:'center'});
+
+  // ── PAGE 4: ВРЕМЕННАЯ ШКАЛА ──
+  doc.addPage();
+  doc.setFillColor(25,59,83);doc.rect(0,0,W,28,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+  doc.text(isKz?'4. ДАЙЫНДАЛУ ЖОСПАРЫ':'4. ПЛАН ПОДГОТОВКИ', mg, 18);
+  doc.setTextColor(0,0,0);y=40;
+  var timeline=isKz?[
+    {m:'1–2 ай', t:'Диагностика', d:'Бастапқы деңгейді анықта, әлсіз тақырыптарды белгіле'},
+    {m:'3–4 ай', t:'Негіз', d:'Профильді пәндердің негізгі тақырыптарын қайталап шық'},
+    {m:'5–6 ай', t:'Тереңдету', d:'Күрделі тапсырмаларды, шығармашылық сұрақтарды шеш'},
+    {m:'7–8 ай', t:'Пробный ҰБТ', d:'Ай сайын пробный ҰБТ тапсыр, нәтижелерді талда'},
+    {m:'9–10 ай', t:'Финалдық дайындық', d:'Барлық пәндерді жалпылама қайтала, уақытты басқар'},
+    {m:'11 ай', t:'ҰБТ-ға дейін', d:'Тыныштал, ұйқыңды жаңсарт, соңғы тесттерді өтіп шық'},
+  ]:[
+    {m:'1–2 мес', t:'Диагностика', d:'Определи начальный уровень, отметь слабые темы'},
+    {m:'3–4 мес', t:'База', d:'Повтори основные темы профильных предметов'},
+    {m:'5–6 мес', t:'Углубление', d:'Решай сложные задачи и нестандартные вопросы'},
+    {m:'7–8 мес', t:'Пробный ЕНТ', d:'Ежемесячно сдавай пробный ЕНТ, анализируй результаты'},
+    {m:'9–10 мес', t:'Финальная подготовка', d:'Общее повторение всех предметов, тренировка времени'},
+    {m:'11 мес', t:'Накануне ЕНТ', d:'Отдыхай, нормализуй сон, пройди последние тесты'},
+  ];
+  timeline.forEach(function(step,i){
+    var fillEven=i%2===0;
+    doc.setFillColor(fillEven?240:255,fillEven?246:255,fillEven?252:255);
+    doc.roundedRect(mg,y,cw,22,3,3,'F');
+    doc.setFillColor(20,114,194);doc.roundedRect(mg,y,28,22,3,3,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(9);doc.setFont('helvetica','bold');
+    doc.text(step.m,mg+14,y+14,{align:'center'});
+    doc.setTextColor(20,114,194);doc.setFontSize(10);doc.setFont('helvetica','bold');
+    doc.text(step.t,mg+34,y+9);
+    doc.setTextColor(60,60,60);doc.setFontSize(9);doc.setFont('helvetica','normal');
+    doc.text(step.d,mg+34,y+17);
+    y+=26;
+  });
+  // Score target
+  y+=6;
+  doc.setFillColor(232,245,224);doc.roundedRect(mg,y,cw,22,4,4,'F');
+  doc.setTextColor(59,109,17);doc.setFontSize(11);doc.setFont('helvetica','bold');
+  doc.text((isKz?'Мақсатты балыңыз: ':'Ваш целевой балл: ')+score+' | '+(isKz?'Мақсатты жыл: ':'Год поступления: ')+year, mg+8, y+9);
+  doc.setFont('helvetica','normal');doc.setFontSize(9.5);
+  doc.text((isKz?'Мамандық: ':'Специальность: ')+specName+' ('+code+')', mg+8, y+17);
+  // Footer
+  y=H-30;
+  doc.setFillColor(25,59,83);doc.rect(0,y,W,30,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(10);doc.setFont('helvetica','bold');
+  doc.text('Aiplus — '+(isKz?'Білім орталығы':'Образовательный центр'), mg, y+12);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  doc.text('flameelement01.github.io/aiplus-mbti', mg, y+22);
+  doc.text('4 / 4', W-mg, y+22, {align:'right'});
+
+  var fname='Aiplus_IOP_'+(name||'plan').replace(/\s+/g,'_')+'_'+year+'.pdf';
+  doc.save(fname);
 }
 
 // ── RESTART ──
