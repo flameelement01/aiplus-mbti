@@ -34,6 +34,11 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .logo img{height:40px;transform:rotate(270deg)}
 .badge{background:var(--accent);color:#000;font-size:10px;font-weight:700;
   padding:4px 11px;border-radius:20px;letter-spacing:.4px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.lang-switch{display:inline-flex;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.15)}
+.lang-switch button{background:transparent;color:rgba(255,255,255,.75);border:none;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;font-family:inherit}
+.lang-switch button.active{background:var(--accent);color:#000}
+.lang-switch button:not(.active):hover{background:rgba(255,255,255,.08);color:#fff}
 
 /* CONTAINER */
 .wrap{max-width:780px;margin:0 auto;padding:20px 14px 80px}
@@ -449,7 +454,13 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 
 <div class="topbar">
   <div class="logo"><img src="https://static.tildacdn.pro/tild6138-6238-4632-b230-313838323361/logo.svg" alt="Aiplus"></div>
-  <div class="badge">MBTI × ЕНТ 2026</div>
+  <div class="topbar-right">
+    <div class="lang-switch" id="topbar-lang">
+      <button data-lang="kz" onclick="setLang('kz')">KZ</button>
+      <button data-lang="ru" onclick="setLang('ru')">RU</button>
+    </div>
+    <div class="badge">MBTI × ЕНТ 2026</div>
+  </div>
 </div>
 
 <div class="wrap" id="app"></div>
@@ -1517,8 +1528,21 @@ function render(){
     case"loading":rLoader(a);break;
     case"result":rResult(a);initCareerGuide(calcType());initSpecBrowser();initUniBrowser();initENTTable(calcType());initENTSearch();initGrantCalc();break;
   }
+  updateTopbarLang();
   window.scrollTo({top:0,behavior:'smooth'});
   try{sessionStorage.setItem('mbti_state',JSON.stringify(S))}catch(e){}
+}
+function updateTopbarLang(){
+  var box=document.getElementById('topbar-lang');
+  if(!box)return;
+  box.querySelectorAll('button').forEach(function(b){
+    b.classList.toggle('active',b.getAttribute('data-lang')===S.lang);
+  });
+}
+function setLang(lang){
+  if(S.lang===lang)return;
+  S.lang=lang;
+  render();
 }
 
 // ── WELCOME ──
@@ -2025,6 +2049,16 @@ function filterENT(q){
 }
 
 // ── GRANT CALCULATOR ──
+var SUBJ_KZ={
+  'Биология':'Биология','География':'География','Химия':'Химия','Физика':'Физика',
+  'Математика':'Математика','Информатика':'Информатика',
+  'Английский язык':'Ағылшын тілі','Всемирная история':'Дүниежүзі тарихы',
+  'ЧОП':'Құқық негіздері','Казахский язык':'Қазақ тілі','Русский язык':'Орыс тілі',
+  'Казахская литература':'Қазақ әдебиеті','Русская литература':'Орыс әдебиеті',
+  'Казахский/Русский язык':'Қазақ/Орыс тілі','Казахская/Русская литература':'Қазақ/Орыс әдебиеті',
+  'Творческий экзамен':'Шығармашылық емтихан'
+};
+function localizeSubj(s){return S.lang==='kz'&&SUBJ_KZ[s]?SUBJ_KZ[s]:s;}
 function getENTSubjectPairs(){
   var seen={};var pairs=[];
   ENT_DATA.forEach(function(d){
@@ -2037,9 +2071,12 @@ function renderGrantCalc(){
   var isKz=S.lang==='kz';
   var pairs=getENTSubjectPairs();
   var opts='<option value="">'+(isKz?'Пән комбинациясын таңдаңыз':'Выберите комбинацию предметов')+'</option>'+
-    pairs.map(function(p){return '<option value="'+p.key+'">'+p.key+'</option>';}).join('');
+    pairs.map(function(p){
+      var lbl=localizeSubj(p.s1)+' + '+localizeSubj(p.s2);
+      return '<option value="'+p.key+'">'+lbl+'</option>';
+    }).join('');
   return '<div class="gc-wrap" id="grant-calc">'+
-    '<div class="gc-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігін есептегіш':'Калькулятор шансов на грант')+'</div>'+
+    '<div class="gc-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігіңді анықта':'Калькулятор шансов на грант')+'</div>'+
     '<div class="gc-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз — 2023–2025 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ — покажем шансы по статистике 2023–2025 гг.')+'</div>'+
     '<div class="gc-form">'+
       '<div class="gc-field"><label>'+(isKz?'Бейіндік пәндер':'Профильные предметы')+'</label><select id="gc-pair">'+opts+'</select></div>'+
@@ -2074,16 +2111,10 @@ function calcGrant(){
       if(y&&y.min!=null){hasCount++;if(score>=y.min)okCount++;}
     });
     var level;
-    if(hasCount===0)level='low';
-    else if(okCount===hasCount&&hasCount>=3)level='high';
-    else if(okCount>=2)level='mid';
-    else level='low';
-    // strict ТЗ: 3/3 = high, 2/3 = mid, 0-1/3 = low
-    if(hasCount===3){
-      if(okCount===3)level='high';
-      else if(okCount===2)level='mid';
-      else level='low';
-    }
+    if(hasCount===0){level='low';}
+    else if(okCount===hasCount){level='high';}
+    else if(okCount/hasCount>=0.5){level='mid';}
+    else{level='low';}
     groups[level].push({d:d,years:years,score:score});
   });
   var lblHigh=isKz?'Жоғары мүмкіндік':'Высокий шанс';
