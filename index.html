@@ -2304,7 +2304,8 @@ function genPDF(){
   if(btn){btn.disabled=true;btn.textContent=S.lang==='kz'?'Жүктелуде...':'Загрузка...';}
   var wrap=document.querySelector('.wrap');
   if(!wrap)return;
-  html2canvas(wrap,{scale:2,useCORS:true,backgroundColor:'#f0f4f8',scrollY:-window.scrollY,windowWidth:wrap.scrollWidth}).then(function(canvas){
+  var dpr=Math.max(3,window.devicePixelRatio||1);
+  html2canvas(wrap,{scale:dpr,useCORS:true,backgroundColor:'#f0f4f8',scrollY:-window.scrollY,windowWidth:wrap.scrollWidth}).then(function(canvas){
     var{jsPDF}=window.jspdf;
     var imgW=canvas.width;var imgH=canvas.height;
     var pdfW=210;var pdfH=297;var margin=5;
@@ -2313,7 +2314,6 @@ function genPDF(){
     var scaledH=imgH*ratio;
     var pageContentH=pdfH-2*margin;
     var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    var imgData=canvas.toDataURL('image/jpeg',0.92);
     var pages=Math.ceil(scaledH/pageContentH);
     for(var p=0;p<pages;p++){
       if(p>0)doc.addPage();
@@ -2323,8 +2323,8 @@ function genPDF(){
       tmpCanvas.width=imgW;tmpCanvas.height=Math.round(srcH);
       var ctx=tmpCanvas.getContext('2d');
       ctx.drawImage(canvas,0,Math.round(srcY),imgW,Math.round(srcH),0,0,imgW,Math.round(srcH));
-      var pageImg=tmpCanvas.toDataURL('image/jpeg',0.92);
-      doc.addImage(pageImg,'JPEG',margin,margin,contentW,srcH*ratio);
+      var pageImg=tmpCanvas.toDataURL('image/png');
+      doc.addImage(pageImg,'PNG',margin,margin,contentW,srcH*ratio);
     }
     var type=calcType();
     var fileName='Aiplus_MBTI_'+type+'_'+(S.user.name||'result').replace(/\s+/g,'_')+'.pdf';
