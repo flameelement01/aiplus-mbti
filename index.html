@@ -1591,7 +1591,6 @@ function setLang(lang){
 function rWelcome(a){
   var isKz=S.lang==='kz';
   a.innerHTML=`<div class="hero">
-    ${renderGrantCalc()}
     <div class="hero-tag">${t('heroTag')}</div>
     <h1 class="hero-title">${t('heroTitle')}</h1>
     <p class="hero-sub">${t('heroSub')}</p>
@@ -1602,6 +1601,7 @@ function rWelcome(a){
       <div class="stat"><b>${t('s3')}</b><small>${t('s3l')}</small></div>
     </div>
     <button class="btn" onclick="S.screen='lang';render()">${t('startBtn')}</button>
+    ${renderGrantCalc()}
     <div class="trust">
       <div class="trust-card"><div class="ic">🔗</div><h4>${t('t1t')}</h4><p>${t('t1d')}</p></div>
       <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p>${(T[S.lang].t2items||[]).map(x=>'<div class="trust-item">'+x+'</div>').join('')}</div>
