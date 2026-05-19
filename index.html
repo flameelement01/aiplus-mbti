@@ -2740,10 +2740,12 @@ function genIOPpdf(){
   var namePill='<div style="position:absolute;bottom:130px;left:0;right:0;text-align:center">'+
     '<span style="background:rgba(255,255,255,.95);border-radius:50px;padding:10px 32px;font-size:16px;font-weight:800;color:#193b53;box-shadow:0 2px 16px rgba(0,0,0,.15);display:inline-block">'+escHtml(name)+'</span></div>';
 
+  // ── БЕТ 1: Кіріспе (cover) ──
   var p1='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
     '<img src="'+imgCover+'" style="width:100%;height:100%;object-fit:cover;display:block" crossorigin="anonymous">'+
     namePill+'</div>';
 
+  // ── БЕТ 2: ҰБТ статистикалық мәліметтер ──
   var tableRows=specs.map(function(sp,si){
     var ch=specChance(sp,score);
     var chColor=ch==='high'?'#2d7d46':ch==='mid'?'#b07d20':'#c0392b';
@@ -2764,24 +2766,20 @@ function genIOPpdf(){
       '<td style="padding:5px;text-align:center;border:1px solid #dee;font-weight:bold;color:'+chColor+';font-size:11px">'+(sp.comp!=null?sp.comp:'—')+'<br><span style="font-size:9px">'+chLbl+'</span></td>'+
     '</tr>';
   }).join('');
-
   var p2='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" crossorigin="anonymous">'+
     '<div style="position:absolute;top:10px;right:20px;z-index:1">'+
       '<span style="background:rgba(255,255,255,.92);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:bold;color:#193b53">'+escHtml(name)+'</span></div>'+
     '<div style="position:absolute;top:50px;left:24px;right:24px;bottom:30px;z-index:1;overflow:hidden">'+
     '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:8px;background:rgba(255,255,255,.8);padding:6px 10px;border-radius:6px;display:inline-block">'+
-      (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР СТАТИСТИКАСЫ':'СТАТИСТИКА ВЫБРАННЫХ СПЕЦИАЛЬНОСТЕЙ')+'</div>'+
+      (isKz?'ҰБТ СТАТИСТИКАЛЫҚ МӘЛІМЕТТЕР':'СТАТИСТИКА ЕНТ — ВЫБРАННЫЕ СПЕЦИАЛЬНОСТИ')+'</div>'+
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
-    ['','ТОП-3','2023','2024','2025','2023','2024','2025',isKz?'Өтін.':'Заявок',isKz?'Бәсеке':'Конкур.'].map(function(h,ci){
-      if(ci===0)return '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Мамандық':'Специальность')+'</th>';
-      if(ci===1)return '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+h+'</th>';
-      if(ci===2)return '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Грант саны':'Гранты')+'</th>';
-      if(ci===5)return '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:8px;border:1px solid #0f2d42">Max/Min</th>';
-      if(ci===8)return '<th colspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">2025</th>';
-      return '';
-    }).join('')+
+    '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Мамандық':'Специальность')+'</th>'+
+    '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">ТОП-3</th>'+
+    '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Грант саны':'Гранты')+'</th>'+
+    '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:8px;border:1px solid #0f2d42">Max/Min</th>'+
+    '<th colspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">2025</th>'+
     '</tr><tr>'+
     ['2023','2024','2025','2023','2024','2025',isKz?'Өтін.':'Заявок',isKz?'Бәсеке':'Конкур.'].map(function(h){
       return '<th style="background:#1e5a7a;color:#fff;padding:5px;font-size:9px;border:1px solid #0f2d42">'+h+'</th>';
@@ -2794,36 +2792,41 @@ function genIOPpdf(){
       '<b style="color:#c0392b">'+(isKz?'Қызыл':'Красн.')+'</b>='+(isKz?'төмен':'низк.')+'</div>'+
     '</div></div>';
 
-  var specPages=specs.map(function(sp,i){
+  // ── БЕТ 3: Таңдалған мамандық туралы ақпарат ──
+  var specCards=specs.map(function(sp,i){
     var sd=specDatas[i];
     var nm=escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name);
     var maqsat=escHtml(sd?(isKz?sd.m:sd.mr)||'—':'—');
     var jumys=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
-    return '<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
-      '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" crossorigin="anonymous">'+
-      '<div style="position:absolute;top:10px;right:20px;z-index:1">'+
-        '<span style="background:rgba(255,255,255,.92);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:bold;color:#193b53">'+escHtml(name)+'</span></div>'+
-      '<div style="position:absolute;top:50px;left:24px;right:24px;bottom:30px;z-index:1">'+
-      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">'+
-        '<div style="background:#193b53;color:#fff;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:bold;flex-shrink:0">'+(i+1)+'</div>'+
-        '<div><div style="font-size:16px;font-weight:bold;color:#193b53;line-height:1.3">'+nm+'</div>'+
-          '<div style="font-size:12px;color:#555">'+sp.code+'</div></div>'+
-      '</div>'+
-      '<div style="background:rgba(255,255,255,.92);border-radius:12px;padding:16px;margin-bottom:14px">'+
-        '<div style="font-size:11px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ СПЕЦИАЛЬНОСТИ')+'</div>'+
-        '<div style="font-size:13px;color:#333;line-height:1.7">'+maqsat+'</div>'+
-      '</div>'+
-      '<div style="background:rgba(255,255,255,.92);border-radius:12px;padding:16px">'+
-        '<div style="font-size:11px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
-        '<div style="font-size:13px;color:#333;line-height:1.7">'+jumys+'</div>'+
-      '</div></div></div>';
-  });
+    return '<div style="display:flex;gap:10px;margin-bottom:10px;background:rgba(255,255,255,.93);border-radius:10px;padding:12px;border-left:4px solid #193b53">'+
+      '<div style="background:#193b53;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;flex-shrink:0;margin-top:2px">'+(i+1)+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:4px">'+nm+
+          '<span style="font-size:10px;color:#888;font-weight:normal;margin-left:8px">'+sp.code+'</span></div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+          '<div><div style="font-size:9px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
+            '<div style="font-size:10px;color:#333;line-height:1.5">'+maqsat+'</div></div>'+
+          '<div><div style="font-size:9px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
+            '<div style="font-size:10px;color:#333;line-height:1.5">'+jumys+'</div></div>'+
+        '</div>'+
+      '</div></div>';
+  }).join('');
+  var p3='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
+    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" crossorigin="anonymous">'+
+    '<div style="position:absolute;top:10px;right:20px;z-index:1">'+
+      '<span style="background:rgba(255,255,255,.92);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:bold;color:#193b53">'+escHtml(name)+'</span></div>'+
+    '<div style="position:absolute;top:50px;left:24px;right:24px;bottom:30px;z-index:1">'+
+    '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:12px;background:rgba(255,255,255,.8);padding:6px 10px;border-radius:6px;display:inline-block">'+
+      (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
+    specCards+
+    '</div></div>';
 
-  var pCongrats='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
+  // ── БЕТ 4: Құттықтау сөзі ──
+  var p4='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
     '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:cover;display:block" crossorigin="anonymous">'+
     namePill+'</div>';
 
-  var pages=[p1,p2].concat(specPages).concat([pCongrats]);
+  var pages=[p1,p2,p3,p4];
   var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   var sc=Math.min(Math.max(window.devicePixelRatio||2,2),3);
 
@@ -2831,7 +2834,7 @@ function genIOPpdf(){
     if(i>=pages.length){
       doc.save(fname);
       if(dlBtn){dlBtn.disabled=false;dlBtn.innerHTML=isKz?'&#128229; PDF жүктеу — Жеке оқу жоспары':'&#128229; Скачать PDF — Индивидуальный план обучения';}
-      if(status){status.textContent=isKz?'PDF сәтті жасалды!':'PDF успешно создан!';}
+      if(status){status.textContent=isKz?'&#10003; PDF сәтті жасалды!':'&#10003; PDF успешно создан!';}
       return;
     }
     var div=document.createElement('div');
