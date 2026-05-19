@@ -25,7 +25,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
-  min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
+  min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;
+  font-size:15px;line-height:1.6;letter-spacing:.01em}
 
 /* TOPBAR */
 .topbar{background:var(--dark-bg);color:#fff;padding:10px 20px;display:flex;
@@ -135,13 +136,13 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 /* QUESTION */
 .q-dim{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
   letter-spacing:2px;margin-bottom:8px}
-.q-text{font-family:'Inter',sans-serif;font-size:clamp(17px,3vw,22px);font-weight:800;
-  line-height:1.35;margin-bottom:26px;letter-spacing:-.3px}
+.q-text{font-family:'Inter',sans-serif;font-size:clamp(17px,3vw,21px);font-weight:700;
+  line-height:1.45;margin-bottom:26px;letter-spacing:-.2px}
 .opts{display:flex;flex-direction:column;gap:9px}
 .opt{background:#f0ede5;border:2px solid transparent;border-radius:13px;
   padding:16px 20px;text-align:left;cursor:pointer;font-family:'Inter',sans-serif;
-  font-size:14px;font-weight:600;color:var(--dark);transition:all .18s;
-  display:flex;align-items:center;gap:11px}
+  font-size:15px;font-weight:500;color:var(--dark);transition:all .18s;
+  display:flex;align-items:center;gap:11px;line-height:1.5}
 .opt:hover{border-color:var(--dark);background:#fff;transform:translateX(4px)}
 .opt:active{background:var(--dark);color:#fff}
 .opt-let{display:flex;align-items:center;justify-content:center;background:var(--dark);
@@ -1680,9 +1681,14 @@ function rRegister(a){
     <h2 class="reg-title">${t('regTitle')}</h2>
     <p class="reg-sub">${t('regSub')}</p>
     <input class="inp" id="rname" placeholder="${t('regName')}" autocomplete="name">
-    <input class="inp" id="rphone" placeholder="${t('regPhone')}" type="tel" autocomplete="tel">
+    <input class="inp" id="rphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" maxlength="18">
     <input class="inp" id="rschool" placeholder="${t('regSchool')}">
-    <input class="inp" id="rgrade" placeholder="${t('regGrade')}">
+    <select class="inp" id="rgrade" style="cursor:pointer">
+      <option value="">${S.lang==='kz'?'Сынып — 9 / 10 / 11':'Класс — 9 / 10 / 11'}</option>
+      <option value="9">9 ${S.lang==='kz'?'сынып':'класс'}</option>
+      <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
+      <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
+    </select>
     <button class="btn" style="width:100%;margin-top:6px" id="rbtn" onclick="submitReg()">${t('regBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
   </div>`;
@@ -1690,11 +1696,15 @@ function rRegister(a){
 
 function submitReg(){
   const name=$("rname").value.trim();
-  const phone=$("rphone").value.trim();
+  const phone=$("rphone").value.replace(/\D/g,'');
   const school=$("rschool").value.trim();
   const grade=$("rgrade").value.trim();
-  if(!name||!phone){alert(S.lang==='kz'?'Атыңыз бен телефоныңызды жазыңыз!':'Заполните имя и телефон!');return}
-  S.user={name,phone,school,grade};
+  const isKz=S.lang==='kz';
+  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return}
+  if(phone.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return}
+  if(!school){alert(isKz?'Мектепті жазыңыз!':'Укажите школу!');return}
+  if(!grade){alert(isKz?'Сыныпты таңдаңыз!':'Выберите класс!');return}
+  S.user={name,phone:$("rphone").value.trim(),school,grade};
   S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
   S.screen="quiz";render();
 }
@@ -2174,13 +2184,12 @@ function renderGrantCalc(){
 function submitGcReg(){
   var isKz=S.lang==='kz';
   var name=(document.getElementById('gc-reg-name')||{}).value||'';
-  var phone=(document.getElementById('gc-reg-phone')||{}).value||'';
-  name=name.trim();phone=phone.trim();
-  if(!name||!phone){
-    alert(isKz?'Атыңыз бен телефоныңызды жазыңыз!':'Заполните имя и телефон!');
-    return;
-  }
-  S.user={name:name,phone:phone};
+  var rawPhone=(document.getElementById('gc-reg-phone')||{}).value||'';
+  name=name.trim();
+  var digits=rawPhone.replace(/\D/g,'');
+  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return;}
+  if(digits.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return;}
+  S.user={name:name,phone:rawPhone.trim()};
   calcGrant();
 }
 function initGrantCalc(){
@@ -2201,7 +2210,7 @@ function calcGrant(){
       '<div class="gc-reg-icon">🔒</div>'+
       '<div class="gc-reg-title">'+(isKz?'Грантқа түсу мүмкіндігіңізді анықтау үшін жеке деректеріңізді толтырыңыз':'Заполните личные данные, чтобы узнать свои шансы на получение гранта')+'</div>'+
       '<input class="inp" id="gc-reg-name" placeholder="'+(isKz?'Аты-жөніңіз':'Ваше имя')+'" style="margin-bottom:8px">'+
-      '<input class="inp" id="gc-reg-phone" placeholder="+7 (___) ___-__-__" type="tel" style="margin-bottom:8px">'+
+      '<input class="inp" id="gc-reg-phone" placeholder="+7 (___) ___-__-__" type="tel" style="margin-bottom:8px" oninput="phoneMask(this)" maxlength="18">'+
       '<button class="gc-btn" onclick="submitGcReg()">'+(isKz?'Жалғастыру →':'Продолжить →')+'</button>'+
     '</div>';
     return;
@@ -2510,6 +2519,21 @@ var UNI_LIST=[
   {c:'989',n:'Мәскеу авиация институтының «Восход» филиалы',s:'МАИ'},
 ];
 var MONTHS_RU=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+// ── PHONE MASK ──
+function phoneMask(el){
+  var v=el.value.replace(/\D/g,'');
+  if(v.startsWith('8'))v='7'+v.slice(1);
+  if(!v.startsWith('7'))v='7'+v;
+  v=v.slice(0,11);
+  var d=v.slice(1);
+  var r='+7';
+  if(d.length>0)r+=' ('+d.slice(0,3);
+  if(d.length>=3)r+=') '+d.slice(3,6);
+  if(d.length>=6)r+='-'+d.slice(6,8);
+  if(d.length>=8)r+='-'+d.slice(8,10);
+  el.value=r;
+}
 
 // ── IOP MODULE v2 ──
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -2821,9 +2845,15 @@ function genIOPpdf(){
       '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-weight:bold;color:'+chColor+';font-size:10px">'+(sp.comp!=null?sp.comp:'—')+'<br><span style="font-size:8px">'+chLbl+'</span></td>'+
     '</tr>';
   }).join('');
+  var aiplusBadge='<div style="position:absolute;bottom:10px;right:16px;z-index:3;'+
+    'background:rgba(20,50,90,.82);border-radius:8px;padding:5px 13px;display:flex;align-items:center;gap:7px">'+
+    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#faa318;letter-spacing:.5px">Ai</span>'+
+    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#fff;letter-spacing:.5px">plus</span>'+
+    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:rgba(255,255,255,.7);margin-left:2px">ent.aiplus.kz</span>'+
+    '</div>';
   var p2='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
-    nameInPill+
+    nameInPill+aiplusBadge+
     '<div style="position:absolute;top:60px;left:30px;right:30px;bottom:20px;z-index:1">'+
     '<div style="font-size:13px;font-weight:bold;color:#1565C0;text-align:center;margin-bottom:4px">'+
       (isKz?'ҰБТ СТАТИСТИКАЛЫҚ МӘЛІМЕТТЕР':'АНАЛИЗ СТАТИСТИКИ ЕНТ')+'</div>'+
@@ -2869,7 +2899,7 @@ function genIOPpdf(){
   }).join('');
   var p3='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
-    nameInPill+
+    nameInPill+aiplusBadge+
     '<div style="position:absolute;top:60px;left:30px;right:30px;bottom:20px;z-index:1">'+
     '<div style="font-size:13px;font-weight:bold;color:#1565C0;margin-bottom:10px">'+
       (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
