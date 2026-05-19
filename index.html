@@ -486,37 +486,63 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-prog{height:6px;background:#e8eef5;border-radius:6px;margin:10px 0}
 .iop-prog-bar{height:6px;background:var(--dark);border-radius:6px;transition:width .3s}
 .iop-prog-lbl{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px}
-.iop-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:420px;overflow-y:auto;margin-bottom:14px;padding-right:2px}
-.iop-scard{border:1.5px solid #d0dce8;border-radius:12px;padding:12px 12px 10px;cursor:pointer;background:#fafbfc;transition:all .15s;position:relative}
+/* Step 2 — header */
+.iop-step2-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.iop-step2-title{font-size:15px;font-weight:800;color:#1a2a3a}
+.iop-step2-cnt{font-size:16px;font-weight:900;color:var(--dark);background:#e3f2fd;border-radius:8px;padding:3px 12px;letter-spacing:.5px}
+/* Step 2 — grid (NO overflow/max-height — fixes tap bug on mobile) */
+.iop-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.iop-scard{border:1.5px solid #d0dce8;border-radius:12px;padding:12px 12px 10px;cursor:pointer;background:#fafbfc;transition:all .15s;position:relative;-webkit-tap-highlight-color:rgba(0,0,0,.05)}
 .iop-scard:hover:not(.disabled):not(.selected){transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .iop-scard.selected{border-color:var(--dark);background:#e3f2fd}
 .iop-scard.disabled{opacity:.35;pointer-events:none;cursor:default}
-.iop-scard-cb{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;border:2px solid #d0dce8;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff;flex-shrink:0}
+.iop-scard-cb{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;border:2px solid #d0dce8;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff;pointer-events:none}
 .iop-scard.selected .iop-scard-cb{background:var(--dark);border-color:var(--dark)}
 .iop-scard-cb-dot{width:8px;height:8px;border-radius:50%;background:#fff;display:none}
 .iop-scard.selected .iop-scard-cb-dot{display:block}
-.iop-scard-code{font-size:12px;font-weight:800;color:var(--dark);margin-bottom:3px;padding-right:28px}
-.iop-scard-name{font-size:12px;font-weight:600;color:#1a2a3a;line-height:1.35;margin-bottom:4px;padding-right:28px}
-.iop-scard-chance{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:5px;display:inline-block}
-.chance-high{background:#e8f5e0;color:#2d7d46}
+.iop-scard-code{font-size:12px;font-weight:800;color:var(--dark);margin-bottom:2px;padding-right:28px}
+.iop-scard-name{font-size:11px;font-weight:600;color:#1a2a3a;line-height:1.35;margin-bottom:5px;padding-right:28px}
+.iop-scard-chance{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:6px;display:inline-block}
+.chance-high{background:#e8f5e0;color:#1B5E20}
 .chance-mid{background:#fff4e0;color:#854F0B}
-.chance-low{background:#fce8e8;color:#c0392b}
+.chance-low{background:#fce8e8;color:#B71C1C}
 .chance-none{background:#eee;color:#888}
-.iop-scard-scores{display:flex;gap:4px;flex-wrap:wrap}
-.iop-score-chip{font-size:9px;padding:2px 6px;border-radius:4px;background:#eef2f7;color:#555;font-weight:600}
+/* Score table 3-column per TZ */
+.iop-score-tbl{margin-top:2px}
+.iop-score-tbl-lbl{font-size:9px;color:#999;font-weight:600;margin-bottom:3px}
+.iop-score-tbl-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.iop-score-yr{text-align:center;background:#f0f4f8;border-radius:4px;padding:3px 2px}
+.iop-score-yr-lbl{font-size:8px;color:#888;font-weight:600}
+.iop-score-yr-val{font-size:9px;color:#1a2a3a;font-weight:700}
+/* Step 2 — chips */
+.iop-chips-hdr{font-size:11px;font-weight:700;color:#555;margin-bottom:6px}
 .iop-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;min-height:40px;padding:8px;background:#f7f9fc;border-radius:10px;border:1px solid #e8eef5;align-items:center}
 .iop-chip{display:flex;align-items:center;gap:6px;background:#e0eeff;border:1px solid #b8d0f0;border-radius:20px;padding:4px 10px 4px 12px;font-size:11px;font-weight:600;color:var(--dark)}
 .iop-chip .num{background:var(--dark);color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
 .iop-chip button{background:none;border:none;cursor:pointer;font-size:13px;color:#888;padding:0;line-height:1}
 .iop-chips-clear{margin-left:auto;background:none;border:1px solid #c0392b;color:#c0392b;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
-.iop-info-card{border:1.5px solid #d0e8f5;border-radius:14px;padding:16px;margin-bottom:12px;background:#fafcff}
-.iop-info-head{display:flex;align-items:center;margin-bottom:10px;gap:8px}
-.iop-info-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--dark);color:#fff;font-size:13px;font-weight:800;flex-shrink:0}
-.iop-info-name{font-size:14px;font-weight:800;color:var(--dark-bg);line-height:1.3;flex:1}
-.iop-info-code{font-size:11px;color:#888;flex-shrink:0}
-.iop-info-sec{margin-bottom:8px}
-.iop-info-sec-ttl{font-size:11px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.iop-info-sec-txt{font-size:12px;color:#333;line-height:1.6}
+/* Step 3 — official document style */
+.iop-doc-hdr{border-bottom:2px solid #1565C0;padding-bottom:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.iop-doc-ttl{font-size:16px;font-weight:800;color:#0C447C}
+.iop-doc-sub{font-size:11px;color:#888;margin-top:3px}
+.iop-doc-meta{text-align:right;font-size:11px;color:#666;line-height:1.7}
+.iop-doc-footer{font-size:11px;color:#888;text-align:center;margin-top:12px;padding-top:10px;border-top:1px solid #e0e6ed}
+/* Step 3 — official specialty card */
+.iop-info2{border:1px solid #d0e2f5;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.iop-info2-hdr{background:#F5F8FD;padding:11px 14px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.iop-info2-badge{background:#EBF3FB;border:1px solid #BBDEFB;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:800;color:#1565C0;flex-shrink:0;white-space:nowrap}
+.iop-info2-name{font-size:13px;font-weight:800;color:#1a2a3a;flex:1;line-height:1.3;min-width:0}
+.iop-info2-level{font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;border:1px solid;flex-shrink:0;white-space:nowrap}
+.iop-info2-level.high{background:#F0F9F0;color:#1B5E20;border-color:#A5D6A7}
+.iop-info2-level.mid{background:#FFFBF0;color:#8D5A00;border-color:#FFD54F}
+.iop-info2-level.low{background:#FFF5F5;color:#8B1A1A;border-color:#EF9A9A}
+.iop-info2-meta{font-size:10px;color:#999;width:100%;margin-top:1px}
+.iop-info2-body{display:grid;grid-template-columns:1fr 1px 1fr;background:#fff}
+.iop-info2-col{padding:12px 14px}
+.iop-info2-sep{background:#e0e6ed}
+.iop-info2-col-ttl{font-size:9px;font-weight:700;color:#1565C0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.iop-info2-col-txt{font-size:11px;color:#333;line-height:1.6}
+/* Misc */
 .iop-summary{background:#f7f9fc;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #d0e2f5}
 .iop-sum-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid #e8f0f8;font-size:13px}
 .iop-sum-row:last-child{border-bottom:none}
@@ -530,7 +556,7 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-btn-out{background:#fff;color:var(--dark);border:2px solid var(--dark)}
 .iop-btn-out:hover{background:#f0f6fc}
 .iop-btn-dl{background:linear-gradient(135deg,#1472c2,#0f5a9c)}
-@media(max-width:600px){.iop-grid2{grid-template-columns:1fr}.iop-fcards{flex-wrap:wrap}.iop-fcard{min-width:calc(50% - 4px)}}
+@media(max-width:600px){.iop-grid2{grid-template-columns:1fr}.iop-fcards{flex-wrap:wrap}.iop-fcard{min-width:calc(50% - 4px)}.iop-doc-meta{text-align:left}.iop-info2-body{grid-template-columns:1fr}.iop-info2-sep{height:1px;width:auto}}
 @media(max-width:600px){.gc-form{grid-template-columns:1fr}.gc-counters{grid-template-columns:1fr;gap:8px}.gc-counter{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}.gc-counter-num{font-size:22px}.gc-counter-lbl{margin-top:0}}
 
 </style>
@@ -2613,6 +2639,7 @@ function iopGoStep2(){
 }
 
 function iopStep2(sec){
+  if(!sec)return;
   var isKz=S.lang==='kz';
   if(!S.iopSpecs)S.iopSpecs=[];
   var pair=S.iopPair||'';
@@ -2633,9 +2660,9 @@ function iopStep2(sec){
   var cnt=S.iopSpecs.length;
   var fcards=[
     {f:'all',icon:'&#128269;',lbl:isKz?'Барлығы':'Все',cnt:counts.all},
-    {f:'high',icon:'&#128200;',lbl:isKz?'Жоғары':'Высокий',cnt:counts.high},
-    {f:'mid',icon:'&#8212;',lbl:isKz?'Орташа':'Средний',cnt:counts.mid},
-    {f:'low',icon:'&#128201;',lbl:isKz?'Төмен':'Низкий',cnt:counts.low}
+    {f:'high',icon:'&#128200;',lbl:isKz?'Жоғары мүмкіндік':'Высокая возм.',cnt:counts.high},
+    {f:'mid',icon:'&#8212;',lbl:isKz?'Орташа мүмкіндік':'Средняя возм.',cnt:counts.mid},
+    {f:'low',icon:'&#128201;',lbl:isKz?'Төмен мүмкіндік':'Низкая возм.',cnt:counts.low}
   ].map(function(fc){
     return '<button class="iop-fcard fc-'+fc.f+(filter===fc.f?' active':'')+'" onclick="iopSetFilter(\''+fc.f+'\')">'+
       '<div class="iop-fcard-icon">'+fc.icon+'</div>'+
@@ -2646,23 +2673,30 @@ function iopStep2(sec){
     var isSel=S.iopSpecs.indexOf(sp.code)>=0;
     var isDis=!isSel&&cnt>=4;
     var ch=specChance(sp,score);
-    var chLbl=ch==='high'?(isKz?'Жоғары':'Высок.'):ch==='mid'?(isKz?'Орташа':'Средн.'):ch==='low'?(isKz?'Төмен':'Низк.'):'—';
+    var chLbl=ch==='high'?(isKz?'Грант алудың жоғары мүмкіндігі':'Высокая возможность гранта'):
+              ch==='mid'?(isKz?'Грант алудың орташа мүмкіндігі':'Средняя возможность гранта'):
+              ch==='low'?(isKz?'Грант алудың төмен мүмкіндігі':'Низкая возможность гранта'):'—';
     var y23=sp.scores.y23,y24=sp.scores.y24,y25=sp.scores.y25;
     var s23=y23?(y23.max+'/'+y23.min):'—';
     var s24=y24?(y24.max+'/'+y24.min):'—';
     var s25=y25?(y25.max+'/'+y25.min):'—';
+    var scoreLbl=isKz?'Грантқа түсу балы (max/min)':'Баллы гранта (max/min)';
     return '<div class="iop-scard'+(isSel?' selected':'')+(isDis?' disabled':'')+'" onclick="iopToggleSpec(\''+sp.code+'\')">'+
       '<div class="iop-scard-cb"><div class="iop-scard-cb-dot"></div></div>'+
       '<div class="iop-scard-code">'+sp.code+'</div>'+
       '<div class="iop-scard-name">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div>'+
       '<div class="iop-scard-chance chance-'+ch+'">'+chLbl+'</div>'+
-      '<div class="iop-scard-scores">'+
-        '<span class="iop-score-chip">2023: '+s23+'</span>'+
-        '<span class="iop-score-chip">2024: '+s24+'</span>'+
-        '<span class="iop-score-chip">2025: '+s25+'</span>'+
+      '<div class="iop-score-tbl">'+
+        '<div class="iop-score-tbl-lbl">'+scoreLbl+'</div>'+
+        '<div class="iop-score-tbl-row">'+
+          '<div class="iop-score-yr"><div class="iop-score-yr-lbl">2023</div><div class="iop-score-yr-val">'+s23+'</div></div>'+
+          '<div class="iop-score-yr"><div class="iop-score-yr-lbl">2024</div><div class="iop-score-yr-val">'+s24+'</div></div>'+
+          '<div class="iop-score-yr"><div class="iop-score-yr-lbl">2025</div><div class="iop-score-yr-val">'+s25+'</div></div>'+
+        '</div>'+
       '</div></div>';
   }).join('');
-  var chips=cnt?S.iopSpecs.map(function(code,i){
+  if(!cards)cards='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#aaa;font-size:13px">'+(isKz?'Мамандықтар табылмады':'Специальности не найдены')+'</div>';
+  var chipsHtml=cnt?S.iopSpecs.map(function(code,i){
     var sp=ENT_DATA.find(function(d){return d.code===code;});
     var nm=sp?escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name):code;
     return '<div class="iop-chip"><span class="num">'+(i+1)+'</span>'+nm+
@@ -2671,18 +2705,21 @@ function iopStep2(sec){
   '<span style="font-size:12px;color:#aaa">'+(isKz?'Таңдалмаған...':'Не выбрано...')+'</span>';
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">&#128203; '+(isKz?'Жеке оқу жоспарым':'Мой индивидуальный план обучения')+'</div>'+
-    '<div class="iop-sub">'+(isKz?'2-қадам: 4 мамандық таңдаңыз':'Шаг 2: выберите 4 специальности')+'</div>'+
     iopStepBar(2)+
+    '<div class="iop-step2-hdr">'+
+      '<div class="iop-step2-title">'+(isKz?'4 таңдауыңызды жасаңыз':'Сделайте свой выбор из 4')+'</div>'+
+      '<div class="iop-step2-cnt">'+cnt+' / 4</div>'+
+    '</div>'+
+    '<div class="iop-prog" style="margin-bottom:14px"><div class="iop-prog-bar" style="width:'+Math.round(cnt/4*100)+'%"></div></div>'+
     '<div class="iop-fcards">'+fcards+'</div>'+
-    '<input class="iop-search" id="iop-search" type="text" placeholder="'+(isKz?'Мамандықты іздеу...':'Поиск специальности...')+'" value="'+escHtml(S.iopSearch||'')+'" oninput="iopSearch(this.value)">'+
-    '<div class="iop-prog-lbl">'+cnt+' / 4 '+(isKz?'таңдалды':'выбрано')+(cnt>=4?' &#10003;':'')+'</div>'+
-    '<div class="iop-prog"><div class="iop-prog-bar" style="width:'+Math.round(cnt/4*100)+'%"></div></div>'+
+    '<input class="iop-search" id="iop-search" type="text" placeholder="'+(isKz?'Іздеу...':'Поиск...')+'" value="'+escHtml(S.iopSearch||'')+'" oninput="iopSearch(this.value)">'+
     '<div class="iop-grid2">'+cards+'</div>'+
-    '<div class="iop-chips">'+chips+'</div>'+
+    '<div class="iop-chips-hdr">'+(isKz?'Таңдалған мамандықтар':'Выбранные специальности')+'</div>'+
+    '<div class="iop-chips">'+chipsHtml+'</div>'+
     '<div class="iop-nav">'+
       '<button class="iop-btn iop-btn-out" onclick="iopBack(1)">&larr; '+(isKz?'Артқа':'Назад')+'</button>'+
       '<button class="iop-btn" onclick="iopGoStep3()" '+(cnt<4?'disabled':'')+'>'+
-        (isKz?'Жалғастыру &rarr;':'Продолжить &rarr;')+'</button>'+
+        (isKz?'Мамандық туралы ақпарат &rarr;':'Информация о специальностях &rarr;')+'</button>'+
     '</div></div>';
 }
 
@@ -2733,7 +2770,11 @@ function iopGoStep3(){
 }
 
 function iopStep3(sec){
+  if(!sec)return;
   var isKz=S.lang==='kz';
+  var today=new Date();
+  var dateStr=today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
+  var pairDisp=escHtml(S.iopPair||'');
   var cards=(S.iopSpecs||[]).map(function(code,i){
     var sp=ENT_DATA.find(function(d){return d.code===code;});
     var sd=SPEC_DATA.find(function(d){return d.c===code;});
@@ -2741,23 +2782,48 @@ function iopStep3(sec){
     var nm=escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name);
     var maqsat=escHtml(sd?(isKz?sd.m:sd.mr)||'—':'—');
     var jumys=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
-    return '<div class="iop-info-card">'+
-      '<div class="iop-info-head">'+
-        '<span class="iop-info-num">'+(i+1)+'</span>'+
-        '<span class="iop-info-name">'+nm+'</span>'+
-        '<span class="iop-info-code">'+sp.code+'</span>'+
+    var ch=specChance(sp,S.iopScore||0);
+    var lvlLbl=ch==='high'?(isKz?'Жоғары мүмкіндік':'Высокая возможность'):
+               ch==='mid'?(isKz?'Орташа мүмкіндік':'Средняя возможность'):
+               (isKz?'Төмен мүмкіндік':'Низкая возможность');
+    var subj=escHtml(sp.s1+' · '+sp.s2);
+    return '<div class="iop-info2">'+
+      '<div class="iop-info2-hdr">'+
+        '<span class="iop-info2-badge">№ '+(i+1)+'</span>'+
+        '<span class="iop-info2-name">'+nm+'</span>'+
+        '<span class="iop-info2-level '+ch+'">'+lvlLbl+'</span>'+
+        '<div class="iop-info2-meta">'+sp.code+' · '+subj+'</div>'+
       '</div>'+
-      '<div class="iop-info-sec"><div class="iop-info-sec-ttl">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
-        '<div class="iop-info-sec-txt">'+maqsat+'</div></div>'+
-      '<div class="iop-info-sec"><div class="iop-info-sec-ttl">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
-        '<div class="iop-info-sec-txt">'+jumys+'</div></div>'+
+      '<div class="iop-info2-body">'+
+        '<div class="iop-info2-col">'+
+          '<div class="iop-info2-col-ttl">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
+          '<div class="iop-info2-col-txt">'+maqsat+'</div>'+
+        '</div>'+
+        '<div class="iop-info2-sep"></div>'+
+        '<div class="iop-info2-col">'+
+          '<div class="iop-info2-col-ttl">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
+          '<div class="iop-info2-col-txt">'+jumys+'</div>'+
+        '</div>'+
+      '</div>'+
     '</div>';
   }).join('');
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">&#128203; '+(isKz?'Жеке оқу жоспарым':'Мой индивидуальный план обучения')+'</div>'+
-    '<div class="iop-sub">'+(isKz?'3-қадам: мамандықтар туралы ақпарат':'Шаг 3: информация о специальностях')+'</div>'+
-    iopStepBar(3)+cards+
-    '<div class="iop-nav">'+
+    iopStepBar(3)+
+    '<div class="iop-doc-hdr">'+
+      '<div>'+
+        '<div class="iop-doc-ttl">'+(isKz?'Мамандық туралы ақпарат':'Информация о специальностях')+'</div>'+
+        '<div class="iop-doc-sub">AiPlus · ent.aiplus.kz</div>'+
+      '</div>'+
+      '<div class="iop-doc-meta">'+
+        escHtml(S.iopName||'')+'<br>'+
+        (isKz?'ҰБТ:':'ЕНТ:')+' '+(S.iopScore||'—')+'&nbsp;|&nbsp;'+pairDisp+'<br>'+
+        dateStr+
+      '</div>'+
+    '</div>'+
+    cards+
+    '<div class="iop-doc-footer">'+(isKz?'Құжат AiPlus платформасы арқылы жасалған':'Документ создан на платформе AiPlus')+'</div>'+
+    '<div class="iop-nav" style="margin-top:16px">'+
       '<button class="iop-btn iop-btn-out" onclick="iopBack(2)">&larr; '+(isKz?'Артқа':'Назад')+'</button>'+
       '<button class="iop-btn iop-btn-dl" onclick="iopGoStep4()">PDF '+(isKz?'жасау &rarr;':'создать &rarr;')+'</button>'+
     '</div></div>';
