@@ -466,31 +466,48 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-field label{font-size:12px;font-weight:600;color:#555}
 .iop-field select,.iop-field input{padding:11px 13px;border:1.5px solid #e0e6ed;border-radius:10px;font-size:13px;font-family:inherit;background:#fafbfc;transition:border-color .15s}
 .iop-field select:focus,.iop-field input:focus{outline:none;border-color:var(--dark);background:#fff}
-.iop-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.iop-filter{padding:7px 16px;border-radius:20px;border:1.5px solid #d0dce8;background:#fafbfc;font-size:12px;font-weight:600;cursor:pointer;color:#666;font-family:inherit;transition:all .15s}
-.iop-filter.active{background:var(--dark);border-color:var(--dark);color:#fff}
+.iop-fcards{display:flex;gap:8px;margin-bottom:14px}
+.iop-fcard{flex:1;padding:10px 8px;border-radius:12px;border:2px solid #e0e6ed;background:#fafbfc;cursor:pointer;font-family:inherit;text-align:center;transition:all .15s}
+.iop-fcard:hover{border-color:#b0c4d8}
+.iop-fcard-icon{font-size:16px;margin-bottom:3px}
+.iop-fcard-lbl{font-size:10px;font-weight:700;color:#aaa;margin-bottom:3px;line-height:1.2}
+.iop-fcard-cnt{font-size:20px;font-weight:900;color:#ccc;line-height:1}
+.iop-fcard.fc-all.active{border-color:#1565C0;background:#e3f2fd}
+.iop-fcard.fc-all.active .iop-fcard-cnt,.iop-fcard.fc-all.active .iop-fcard-lbl{color:#1565C0}
+.iop-fcard.fc-high.active{border-color:#1B5E20;background:#e8f5e9}
+.iop-fcard.fc-high.active .iop-fcard-cnt,.iop-fcard.fc-high.active .iop-fcard-lbl{color:#1B5E20}
+.iop-fcard.fc-mid.active{border-color:#E65100;background:#fff3e0}
+.iop-fcard.fc-mid.active .iop-fcard-cnt,.iop-fcard.fc-mid.active .iop-fcard-lbl{color:#E65100}
+.iop-fcard.fc-low.active{border-color:#B71C1C;background:#ffebee}
+.iop-fcard.fc-low.active .iop-fcard-cnt,.iop-fcard.fc-low.active .iop-fcard-lbl{color:#B71C1C}
+.iop-search{width:100%;padding:10px 14px;border:1.5px solid #e0e6ed;border-radius:10px;font-size:13px;font-family:inherit;background:#fafbfc;margin-bottom:10px;box-sizing:border-box;transition:border-color .15s}
+.iop-search:focus{outline:none;border-color:var(--dark);background:#fff}
 .iop-prog{height:6px;background:#e8eef5;border-radius:6px;margin:10px 0}
 .iop-prog-bar{height:6px;background:var(--dark);border-radius:6px;transition:width .3s}
 .iop-prog-lbl{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px}
-.iop-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:440px;overflow-y:auto;margin-bottom:14px;padding-right:2px}
-.iop-scard{border:1.5px solid #d0dce8;border-radius:12px;padding:12px;cursor:pointer;background:#fafbfc;transition:all .15s;display:flex;gap:10px;align-items:flex-start}
-.iop-scard.selected{border-color:var(--dark);background:#f0f6fc}
-.iop-scard-cb{width:20px;height:20px;border-radius:50%;border:2px solid #d0dce8;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.iop-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:420px;overflow-y:auto;margin-bottom:14px;padding-right:2px}
+.iop-scard{border:1.5px solid #d0dce8;border-radius:12px;padding:12px 12px 10px;cursor:pointer;background:#fafbfc;transition:all .15s;position:relative}
+.iop-scard:hover:not(.disabled):not(.selected){transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.iop-scard.selected{border-color:var(--dark);background:#e3f2fd}
+.iop-scard.disabled{opacity:.35;pointer-events:none;cursor:default}
+.iop-scard-cb{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;border:2px solid #d0dce8;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff;flex-shrink:0}
 .iop-scard.selected .iop-scard-cb{background:var(--dark);border-color:var(--dark)}
 .iop-scard-cb-dot{width:8px;height:8px;border-radius:50%;background:#fff;display:none}
 .iop-scard.selected .iop-scard-cb-dot{display:block}
-.iop-scard-body{flex:1;min-width:0}
-.iop-scard-name{font-size:12px;font-weight:700;color:#1a2a3a;line-height:1.35;margin-bottom:3px}
-.iop-scard-code{font-size:11px;color:#888}
-.iop-scard-chance{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:4px;display:inline-block}
+.iop-scard-code{font-size:12px;font-weight:800;color:var(--dark);margin-bottom:3px;padding-right:28px}
+.iop-scard-name{font-size:12px;font-weight:600;color:#1a2a3a;line-height:1.35;margin-bottom:4px;padding-right:28px}
+.iop-scard-chance{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:5px;display:inline-block}
 .chance-high{background:#e8f5e0;color:#2d7d46}
 .chance-mid{background:#fff4e0;color:#854F0B}
 .chance-low{background:#fce8e8;color:#c0392b}
 .chance-none{background:#eee;color:#888}
+.iop-scard-scores{display:flex;gap:4px;flex-wrap:wrap}
+.iop-score-chip{font-size:9px;padding:2px 6px;border-radius:4px;background:#eef2f7;color:#555;font-weight:600}
 .iop-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;min-height:40px;padding:8px;background:#f7f9fc;border-radius:10px;border:1px solid #e8eef5;align-items:center}
 .iop-chip{display:flex;align-items:center;gap:6px;background:#e0eeff;border:1px solid #b8d0f0;border-radius:20px;padding:4px 10px 4px 12px;font-size:11px;font-weight:600;color:var(--dark)}
 .iop-chip .num{background:var(--dark);color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
 .iop-chip button{background:none;border:none;cursor:pointer;font-size:13px;color:#888;padding:0;line-height:1}
+.iop-chips-clear{margin-left:auto;background:none;border:1px solid #c0392b;color:#c0392b;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
 .iop-info-card{border:1.5px solid #d0e8f5;border-radius:14px;padding:16px;margin-bottom:12px;background:#fafcff}
 .iop-info-head{display:flex;align-items:center;margin-bottom:10px;gap:8px}
 .iop-info-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--dark);color:#fff;font-size:13px;font-weight:800;flex-shrink:0}
@@ -512,7 +529,7 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-btn-out{background:#fff;color:var(--dark);border:2px solid var(--dark)}
 .iop-btn-out:hover{background:#f0f6fc}
 .iop-btn-dl{background:linear-gradient(135deg,#1472c2,#0f5a9c)}
-@media(max-width:600px){.iop-grid2{grid-template-columns:1fr}}
+@media(max-width:600px){.iop-grid2{grid-template-columns:1fr}.iop-fcards{flex-wrap:wrap}.iop-fcard{min-width:calc(50% - 4px)}}
 @media(max-width:600px){.gc-form{grid-template-columns:1fr}.gc-counters{grid-template-columns:1fr;gap:8px}.gc-counter{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}.gc-counter-num{font-size:22px}.gc-counter-lbl{margin-top:0}}
 
 </style>
@@ -2577,26 +2594,48 @@ function iopStep2(sec){
   var pair=S.iopPair||'';
   var score=S.iopScore||0;
   var filter=S.iopFilter||'all';
+  var searchQ=(S.iopSearch||'').toLowerCase();
   var allSpecs=ENT_DATA.filter(function(d){return (d.s1+' + '+d.s2)===pair;});
+  var counts={all:allSpecs.length,high:0,mid:0,low:0};
+  allSpecs.forEach(function(sp){var c=specChance(sp,score);if(c==='high')counts.high++;else if(c==='mid')counts.mid++;else counts.low++;});
   var filtered=filter==='all'?allSpecs:allSpecs.filter(function(sp){
     var c=specChance(sp,score);
     return filter==='high'?c==='high':filter==='mid'?c==='mid':(c==='low'||c==='none');
   });
+  if(searchQ)filtered=filtered.filter(function(sp){
+    var nm=(isKz&&sp.nameKz?sp.nameKz:sp.name).toLowerCase();
+    return nm.indexOf(searchQ)>=0||sp.code.toLowerCase().indexOf(searchQ)>=0;
+  });
   var cnt=S.iopSpecs.length;
-  var filterBtns=['all','high','mid','low'].map(function(f){
-    var lbl=f==='all'?(isKz?'Барлығы':'Все'):f==='high'?(isKz?'Жоғары':'Высок.'):f==='mid'?(isKz?'Орташа':'Средн.'):(isKz?'Төмен':'Низк.');
-    return '<button class="iop-filter'+(filter===f?' active':'')+'" onclick="iopSetFilter(\''+f+'\')">'+lbl+'</button>';
+  var fcards=[
+    {f:'all',icon:'&#128269;',lbl:isKz?'Барлығы':'Все',cnt:counts.all},
+    {f:'high',icon:'&#128200;',lbl:isKz?'Жоғары':'Высокий',cnt:counts.high},
+    {f:'mid',icon:'&#8212;',lbl:isKz?'Орташа':'Средний',cnt:counts.mid},
+    {f:'low',icon:'&#128201;',lbl:isKz?'Төмен':'Низкий',cnt:counts.low}
+  ].map(function(fc){
+    return '<button class="iop-fcard fc-'+fc.f+(filter===fc.f?' active':'')+'" onclick="iopSetFilter(\''+fc.f+'\')">'+
+      '<div class="iop-fcard-icon">'+fc.icon+'</div>'+
+      '<div class="iop-fcard-lbl">'+fc.lbl+'</div>'+
+      '<div class="iop-fcard-cnt">'+fc.cnt+'</div></button>';
   }).join('');
   var cards=filtered.map(function(sp){
     var isSel=S.iopSpecs.indexOf(sp.code)>=0;
+    var isDis=!isSel&&cnt>=4;
     var ch=specChance(sp,score);
     var chLbl=ch==='high'?(isKz?'Жоғары':'Высок.'):ch==='mid'?(isKz?'Орташа':'Средн.'):ch==='low'?(isKz?'Төмен':'Низк.'):'—';
-    return '<div class="iop-scard'+(isSel?' selected':'')+'" onclick="iopToggleSpec(\''+sp.code+'\')">'+
+    var y23=sp.scores.y23,y24=sp.scores.y24,y25=sp.scores.y25;
+    var s23=y23?(y23.max+'/'+y23.min):'—';
+    var s24=y24?(y24.max+'/'+y24.min):'—';
+    var s25=y25?(y25.max+'/'+y25.min):'—';
+    return '<div class="iop-scard'+(isSel?' selected':'')+(isDis?' disabled':'')+'" onclick="iopToggleSpec(\''+sp.code+'\')">'+
       '<div class="iop-scard-cb"><div class="iop-scard-cb-dot"></div></div>'+
-      '<div class="iop-scard-body">'+
-        '<div class="iop-scard-name">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div>'+
-        '<div class="iop-scard-code">'+sp.code+'</div>'+
-        '<div class="iop-scard-chance chance-'+ch+'">'+chLbl+'</div>'+
+      '<div class="iop-scard-code">'+sp.code+'</div>'+
+      '<div class="iop-scard-name">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div>'+
+      '<div class="iop-scard-chance chance-'+ch+'">'+chLbl+'</div>'+
+      '<div class="iop-scard-scores">'+
+        '<span class="iop-score-chip">2023: '+s23+'</span>'+
+        '<span class="iop-score-chip">2024: '+s24+'</span>'+
+        '<span class="iop-score-chip">2025: '+s25+'</span>'+
       '</div></div>';
   }).join('');
   var chips=cnt?S.iopSpecs.map(function(code,i){
@@ -2604,13 +2643,15 @@ function iopStep2(sec){
     var nm=sp?escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name):code;
     return '<div class="iop-chip"><span class="num">'+(i+1)+'</span>'+nm+
       '<button onclick="iopRemChip('+i+')">&#x2715;</button></div>';
-  }).join(''):'<span style="font-size:12px;color:#aaa">'+(isKz?'Мамандықтар таңдалмаған...':'Специальности не выбраны...')+'</span>';
+  }).join('')+'<button class="iop-chips-clear" onclick="iopClearSpecs()">'+(isKz?'Тазалау':'Очистить')+'</button>':
+  '<span style="font-size:12px;color:#aaa">'+(isKz?'Таңдалмаған...':'Не выбрано...')+'</span>';
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">&#128203; '+(isKz?'Жеке оқу жоспарым':'Мой индивидуальный план обучения')+'</div>'+
     '<div class="iop-sub">'+(isKz?'2-қадам: 4 мамандық таңдаңыз':'Шаг 2: выберите 4 специальности')+'</div>'+
     iopStepBar(2)+
-    '<div class="iop-filters">'+filterBtns+'</div>'+
-    '<div class="iop-prog-lbl">'+cnt+' / 4 '+(isKz?'таңдалды':'выбрано')+'</div>'+
+    '<div class="iop-fcards">'+fcards+'</div>'+
+    '<input class="iop-search" id="iop-search" type="text" placeholder="'+(isKz?'Мамандықты іздеу...':'Поиск специальности...')+'" value="'+escHtml(S.iopSearch||'')+'" oninput="iopSearch(this.value)">'+
+    '<div class="iop-prog-lbl">'+cnt+' / 4 '+(isKz?'таңдалды':'выбрано')+(cnt>=4?' &#10003;':'')+'</div>'+
     '<div class="iop-prog"><div class="iop-prog-bar" style="width:'+Math.round(cnt/4*100)+'%"></div></div>'+
     '<div class="iop-grid2">'+cards+'</div>'+
     '<div class="iop-chips">'+chips+'</div>'+
@@ -2641,6 +2682,16 @@ function iopToggleSpec(code){
 
 function iopRemChip(i){
   if(S.iopSpecs)S.iopSpecs.splice(i,1);
+  iopStep2(document.getElementById('iop-sec'));
+}
+
+function iopSearch(val){
+  S.iopSearch=val;
+  iopStep2(document.getElementById('iop-sec'));
+}
+
+function iopClearSpecs(){
+  S.iopSpecs=[];
   iopStep2(document.getElementById('iop-sec'));
 }
 
@@ -2725,6 +2776,7 @@ function genIOPpdf(){
   var score=S.iopScore||0;
   var today=new Date();
   var year=today.getFullYear();
+  var dateStr=today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
   var fname='Aiplus_IOP_'+(name||'plan').replace(/\s+/g,'_')+'_'+year+'.pdf';
   var dlBtn=document.getElementById('iop-dl-btn');
   var status=document.getElementById('iop-status');
@@ -2737,97 +2789,100 @@ function genIOPpdf(){
   var imgBg=BASE+'img/bg.jpg';
   var imgCongrats=BASE+'img/'+(isKz?'congrats_kz.jpg':'congrats_ru.jpg');
   var PS='font-family:Arial,Helvetica,sans-serif;box-sizing:border-box;';
-  var namePill='<div style="position:absolute;bottom:130px;left:0;right:0;text-align:center">'+
-    '<span style="background:rgba(255,255,255,.95);border-radius:50px;padding:10px 32px;font-size:16px;font-weight:800;color:#193b53;box-shadow:0 2px 16px rgba(0,0,0,.15);display:inline-block">'+escHtml(name)+'</span></div>';
+  // жолақ (pill) is drawn on images — top-right corner: ~18px from top, ~40px from right
+  var nameInPill='<div style="position:absolute;top:18px;right:40px;min-width:180px;height:30px;'+
+    'display:flex;align-items:center;justify-content:center;z-index:2">'+
+    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#1A1A2E;white-space:nowrap">'+escHtml(name)+'</span></div>';
 
-  // ── БЕТ 1: Кіріспе (cover) ──
-  var p1='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
-    '<img src="'+imgCover+'" style="width:100%;height:100%;object-fit:cover;display:block" crossorigin="anonymous">'+
-    namePill+'</div>';
+  // БЕТ 1: Кіріспе (cover) — landscape 1123×794
+  var p1='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgCover+'" style="width:100%;height:100%;object-fit:fill;display:block" crossorigin="anonymous">'+
+    nameInPill+'</div>';
 
-  // ── БЕТ 2: ҰБТ статистикалық мәліметтер ──
+  // БЕТ 2: ҰБТ статистикалық мәліметтер
   var tableRows=specs.map(function(sp,si){
     var ch=specChance(sp,score);
-    var chColor=ch==='high'?'#2d7d46':ch==='mid'?'#b07d20':'#c0392b';
+    var chColor=ch==='high'?'#1B5E20':ch==='mid'?'#E65100':'#B71C1C';
     var chLbl=ch==='high'?(isKz?'Жоғары':'Высок.'):ch==='mid'?(isKz?'Орташа':'Средн.'):(isKz?'Төмен':'Низк.');
     var y23=sp.scores.y23,y24=sp.scores.y24,y25=sp.scores.y25;
-    var t3=(sp.top3||[]).slice(0,3).map(function(u){return '<div style="font-size:9px;line-height:1.4">'+u+'</div>';}).join('');
-    return '<tr style="background:'+(si%2===0?'#f8f9fb':'#fff')+'">'+
-      '<td style="padding:7px;font-size:10px;border:1px solid #dee;width:155px"><div style="color:#1472c2;font-weight:bold">'+sp.code+'</div>'+
-        '<div style="font-weight:600;line-height:1.3">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div></td>'+
-      '<td style="padding:6px;border:1px solid #dee;width:130px">'+t3+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:11px">'+(sp.grants.y23||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:11px">'+(sp.grants.y24||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:11px">'+(sp.grants.y25||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:10px">'+(y23?y23.max+'/'+y23.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:10px">'+(y24?y24.max+'/'+y24.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:10px">'+(y25?y25.max+'/'+y25.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-size:11px">'+(sp.apps!=null?sp.apps:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #dee;font-weight:bold;color:'+chColor+';font-size:11px">'+(sp.comp!=null?sp.comp:'—')+'<br><span style="font-size:9px">'+chLbl+'</span></td>'+
+    var t3=(sp.top3||[]).slice(0,3).map(function(u){return '<div style="font-size:8px;line-height:1.4">'+u+'</div>';}).join('');
+    return '<tr style="background:'+(si%2===0?'#f0f4f8':'#fff')+'">'+
+      '<td style="padding:7px 8px;font-size:9px;border:1px solid #d0dce8;width:120px">'+
+        '<div style="color:#1565C0;font-weight:bold;margin-bottom:2px">'+sp.code+'</div>'+
+        '<div style="font-weight:600;line-height:1.3;color:#1a2a3a">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div></td>'+
+      '<td style="padding:6px 8px;border:1px solid #d0dce8;width:200px">'+t3+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y23||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y24||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px;font-weight:bold">'+(sp.grants.y25||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y23?y23.max+'/'+y23.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y24?y24.max+'/'+y24.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:bold">'+(y25?y25.max+'/'+y25.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.apps!=null?sp.apps:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-weight:bold;color:'+chColor+';font-size:10px">'+(sp.comp!=null?sp.comp:'—')+'<br><span style="font-size:8px">'+chLbl+'</span></td>'+
     '</tr>';
   }).join('');
-  var p2='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
-    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" crossorigin="anonymous">'+
-    '<div style="position:absolute;top:10px;right:20px;z-index:1">'+
-      '<span style="background:rgba(255,255,255,.92);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:bold;color:#193b53">'+escHtml(name)+'</span></div>'+
-    '<div style="position:absolute;top:50px;left:24px;right:24px;bottom:30px;z-index:1;overflow:hidden">'+
-    '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:8px;background:rgba(255,255,255,.8);padding:6px 10px;border-radius:6px;display:inline-block">'+
-      (isKz?'ҰБТ СТАТИСТИКАЛЫҚ МӘЛІМЕТТЕР':'СТАТИСТИКА ЕНТ — ВЫБРАННЫЕ СПЕЦИАЛЬНОСТИ')+'</div>'+
+  var p2='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
+    nameInPill+
+    '<div style="position:absolute;top:60px;left:30px;right:30px;bottom:20px;z-index:1">'+
+    '<div style="font-size:13px;font-weight:bold;color:#1565C0;text-align:center;margin-bottom:4px">'+
+      (isKz?'ҰБТ СТАТИСТИКАЛЫҚ МӘЛІМЕТТЕР':'АНАЛИЗ СТАТИСТИКИ ЕНТ')+'</div>'+
+    '<div style="font-size:8px;color:#3C3C50;text-align:center;margin-bottom:8px">'+
+      (isKz?'Оқушы: ':'Оқушы: ')+escHtml(name)+' | ҰБТ: '+score+' | '+escHtml(S.iopPair||'')+' | '+dateStr+'</div>'+
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
-    '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Мамандық':'Специальность')+'</th>'+
-    '<th rowspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">ТОП-3</th>'+
-    '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">'+(isKz?'Грант саны':'Гранты')+'</th>'+
-    '<th colspan="3" style="background:#193b53;color:#fff;padding:6px;font-size:8px;border:1px solid #0f2d42">Max/Min</th>'+
-    '<th colspan="2" style="background:#193b53;color:#fff;padding:6px;font-size:9px;border:1px solid #0f2d42">2025</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #0d47a1;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #0d47a1;width:200px">'+(isKz?'Ең жоғары балл жинаған оқушылар таңдаған ТОП-3 университет':'ТОП-3 университет (выбор лучших учеников)')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #0d47a1">'+(isKz?'Грант саны':'Гранты')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #0d47a1">'+(isKz?'Грантқа түсудің Max/Min баллдары':'Max/Min баллы гранта')+'</th>'+
+    '<th colspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #0d47a1">2025</th>'+
     '</tr><tr>'+
     ['2023','2024','2025','2023','2024','2025',isKz?'Өтін.':'Заявок',isKz?'Бәсеке':'Конкур.'].map(function(h){
-      return '<th style="background:#1e5a7a;color:#fff;padding:5px;font-size:9px;border:1px solid #0f2d42">'+h+'</th>';
+      return '<th style="background:#1976D2;color:#fff;padding:5px;font-size:8px;border:1px solid #0d47a1">'+h+'</th>';
     }).join('')+
     '</tr></thead><tbody>'+tableRows+'</tbody></table>'+
-    '<div style="margin-top:8px;background:rgba(255,255,255,.85);border-radius:8px;padding:7px 12px;font-size:10px">'+
-      '<b>'+(isKz?'Сіздің балыңыз: ':'Ваш балл: ')+score+'</b> | '+
-      '<b style="color:#2d7d46">'+(isKz?'Жасыл':'Зел.')+'</b>='+(isKz?'жоғары':'высок.')+' | '+
-      '<b style="color:#b07d20">'+(isKz?'Сары':'Жёлт.')+'</b>='+(isKz?'орташа':'средн.')+' | '+
-      '<b style="color:#c0392b">'+(isKz?'Қызыл':'Красн.')+'</b>='+(isKz?'төмен':'низк.')+'</div>'+
+    '<div style="margin-top:8px;background:rgba(255,255,255,.85);border-radius:6px;padding:6px 10px;font-size:9px;display:inline-block">'+
+      '<b>'+(isKz?'Сіздің балыңыз: ':'Ваш балл: ')+score+'</b> &nbsp;|&nbsp; '+
+      '<b style="color:#1B5E20">'+(isKz?'Жасыл':'Зел.')+'</b>='+(isKz?'жоғары':'высок.')+
+      ' &nbsp;|&nbsp; <b style="color:#E65100">'+(isKz?'Сары':'Жёлт.')+'</b>='+(isKz?'орташа':'средн.')+
+      ' &nbsp;|&nbsp; <b style="color:#B71C1C">'+(isKz?'Қызыл':'Красн.')+'</b>='+(isKz?'төмен':'низк.')+'</div>'+
     '</div></div>';
 
-  // ── БЕТ 3: Таңдалған мамандық туралы ақпарат ──
+  // БЕТ 3: Таңдалған мамандықтар туралы ақпарат
   var specCards=specs.map(function(sp,i){
     var sd=specDatas[i];
     var nm=escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name);
     var maqsat=escHtml(sd?(isKz?sd.m:sd.mr)||'—':'—');
     var jumys=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
-    return '<div style="display:flex;gap:10px;margin-bottom:10px;background:rgba(255,255,255,.93);border-radius:10px;padding:12px;border-left:4px solid #193b53">'+
-      '<div style="background:#193b53;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;flex-shrink:0;margin-top:2px">'+(i+1)+'</div>'+
+    return '<div style="display:flex;gap:10px;margin-bottom:8px;background:rgba(255,255,255,.93);border-radius:10px;padding:10px 12px;border-left:4px solid #1565C0">'+
+      '<div style="background:#1565C0;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;flex-shrink:0;margin-top:1px">'+(i+1)+'</div>'+
       '<div style="flex:1;min-width:0">'+
-        '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:4px">'+nm+
-          '<span style="font-size:10px;color:#888;font-weight:normal;margin-left:8px">'+sp.code+'</span></div>'+
+        '<div style="font-size:12px;font-weight:bold;color:#1565C0;margin-bottom:4px">'+nm+
+          '<span style="font-size:9px;color:#888;font-weight:normal;margin-left:8px">'+sp.code+'</span></div>'+
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-          '<div><div style="font-size:9px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
-            '<div style="font-size:10px;color:#333;line-height:1.5">'+maqsat+'</div></div>'+
-          '<div><div style="font-size:9px;font-weight:bold;color:#193b53;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
-            '<div style="font-size:10px;color:#333;line-height:1.5">'+jumys+'</div></div>'+
+          '<div><div style="font-size:8px;font-weight:bold;color:#1565C0;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
+            '<div style="font-size:9px;color:#333;line-height:1.5">'+maqsat+'</div></div>'+
+          '<div><div style="font-size:8px;font-weight:bold;color:#1565C0;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
+            '<div style="font-size:9px;color:#333;line-height:1.5">'+jumys+'</div></div>'+
         '</div>'+
       '</div></div>';
   }).join('');
-  var p3='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
-    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" crossorigin="anonymous">'+
-    '<div style="position:absolute;top:10px;right:20px;z-index:1">'+
-      '<span style="background:rgba(255,255,255,.92);border-radius:20px;padding:4px 16px;font-size:11px;font-weight:bold;color:#193b53">'+escHtml(name)+'</span></div>'+
-    '<div style="position:absolute;top:50px;left:24px;right:24px;bottom:30px;z-index:1">'+
-    '<div style="font-size:13px;font-weight:bold;color:#193b53;margin-bottom:12px;background:rgba(255,255,255,.8);padding:6px 10px;border-radius:6px;display:inline-block">'+
+  var p3='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
+    nameInPill+
+    '<div style="position:absolute;top:60px;left:30px;right:30px;bottom:20px;z-index:1">'+
+    '<div style="font-size:13px;font-weight:bold;color:#1565C0;margin-bottom:10px">'+
       (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
     specCards+
     '</div></div>';
 
-  // ── БЕТ 4: Құттықтау сөзі ──
-  var p4='<div style="'+PS+'width:794px;height:1123px;position:relative;overflow:hidden">'+
-    '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:cover;display:block" crossorigin="anonymous">'+
-    namePill+'</div>';
+  // БЕТ 4: Құттықтау сөзі
+  var p4='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:fill;display:block" crossorigin="anonymous">'+
+    nameInPill+'</div>';
 
   var pages=[p1,p2,p3,p4];
-  var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
   var sc=Math.min(Math.max(window.devicePixelRatio||2,2),3);
 
   function renderPage(i){
@@ -2838,14 +2893,14 @@ function genIOPpdf(){
       return;
     }
     var div=document.createElement('div');
-    div.style.cssText='position:fixed;left:-9999px;top:0;width:794px;';
+    div.style.cssText='position:fixed;left:-9999px;top:0;width:1123px;';
     div.innerHTML=pages[i];
     document.body.appendChild(div);
     html2canvas(div,{scale:sc,useCORS:true,logging:false,backgroundColor:null,allowTaint:false})
       .then(function(canvas){
         document.body.removeChild(div);
         if(i>0)doc.addPage();
-        doc.addImage(canvas.toDataURL('image/png'),'PNG',0,0,210,297);
+        doc.addImage(canvas.toDataURL('image/png'),'PNG',0,0,297,210);
         if(status)status.textContent=(isKz?'Бет ':'Стр. ')+(i+1)+'/'+pages.length+'...';
         renderPage(i+1);
       }).catch(function(e){
