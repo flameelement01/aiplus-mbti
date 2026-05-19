@@ -468,11 +468,15 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-field select,.iop-field input{padding:11px 13px;border:1.5px solid #e0e6ed;border-radius:10px;font-size:13px;font-family:inherit;background:#fafbfc;transition:border-color .15s}
 .iop-field select:focus,.iop-field input:focus{outline:none;border-color:var(--dark);background:#fff}
 .iop-fcards{display:flex;gap:8px;margin-bottom:14px}
-.iop-fcard{flex:1;padding:10px 8px;border-radius:12px;border:2px solid #e0e6ed;background:#fafbfc;cursor:pointer;font-family:inherit;text-align:center;transition:all .15s}
+.iop-fcard{flex:1;padding:10px 8px 10px;border-radius:12px;border:2px solid #e0e6ed;background:#fafbfc;cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;position:relative}
 .iop-fcard:hover{border-color:#b0c4d8}
-.iop-fcard-icon{font-size:16px;margin-bottom:3px}
-.iop-fcard-lbl{font-size:10px;font-weight:700;color:#aaa;margin-bottom:3px;line-height:1.2}
-.iop-fcard-cnt{font-size:20px;font-weight:900;color:#ccc;line-height:1}
+.iop-fcard-dot{width:8px;height:8px;border-radius:50%;margin:0 auto 6px;background:#ddd}
+.iop-fcard-cnt{font-size:22px;font-weight:900;color:#bbb;line-height:1;margin-bottom:4px}
+.iop-fcard-lbl{font-size:9px;font-weight:700;color:#aaa;line-height:1.2}
+.iop-fcard.fc-all .iop-fcard-dot{background:#1565C0}
+.iop-fcard.fc-high .iop-fcard-dot{background:#1B5E20}
+.iop-fcard.fc-mid .iop-fcard-dot{background:#E65100}
+.iop-fcard.fc-low .iop-fcard-dot{background:#B71C1C}
 .iop-fcard.fc-all.active{border-color:#1565C0;background:#e3f2fd}
 .iop-fcard.fc-all.active .iop-fcard-cnt,.iop-fcard.fc-all.active .iop-fcard-lbl{color:#1565C0}
 .iop-fcard.fc-high.active{border-color:#1B5E20;background:#e8f5e9}
@@ -514,9 +518,15 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .iop-score-yr{text-align:center;background:#f0f4f8;border-radius:4px;padding:3px 2px}
 .iop-score-yr-lbl{font-size:8px;color:#888;font-weight:600}
 .iop-score-yr-val{font-size:9px;color:#1a2a3a;font-weight:700}
-/* Step 2 — chips */
-.iop-chips-hdr{font-size:11px;font-weight:700;color:#555;margin-bottom:6px}
-.iop-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;min-height:40px;padding:8px;background:#f7f9fc;border-radius:10px;border:1px solid #e8eef5;align-items:center}
+/* Step 2 — chips panel */
+.iop-chips-panel{margin-bottom:14px}
+.iop-chips-panel-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.iop-chips-hdr{font-size:12px;font-weight:700;color:#555}
+.iop-chips-go{background:var(--dark);color:#fff;border:none;border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.iop-chips-go:hover:not(:disabled){background:#0f5a9c}
+.iop-chips-go:disabled{opacity:.35;cursor:not-allowed}
+.iop-chips{display:flex;flex-wrap:wrap;gap:6px;min-height:40px;padding:8px;background:#f7f9fc;border-radius:10px;border:1px solid #e8eef5;align-items:center}
+.iop-note{font-size:11px;color:#aaa;text-align:center;margin-bottom:14px;font-style:italic}
 .iop-chip{display:flex;align-items:center;gap:6px;background:#e0eeff;border:1px solid #b8d0f0;border-radius:20px;padding:4px 10px 4px 12px;font-size:11px;font-weight:600;color:var(--dark)}
 .iop-chip .num{background:var(--dark);color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
 .iop-chip button{background:none;border:none;cursor:pointer;font-size:13px;color:#888;padding:0;line-height:1}
@@ -2659,15 +2669,15 @@ function iopStep2(sec){
   });
   var cnt=S.iopSpecs.length;
   var fcards=[
-    {f:'all',icon:'&#128269;',lbl:isKz?'Барлығы':'Все',cnt:counts.all},
-    {f:'high',icon:'&#128200;',lbl:isKz?'Жоғары мүмкіндік':'Высокая возм.',cnt:counts.high},
-    {f:'mid',icon:'&#8212;',lbl:isKz?'Орташа мүмкіндік':'Средняя возм.',cnt:counts.mid},
-    {f:'low',icon:'&#128201;',lbl:isKz?'Төмен мүмкіндік':'Низкая возм.',cnt:counts.low}
+    {f:'all',lbl:isKz?'Барлығы':'Все',cnt:counts.all},
+    {f:'high',lbl:isKz?'Жоғары мүмкіндік':'Высокая возм.',cnt:counts.high},
+    {f:'mid',lbl:isKz?'Орташа мүмкіндік':'Средняя возм.',cnt:counts.mid},
+    {f:'low',lbl:isKz?'Төмен мүмкіндік':'Низкая возм.',cnt:counts.low}
   ].map(function(fc){
     return '<button class="iop-fcard fc-'+fc.f+(filter===fc.f?' active':'')+'" onclick="iopSetFilter(\''+fc.f+'\')">'+
-      '<div class="iop-fcard-icon">'+fc.icon+'</div>'+
-      '<div class="iop-fcard-lbl">'+fc.lbl+'</div>'+
-      '<div class="iop-fcard-cnt">'+fc.cnt+'</div></button>';
+      '<div class="iop-fcard-dot"></div>'+
+      '<div class="iop-fcard-cnt">'+fc.cnt+'</div>'+
+      '<div class="iop-fcard-lbl">'+fc.lbl+'</div></button>';
   }).join('');
   var cards=filtered.map(function(sp){
     var isSel=S.iopSpecs.indexOf(sp.code)>=0;
@@ -2714,8 +2724,14 @@ function iopStep2(sec){
     '<div class="iop-fcards">'+fcards+'</div>'+
     '<input class="iop-search" id="iop-search" type="text" placeholder="'+(isKz?'Іздеу...':'Поиск...')+'" value="'+escHtml(S.iopSearch||'')+'" oninput="iopSearch(this.value)">'+
     '<div class="iop-grid2">'+cards+'</div>'+
-    '<div class="iop-chips-hdr">'+(isKz?'Таңдалған мамандықтар':'Выбранные специальности')+'</div>'+
-    '<div class="iop-chips">'+chipsHtml+'</div>'+
+    '<div class="iop-chips-panel">'+
+      '<div class="iop-chips-panel-hdr">'+
+        '<span class="iop-chips-hdr">'+(isKz?'Таңдалған мамандықтар':'Выбранные специальности')+'</span>'+
+        '<button class="iop-chips-go" onclick="iopGoStep3()" '+(cnt<4?'disabled title="'+(isKz?'4 мамандық таңдаңыз':'Выберите 4 специальности')+'"':'')+'>&#8595;</button>'+
+      '</div>'+
+      '<div class="iop-chips">'+chipsHtml+'</div>'+
+    '</div>'+
+    '<div class="iop-note">'+(isKz?'бірінші бетіне осыны қолданамыз':'используем это на первой странице')+'</div>'+
     '<div class="iop-nav">'+
       '<button class="iop-btn iop-btn-out" onclick="iopBack(1)">&larr; '+(isKz?'Артқа':'Назад')+'</button>'+
       '<button class="iop-btn" onclick="iopGoStep3()" '+(cnt<4?'disabled':'')+'>'+
