@@ -3112,9 +3112,9 @@ function genIOPpdf(){
         '<div style="color:#1565C0;font-weight:bold;margin-bottom:2px">'+sp.code+'</div>'+
         '<div style="font-weight:600;line-height:1.3;color:#1a2a3a">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div></td>'+
       '<td style="padding:6px 8px;border:1px solid #d0dce8;width:200px">'+t3+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y23||'—')+'</td>'+
       '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y24||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px;font-weight:bold">'+(sp.grants.y25||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y25||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px;font-weight:bold">'+(sp.grants.y26||'—')+'</td>'+
       '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y23&&y23.max&&y23.min?y23.max+'/'+y23.min:'—')+'</td>'+
       '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y24&&y24.max&&y24.min?y24.max+'/'+y24.min:'—')+'</td>'+
       '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:bold">'+(y25&&y25.max&&y25.min?y25.max+'/'+y25.min:'—')+'</td>'+
@@ -3132,7 +3132,7 @@ function genIOPpdf(){
   var p2='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
     nameInPill+aiplusBadge+
-    '<div style="position:absolute;top:18px;left:276px;width:606px;z-index:3;line-height:44px;text-align:center">'+
+    '<div style="position:absolute;top:18px;left:352px;width:606px;z-index:3;line-height:44px;text-align:center">'+
     '<div style="font-size:15px;font-weight:900;color:#1565C0;letter-spacing:.8px;text-align:center;">'+
       (isKz?'ҰБТ СТАТИСТИКАЛЫҚ МӘЛІМЕТТЕР':'АНАЛИЗ СТАТИСТИКИ ЕНТ')+'</div>'+
     '</div>'+
@@ -3182,7 +3182,7 @@ function genIOPpdf(){
   var p3='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
     nameInPill+aiplusBadge+
-    '<div style="position:absolute;top:18px;left:276px;width:606px;z-index:3;line-height:44px;text-align:center">'+
+    '<div style="position:absolute;top:18px;left:352px;width:606px;z-index:3;line-height:44px;text-align:center">'+
     '<div style="font-size:15px;font-weight:900;color:#1565C0;letter-spacing:.8px;text-align:center;">'+
       (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
     '</div>'+
