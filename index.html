@@ -3204,7 +3204,7 @@ function genIOPpdf(){
     if(i>=pages.length){
       doc.save(fname);
       if(dlBtn){dlBtn.disabled=false;dlBtn.innerHTML=isKz?'&#128229; PDF жүктеу — 4 таңдау жоспары':'&#128229; Скачать PDF — 4 таңдау жоспары';}
-      if(status){status.textContent=isKz?'&#10003; PDF сәтті жасалды!':'&#10003; PDF успешно создан!';}
+      if(status){status.textContent=isKz?'PDF сәтті жасалды!':'PDF успешно создан!';}
       return;
     }
     var div=document.createElement('div');
