@@ -36,6 +36,13 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .badge{background:var(--accent);color:#000;font-size:10px;font-weight:700;
   padding:4px 11px;border-radius:20px;letter-spacing:.4px}
 .topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-back{background:rgba(255,255,255,.1);border:none;color:#fff;font-size:14px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;gap:4px;padding:8px 12px 8px 8px;border-radius:20px;
+  transition:background .15s;font-family:'Inter',sans-serif}
+.topbar-back svg{width:16px;height:16px;flex-shrink:0}
+.topbar-back:hover{background:rgba(255,255,255,.2)}
+.topbar-back.hidden{display:none}
 .lang-switch{display:inline-flex;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.15)}
 .lang-switch button{background:transparent;color:rgba(255,255,255,.75);border:none;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;font-family:inherit}
 .lang-switch button.active{background:var(--accent);color:#000}
@@ -601,7 +608,13 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 <body>
 
 <div class="topbar">
-  <div class="logo"><img src="https://static.tildacdn.pro/tild6138-6238-4632-b230-313838323361/logo.svg" alt="Aiplus"></div>
+  <div class="topbar-left">
+    <button id="topbar-back" class="topbar-back hidden" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      <span id="topbar-back-lbl">Артқа</span>
+    </button>
+    <div class="logo"><img src="https://static.tildacdn.pro/tild6138-6238-4632-b230-313838323361/logo.svg" alt="Aiplus"></div>
+  </div>
   <div class="topbar-right">
     <div class="lang-switch" id="topbar-lang">
       <button data-lang="kz" onclick="setLang('kz')">KZ</button>
@@ -1563,7 +1576,7 @@ const UNIS = {
 // ============================================================
 let S = (function(){
   try{var saved=sessionStorage.getItem('mbti_state');if(saved){var p=JSON.parse(saved);if(p&&p.screen)return p}}catch(e){}
-  return {screen:"welcome", lang:"kz", idx:0, scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, user:{}, resultId:null, aiText:"", sharedData:null};
+  return {screen:"welcome", lang:"kz", idx:0, scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, answers:[], user:{}, resultId:null, aiText:"", sharedData:null};
 })();
 
 const $=id=>document.getElementById(id);
@@ -1601,7 +1614,7 @@ const T = {
     entTitle:"📚 Профильные предметы ЕНТ",entSub:"Профильные предметы выбираются парой — оба нужны для поступления",
     obligText:'<b>📌 3 обязательных для всех:</b> Грамотность чтения · Математическая грамотность · История Казахстана<br><span style="color:#555">+ 2 профильных предмета на твой выбор</span>',
     scaleTitle:"🎯 Шкала баллов ЕНТ 2026",scaleSub:"Ориентиры по итогам поступления 2024",
-    uniTitle:"🎓 Рекомендуемые вузы РК",uniSub:"Данные ЕНТ 2024-25г.",
+    uniTitle:"🎓 Рекомендуемые вузы РК",uniSub:"Вуз с самым высоким проходным баллом по каждой из подходящих вам специальностей",
     aiTitle:"🤖 Персональный анализ Aiplus",
     ctaTitle:"Готов к ЕНТ 2026? 🚀",ctaSub:'Запишись на <b>бесплатную диагностику</b> в Aiplus — составим план подготовки',ctaBtn:"📱 Записаться в WhatsApp",
     restart:"← Пройти тест снова",
@@ -1617,7 +1630,7 @@ const T = {
     s1:"70",s1l:"Сұрақ",s2:"16",s2l:"Тип",s3:"12",s3l:"Минут",
     startBtn:"Тестті бастау →",
     t1t:"Мақсатыңа бір қадам жақында!",t1d:"Нәтижені ата-анаңа жібер.",
-    t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың:",t2items:["Грант саны","Грантқа түсудің max/min балдары","2025ж. ТОП-3 ЖОО"],
+    t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың:",t2items:["Грант саны","Грантқа түсудің max/min балдары","2026ж. ТОП-3 ЖОО"],
     t3t:"ҰБТ таңдау пәндері",t3d:"Бейінді пәндердегі мамандықтар бойынша ақпарат",
     whyTitle:"Неге MBTI тесті?",
     w1:"Ғылыми стандарт: 70 сұрақ 4 шкала бойынша нақты нәтиже береді.",
@@ -1636,7 +1649,7 @@ const T = {
     entTitle:"📚 ЕНТ бейінді пәндері",entSub:"Бейінді пәндер жұппен таңдалады — екеуі де түсу үшін қажет",
     obligText:'<b>📌 Барлығына 3 міндетті:</b> Оқу сауаттылығы · Математикалық сауаттылық · ҚР тарихы<br><span style="color:#555">+ Таңдау бойынша 2 бейінді пән</span>',
     scaleTitle:"🎯 ҰБТ 2026 балл шкаласы",scaleSub:"2024 жылғы түсу нәтижелері бойынша",
-    uniTitle:"🎓 Ұсынылатын ҚР ЖОО-лары",uniSub:"ҰБТ 2024-25ж. деректері",
+    uniTitle:"🎓 Ұсынылатын ҚР ЖОО-лары",uniSub:"Тұлғалық типіңізге сай әр мамандық бойынша ең жоғары шекті балды қабылдайтын ЖОО",
     aiTitle:"🤖 Aiplus жеке талдауы",
     ctaTitle:"ҰБТ 2026-ға дайынсың ба? 🚀",ctaSub:'Aiplus-та <b>тегін диагностикаға</b> жазылыңыз — дайындық жоспарын құрамыз',ctaBtn:"📱 WhatsApp-қа жазылу",
     restart:"← Тестті қайта тапсыру",
@@ -1680,8 +1693,44 @@ function render(){
     case"result":rResult(a);initCareerGuide(calcType());initSpecBrowser();initUniBrowser();initENTTable(calcType());initENTSearch();initGrantCalc();initIOP();break;
   }
   updateTopbarLang();
+  updateTopbarBack();
   window.scrollTo({top:0,behavior:'smooth'});
   try{sessionStorage.setItem('mbti_state',JSON.stringify(S))}catch(e){}
+}
+function updateTopbarBack(){
+  var btn=document.getElementById('topbar-back');
+  if(!btn)return;
+  var lbl=document.getElementById('topbar-back-lbl');
+  if(lbl)lbl.textContent=S.lang==='kz'?'Артқа':'Назад';
+  var showOn={lang:1,register:1,quiz:1};
+  if(showOn[S.screen]){btn.classList.remove('hidden');}
+  else{btn.classList.add('hidden');}
+}
+// ── GO BACK (in-app back navigation) ──
+function goBack(){
+  switch(S.screen){
+    case"lang":
+      S.screen="welcome";render();break;
+    case"register":
+      S.screen="lang";render();break;
+    case"quiz":
+      if(S.idx>0){
+        S.idx--;
+        var lastChoice=(S.answers||[]).pop();
+        if(lastChoice){
+          var q=QUESTIONS[S.idx];
+          var pair=q.s;
+          if(lastChoice==='a')S.scores[pair[0]]--;
+          else S.scores[pair[1]]--;
+        }
+        render();
+      } else {
+        S.screen="register";render();
+      }
+      break;
+    default:
+      break;
+  }
 }
 function updateTopbarLang(){
   var box=document.getElementById('topbar-lang');
@@ -1771,7 +1820,7 @@ function submitReg(){
   if(!school){alert(isKz?'Мектепті жазыңыз!':'Укажите школу!');return}
   if(!grade){alert(isKz?'Сыныпты таңдаңыз!':'Выберите класс!');return}
   S.user={name,phone:$("rphone").value.trim(),school,grade};
-  S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};S.answers=[];
   S.screen="quiz";render();
 }
 
@@ -1802,6 +1851,8 @@ function ans(choice){
   const pair=q.s; // "EI","SN","TF","JP"
   if(choice==='a') S.scores[pair[0]]++;
   else S.scores[pair[1]]++;
+  if(!S.answers)S.answers=[];
+  S.answers.push(choice);
   S.idx++;
   if(S.idx>=QUESTIONS.length){finishTest();return}
   render();
@@ -1869,7 +1920,7 @@ function rResult(a){
   const type=calcType();
   const info=MBTI[type]||MBTI.INTP;
   const s=S.scores;
-  const unis=UNIS[info.uniKey]||UNIS.default;
+  const unis=getTopUniForCareers(type);
   const hasId=!!S.resultId;
   const url=hasId?SITE_URL+"?r="+S.resultId:SITE_URL;
   const desc=S.lang==='kz'?info.desc_kz:info.desc_ru;
@@ -1891,7 +1942,7 @@ function rResult(a){
 
   <div class="slide">
     <div class="slide-hdr" style="background:${info.color}">
-      <span>AIPLUS × 16 PERSONALITIES</span><span>${S.lang==='kz'?'ҰБТ':'ЕНТ'} 2026 · ${S.lang==='kz'?'ҚАЗАҚСТАН':'КАЗАХСТАН'}</span>
+      <span>AIPLUS × 16 PERSONALITIES</span><span>${S.lang==='kz'?'ҰБТ':'ЕНТ'} 2026</span>
     </div>
     <div class="slide-body">
       <div class="slide-l">
@@ -1933,26 +1984,16 @@ function rResult(a){
   <div class="sec">
     <div class="sec-title">${t('uniTitle')}</div>
     <div class="sec-sub">${t('uniSub')}</div>
-    ${unis.map(u=>u.t===0?`
+    ${unis.length?unis.map(u=>`
     <div class="uni">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">${u.specName}</div>
       <div class="uni-top">
-        <div><div class="uni-name">${u.name}</div><div class="uni-city">📍 ${u.city}</div></div>
-        <div style="background:#555;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">${S.lang==='kz'?'Жеке іріктеу':'Отд. отбор'}</div>
-      </div>
-      <div class="uni-tags">${u.fac.map(f=>`<span class="uni-tag">${f}</span>`).join('')}</div>
-      ${u.tip?`<div class="uni-tip">💡 ${u.tip}</div>`:''}
-    </div>`:`
-    <div class="uni">
-      <div class="uni-top">
-        <div><div class="uni-name">${u.name}</div><div class="uni-city">📍 ${u.city}</div></div>
+        <div><div class="uni-name">${u.uni.name}</div>${u.uni.city?`<div class="uni-city">📍 ${u.uni.city}</div>`:''}</div>
         <div class="score-pills">
-          <div class="pill pill-t">📋 ${S.lang==='kz'?'Шек':'Порог'}: ${u.t}+</div>
-          <div class="pill pill-g">🏆 ~${S.lang==='kz'?'Грант':'Грант'}: ${u.g}+</div>
+          <div class="pill pill-t">📋 ${S.lang==='kz'?'Шек':'Порог'}: ${u.uni.min}+</div>
         </div>
       </div>
-      <div class="uni-tags">${u.fac.map(f=>`<span class="uni-tag">${f}</span>`).join('')}</div>
-      ${u.tip?`<div class="uni-tip">💡 ${u.tip}</div>`:''}
-    </div>`).join('')}
+    </div>`).join(''):`<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">${S.lang==='kz'?'Мәліметтер табылмады':'Данные не найдены'}</div>`}
   </div>
 
   <div class="sec" id="ent-search-sec">
@@ -1962,8 +2003,8 @@ function rResult(a){
         ?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:'
         :'Анализируй данные за последние 3 года по выбранной специальности:'}
       <div class="ent-features">${S.lang==='kz'
-        ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2025ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
-        :'<span>📊 Количество грантов</span><span>📈 Max/min баллы для гранта</span><span>🏆 ТОП-3 ВУЗа, выбранных 100 лучшими абитуриентами 2025г.</span>'
+        ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
+        :'<span>📊 Количество грантов</span><span>📈 Max/min баллы для гранта</span><span>🏆 ТОП-3 ВУЗа, выбранных 100 лучшими абитуриентами 2026г.</span>'
       }</div>
     </div>
     <input id="ent-inp" class="inp" placeholder="${S.lang==='kz'?'Мамандығыңызды іздеңіз...':'Введите название специальности...'}" oninput="filterENT(this.value)" style="margin-bottom:12px">
@@ -2093,7 +2134,7 @@ var SUBJ_MAP={
   '🎨 Творческий':'Творческий экзамен'
 };
 function getENTForType(type){
-  var info=TYPES[type];if(!info)return[];
+  var info=MBTI[type];if(!info)return[];
   var seen={};var results=[];
   info.entPairs.forEach(function(pair){
     var real1=SUBJ_MAP[pair.s1]||pair.s1;
@@ -2107,6 +2148,46 @@ function getENTForType(type){
     });
   });
   return results;
+}
+// ── RECOMMENDED UNIVERSITIES (matched to personality-type specialties) ──
+// ── AI-MATCHED: CAREERS профессия атауын нақты ENT_DATA мамандық кодына сәйкестендіру ──
+// Тұлғалық типтің 6 ұсынылған мамандығы (CAREERS) нақты ENT кодтарына сай келеді,
+// сол арқылы "мұғалім" деген сияқты жалпы емес, нақты кәсіп бойынша ЖОО ұсынылады.
+const PROFESSION_ENT_MAP = {
+  'HR-менеджер':'B044','Адвокат':'B049','Аналитик':'B055','Архитектор':'B073','Аудитор':'B045',
+  'Бортпроводник':'B095','Бухгалтер':'B045','Веб- р азработчик':'B057','Военнослужащий':'B004',
+  'Врач':'BM086','Врач -исследователь':'BM086','Врач -х ирур г':'BM086','Врач-косметолог':'BM086',
+  'Графический дизайнер':'B030','Дизайнер-проектировщик в строительстве':'B074','Дипломат':'B140',
+  'Журналист':'B042','Инженер':'B057','Исследователь-ученый':'B050','Историк':'B034',
+  'Консультант':'B044','Логист':'B095','Логопед':'B020','Маркетолог':'B047','Менеджер':'B044',
+  'Менеджер проектов':'B044','Педагог':'B001','Переводчик':'B036','Пилот':'B167','Писатель':'B037',
+  'Политолог':'B040','Предприниматель':'B044','Профессиональный спортсмен':'B005','Психолог':'B041',
+  'Разработчик программного обеспечения':'B057','Сотрудник правоохранительных органов':'B049',
+  'Социальный работник':'B090','Специалист в сфере медицины':'BM086','Специалист в сфере образования':'B001',
+  'Специалист индустрии шоу-бизнеса':'B023','Специалист отдела кадров (HR)':'B044',
+  'Специалист по связям с общественностью (PR-менеджер)':'B042','Специалист сферы туризма и гостеприимства':'B091',
+  'Тренер':'B005','Фармацевт':'B085','Физиотерапевт':'B084','Финансист':'B046','Финансовый аналитик':'B046',
+  'Финансовый менеджер':'B046','Экономист':'B046','Юрист':'B049'
+};
+function getTopUniForCareers(type){
+  var isKz=S.lang==='kz';
+  var careers=CAREERS[type];
+  if(!careers)return[];
+  var ruList=careers.ru||[];
+  var dispList=careers[isKz?'kz':'ru']||ruList;
+  var out=[];
+  ruList.forEach(function(p,i){
+    var code=PROFESSION_ENT_MAP[p.name];
+    if(!code)return;
+    var sp=ENT_DATA.find(function(d){return d.code===code;});
+    if(!sp)return;
+    var list=getUniList(code)||[];
+    var withMin=list.filter(function(u){return u&&u.min;});
+    var top=withMin.length?withMin.reduce(function(a,b){return b.min>a.min?b:a;}):(list[0]||null);
+    if(!top)return;
+    out.push({specName:(dispList[i]||p).name,code:code,uni:top});
+  });
+  return out.slice(0,6);
 }
 function initENTTable(type){
   var c=document.getElementById('ent-table-container');if(!c)return;
@@ -2168,8 +2249,8 @@ function initENTSearch(){
       ?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:'
       :'Анализируй данные за последние 3 года по выбранной специальности:')
       +'<div class="ent-features">'+(lang==='kz'
-      ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2025ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
-      :'<span>📊 Количество грантов</span><span>📈 Max/min баллы для гранта</span><span>🏆 ТОП-3 ВУЗа, выбранных 100 лучшими абитуриентами 2025г.</span>')+'</div>';
+      ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
+      :'<span>📊 Количество грантов</span><span>📈 Max/min баллы для гранта</span><span>🏆 ТОП-3 ВУЗа, выбранных 100 лучшими абитуриентами 2026г.</span>')+'</div>';
   }
   if(inp)inp.placeholder=lang==='kz'?'Мамандықты іздеңіз...':'Введите название специальности...';
   filterENT('');
@@ -2239,7 +2320,7 @@ function renderGrantCalc(){
     }).join('');
   return '<div class="gc-wrap" id="grant-calc">'+
     '<div class="gc-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігіңді анықта':'Калькулятор шансов на грант')+'</div>'+
-    '<div class="gc-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз — 2023–2025 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ — покажем шансы по статистике 2023–2025 гг.')+'</div>'+
+    '<div class="gc-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз — 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ — покажем шансы по статистике 2024–2026 гг.')+'</div>'+
     '<div class="gc-form">'+
       '<div class="gc-field"><label>'+(isKz?'Бейіндік пәндер':'Профильные предметы')+'</label><select id="gc-pair">'+opts+'</select></div>'+
       '<div class="gc-field"><label>'+(isKz?'ҰБТ балы (50–140)':'Балл ЕНТ (50–140)')+'</label><input type="number" id="gc-score" min="50" max="140" placeholder="'+(isKz?'Мысалы: 110':'Например: 110')+'"></div>'+
@@ -2651,7 +2732,7 @@ function iopStep1(sec){
   var prefScore=S.iopScore||'';
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігіңді анықта. 4 таңдау жаса!':'Определи шанс на грант. Сделай 4 выбора!')+'</div>'+
-    '<div class="iop-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз – 2023–2025 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ – покажем шанс по статистике 2023–2025 гг.')+'</div>'+
+    '<div class="iop-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз – 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ – покажем шанс по статистике 2024–2026 гг.')+'</div>'+
     iopStepBar(1)+
     '<div class="iop-field"><label>'+(isKz?'Аты-жөні':'ФИО')+'</label>'+
       '<input id="iop-name" type="text" placeholder="'+(isKz?'Толық атыңызды енгізіңіз':'Введите полное имя')+'" value="'+escHtml(prefName)+'"></div>'+
@@ -3257,7 +3338,7 @@ function genIOPpdf(){
 function restart(){
   history.pushState({},"",location.pathname);
   try{sessionStorage.removeItem('mbti_state')}catch(e){}
-  S={screen:"welcome",lang:S.lang,idx:0,scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0},user:{},resultId:null,aiText:"",sharedData:null};
+  S={screen:"welcome",lang:S.lang,idx:0,scores:{E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0},answers:[],user:{},resultId:null,aiText:"",sharedData:null};
   render();
 }
 
