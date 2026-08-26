@@ -1920,7 +1920,7 @@ function rResult(a){
   const type=calcType();
   const info=MBTI[type]||MBTI.INTP;
   const s=S.scores;
-  const unis=getTopUniForCareers(type);
+  const unis=getGroupedUnisForType(type);
   const hasId=!!S.resultId;
   const url=hasId?SITE_URL+"?r="+S.resultId:SITE_URL;
   const desc=S.lang==='kz'?info.desc_kz:info.desc_ru;
@@ -1986,12 +1986,15 @@ function rResult(a){
     <div class="sec-sub">${t('uniSub')}</div>
     ${unis.length?unis.map(u=>`
     <div class="uni">
-      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px">${u.specName}</div>
       <div class="uni-top">
-        <div><div class="uni-name">${u.uni.name}</div>${u.uni.city?`<div class="uni-city">📍 ${u.uni.city}</div>`:''}</div>
-        <div class="score-pills">
-          <div class="pill pill-t">📋 ${S.lang==='kz'?'Шек':'Порог'}: ${u.uni.min}+</div>
-        </div>
+        <div><div class="uni-name">${u.name}</div>${u.city?`<div class="uni-city">📍 ${u.city}</div>`:''}</div>
+      </div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+        ${u.specs.map(sp=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);border-radius:10px;padding:8px 12px">
+          <span style="font-size:13px;font-weight:600">${sp.specName}</span>
+          <span class="pill pill-t" style="flex-shrink:0">📋 ${S.lang==='kz'?'Шек':'Порог'}: ${sp.min}+</span>
+        </div>`).join('')}
       </div>
     </div>`).join(''):`<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">${S.lang==='kz'?'Мәліметтер табылмады':'Данные не найдены'}</div>`}
   </div>
@@ -2175,19 +2178,52 @@ function getTopUniForCareers(type){
   if(!careers)return[];
   var ruList=careers.ru||[];
   var dispList=careers[isKz?'kz':'ru']||ruList;
-  var out=[];
+  var items=[];
   ruList.forEach(function(p,i){
     var code=PROFESSION_ENT_MAP[p.name];
     if(!code)return;
     var sp=ENT_DATA.find(function(d){return d.code===code;});
     if(!sp)return;
-    var list=getUniList(code)||[];
-    var withMin=list.filter(function(u){return u&&u.min;});
-    var top=withMin.length?withMin.reduce(function(a,b){return b.min>a.min?b:a;}):(list[0]||null);
-    if(!top)return;
-    out.push({specName:(dispList[i]||p).name,code:code,uni:top});
+    var list=(getUniList(code)||[]).filter(function(u){return u&&u.name;});
+    var sorted=list.slice().sort(function(a,b){return (b.min||0)-(a.min||0);});
+    if(!sorted.length)return;
+    items.push({specName:(dispList[i]||p).name,code:code,candidates:sorted});
   });
-  return out.slice(0,6);
+  if(!items.length)return[];
+  // ── Топтастыру: бір университетке шамадан тыс мамандық жиналмасын ──
+  // Әр мамандық өз тізіміндегі ең жоғары шекті балды университетті таңдайды,
+  // бірақ сол университет "cap" саны бойынша толса — келесі үздік нұсқаға өтеді.
+  var cap=Math.max(1,Math.ceil(items.length/Math.min(items.length,3)));
+  var order=items.map(function(it,idx){return idx;}).sort(function(a,b){
+    return (items[b].candidates[0].min||0)-(items[a].candidates[0].min||0);
+  });
+  var unCount={};
+  var result=new Array(items.length);
+  order.forEach(function(idx){
+    var it=items[idx];
+    var chosen=null;
+    for(var c=0;c<it.candidates.length;c++){
+      var u=it.candidates[c];
+      if((unCount[u.name]||0)<cap){chosen=u;break;}
+    }
+    if(!chosen)chosen=it.candidates[0];
+    unCount[chosen.name]=(unCount[chosen.name]||0)+1;
+    result[idx]={specName:it.specName,code:it.code,uni:chosen};
+  });
+  return result.slice(0,6);
+}
+// ── Университет бойынша топтастырылған тізім (карточка = 1 университет + оның мамандықтары) ──
+function getGroupedUnisForType(type){
+  var flat=getTopUniForCareers(type);
+  var groups={};var order=[];
+  flat.forEach(function(r){
+    var key=r.uni.name;
+    if(!groups[key]){groups[key]={name:r.uni.name,city:r.uni.city||'',specs:[]};order.push(key);}
+    groups[key].specs.push({specName:r.specName,min:r.uni.min});
+  });
+  // Ең көп мамандықты қамтитын университет бірінші тұрсын
+  order.sort(function(a,b){return groups[b].specs.length-groups[a].specs.length;});
+  return order.map(function(k){return groups[k];});
 }
 function initENTTable(type){
   var c=document.getElementById('ent-table-container');if(!c)return;
