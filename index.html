@@ -1672,7 +1672,7 @@ async function loadShared(id){
 function render(){
   const a=app();
   switch(S.screen){
-    case"welcome":rWelcome(a);initGrantCalc();break;
+    case"welcome":rWelcome(a);initGrantCalc();initIOP();break;
     case"lang":rLang(a);break;
     case"register":rRegister(a);break;
     case"quiz":rQuiz(a);break;
@@ -1714,6 +1714,7 @@ function rWelcome(a){
       <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p>${(T[S.lang].t2items||[]).map(x=>'<div class="trust-item">'+x+'</div>').join('')}</div>
       <div class="trust-card"><div class="ic">📚</div><h4>${t('t3t')}</h4><p>${t('t3d')}</p></div>
     </div>
+    <div id="iop-sec"></div>
     <div class="why">
       <h3>${t('whyTitle')}</h3>
       <div class="why-item"><div class="why-dot"></div>${t('w1')}</div>
