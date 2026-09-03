@@ -63,6 +63,11 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
   cursor:pointer;transition:transform .2s,box-shadow .2s;display:inline-block;text-align:center}
 .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,114,194,.3)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.grant-cta-link{display:inline-block;margin:14px auto 0;background:transparent;
+  border:2px solid var(--dark);color:var(--dark);padding:15px 38px;border-radius:50px;
+  font-family:'Inter',sans-serif;font-size:14px;font-weight:800;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,background .2s,color .2s;text-align:center}
+.grant-cta-link:hover{background:var(--dark);color:#fff;transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,114,194,.3)}
 .btn-outline{background:transparent;border:2px solid var(--dark);color:var(--dark);
   padding:14px 32px;border-radius:50px;font-family:'Inter',sans-serif;font-size:13px;
   font-weight:700;cursor:pointer;transition:all .2s}
@@ -110,6 +115,9 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .trust-item{font-size:11px;color:var(--dark);font-weight:600;padding:4px 0 4px 14px;
   position:relative;line-height:1.4}
 .trust-item::before{content:'•';position:absolute;left:2px;color:var(--accent);font-weight:900}
+.trust-card-cta{cursor:pointer;background:linear-gradient(135deg,#eef2ff,#e8f0fe);border-color:rgba(63,81,181,.25);transition:transform .15s ease,box-shadow .15s ease}
+.trust-card-cta:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(63,81,181,.18)}
+.trust-card-cta h4{color:#3949ab}
 
 .why{background:var(--dark-bg);color:#fff;border-radius:18px;padding:24px;margin:20px 0}
 .why h3{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;
@@ -1528,10 +1536,17 @@ const T = {
     heroSub:"70 вопросов · 16 типов личности · Профессии + профильные предметы ЕНТ + вузы РК с баллами",
     slogan:"ВМЕСТЕ С АЙПЛЮС ПОЗНАЙ СВОЮ ЛИЧНОСТЬ, РАСКРОЙ СВОИ СПОСОБНОСТИ И ОСОЗНАННО ВЫБЕРИ БУДУЩУЮ ПРОФЕССИЮ",
     s1:"70",s1l:"Вопросов",s2:"16",s2l:"Типов",s3:"~12",s3l:"Минут",s4:"30+",s4l:"Профессий",s5:"РК",s5l:"Базы ЕНТ",
-    startBtn:"Начать тест бесплатно →",
+    startBtn:"Пройти тест →",
     t1t:"Сделай шаг ближе к своей цели!",t1d:"Отправь результат родителям.",
     t2t:"Статистические данные ЕНТ",t2d:"По выбранной вами специальности за последние 3 года:",t2items:["Количество грантов","Проходные баллы на грант (max/min)"],
     t3t:"Профильные предметы ЕНТ",t3d:"Информация о специальностях по выбранным профильным предметам",
+    t4t:"Твой шанс на грант",t4d:"Сделай 4 выбора и узнай шанс",
+    grantBtn:"🎯 Узнай свой шанс на грант",
+    grantRegTag:"КАЛЬКУЛЯТОР ГРАНТА",
+    grantRegTitle:"Узнай свой шанс на грант",
+    grantRegSub:"Заполните данные — сделайте 4 выбора, и мы покажем ваш шанс на грант по статистике ЕНТ 2024–2026 гг.",
+    grantRegBtn:"Продолжить →",
+    grantBack:"← На главную",
     t4t:"ИИ-анализ Aiplus",t4d:"Персональные рекомендации нейросети",
     whyTitle:"Почему 70 вопросов — это точно?",
     w1:"MBTI измеряет 4 шкалы — 10–20 вопросов на каждую. Это научный стандарт для надёжного результата",
@@ -1564,10 +1579,17 @@ const T = {
     heroSub:'70 сұрақ · 16 тұлға типі · Мамандықтар · <span style="white-space:nowrap">Грант статистикасы</span>',
     slogan:"АЙПЛЮСПЕН БІРГЕ ӨЗ ТҰЛҒАҢДЫ ТАНЫ, ҚАБІЛЕТІҢДІ АШ ЖӘНЕ БОЛАШАҚ МАМАНДЫҒЫҢДЫ САНАЛЫ ТҮРДЕ ТАҢДА",
     s1:"70",s1l:"Сұрақ",s2:"16",s2l:"Тип",s3:"12",s3l:"Минут",
-    startBtn:"Тестті бастау →",
+    startBtn:"Тест тапсыру →",
     t1t:"Мақсатыңа бір қадам жақында!",t1d:"Нәтижені ата-анаңа жібер.",
     t2t:"ҰБТ статистикалық мәліметтер",t2d:"Таңдаған мамандығыңыз бойынша соңғы 3 жылдың:",t2items:["Грант саны","Грантқа түсудің max/min балдары","2026ж. ТОП-3 ЖОО"],
     t3t:"ҰБТ таңдау пәндері",t3d:"Бейінді пәндердегі мамандықтар бойынша ақпарат",
+    t4t:"Грантқа түсу мүмкіндігің",t4d:"4 таңдау жасап, шансыңды біл",
+    grantBtn:"🎯 Грантқа түсу мүмкіндігіңді анықта",
+    grantRegTag:"ГРАНТ КАЛЬКУЛЯТОРЫ",
+    grantRegTitle:"Грантқа түсу мүмкіндігіңді анықта",
+    grantRegSub:"Деректеріңізді толтырыңыз — 4 таңдау жасап, ҰБТ 2024–2026 жж. статистикасы бойынша грантқа түсу мүмкіндігіңізді көрсетеміз.",
+    grantRegBtn:"Жалғастыру →",
+    grantBack:"← Басты бетке",
     whyTitle:"Неге MBTI тесті?",
     w1:"Ғылыми стандарт: 70 сұрақ 4 шкала бойынша нақты нәтиже береді.",
     w2:"Юнг әдістемесі: Миллиондаған адам тексерген сенімді психологиялық негіз.",
@@ -1624,6 +1646,8 @@ function render(){
     case"welcome":rWelcome(a);initGrantCalc();initIOP();break;
     case"lang":rLang(a);break;
     case"register":rRegister(a);break;
+    case"grantReg":rGrantReg(a);break;
+    case"grant":rGrantScreen(a);initIOP();break;
     case"quiz":rQuiz(a);break;
     case"loading":rLoader(a);break;
     case"result":rResult(a);initCareerGuide(calcType());initSpecBrowser();initUniBrowser();initENTTable(calcType());initENTSearch();initGrantCalc();initIOP();break;
@@ -1638,7 +1662,7 @@ function updateTopbarBack(){
   if(!btn)return;
   var lbl=document.getElementById('topbar-back-lbl');
   if(lbl)lbl.textContent=S.lang==='kz'?'Артқа':'Назад';
-  var showOn={lang:1,register:1,quiz:1};
+  var showOn={lang:1,register:1,quiz:1,grantReg:1,grant:1};
   if(showOn[S.screen]){btn.classList.remove('hidden');}
   else{btn.classList.add('hidden');}
 }
@@ -1649,6 +1673,10 @@ function goBack(){
       S.screen="welcome";render();break;
     case"register":
       S.screen="lang";render();break;
+    case"grantReg":
+      S.screen="welcome";render();break;
+    case"grant":
+      S.screen="grantReg";render();break;
     case"quiz":
       if(S.idx>0){
         S.idx--;
@@ -1694,12 +1722,12 @@ function rWelcome(a){
       <div class="stat"><b>${t('s3')}</b><small>${t('s3l')}</small></div>
     </div>
     <button class="btn" onclick="S.screen='lang';render()">${t('startBtn')}</button>
+    <div class="grant-cta-link" onclick="S.screen='grantReg';render()">${t('grantBtn')}</div>
     <div class="trust">
       <div class="trust-card"><div class="ic">🔗</div><h4>${t('t1t')}</h4><p>${t('t1d')}</p></div>
       <div class="trust-card"><div class="ic">🎓</div><h4>${t('t2t')}</h4><p>${t('t2d')}</p>${(T[S.lang].t2items||[]).map(x=>'<div class="trust-item">'+x+'</div>').join('')}</div>
       <div class="trust-card"><div class="ic">📚</div><h4>${t('t3t')}</h4><p>${t('t3d')}</p></div>
     </div>
-    <div id="iop-sec"></div>
     <div class="why">
       <h3>${t('whyTitle')}</h3>
       <div class="why-item"><div class="why-dot"></div>${t('w1')}</div>
@@ -1758,6 +1786,47 @@ function submitReg(){
   S.user={name,phone:$("rphone").value.trim(),school,grade};
   S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};S.answers=[];
   S.screen="quiz";render();
+}
+
+// ── GRANT CALCULATOR REGISTRATION ──
+function rGrantReg(a){
+  a.innerHTML=`<div class="card reg-card" style="margin-top:32px;text-align:center">
+    <div class="reg-tag">${t('grantRegTag')}</div>
+    <h2 class="reg-title">${t('grantRegTitle')}</h2>
+    <p class="reg-sub">${t('grantRegSub')}</p>
+    <input class="inp" id="gname" placeholder="${t('regName')}" autocomplete="name">
+    <input class="inp" id="gphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" maxlength="18">
+    <input class="inp" id="gschool" placeholder="${t('regSchool')}">
+    <select class="inp" id="ggrade" style="cursor:pointer">
+      <option value="">${S.lang==='kz'?'Сынып — 9 / 10 / 11':'Класс — 9 / 10 / 11'}</option>
+      <option value="9">9 ${S.lang==='kz'?'сынып':'класс'}</option>
+      <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
+      <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
+    </select>
+    <button class="btn" style="width:100%;margin-top:6px" id="gbtn" onclick="submitGrantReg()">${t('grantRegBtn')}</button>
+    <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
+  </div>`;
+}
+
+function submitGrantReg(){
+  const name=$("gname").value.trim();
+  const phone=$("gphone").value.replace(/\D/g,'');
+  const school=$("gschool").value.trim();
+  const grade=$("ggrade").value.trim();
+  const isKz=S.lang==='kz';
+  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return}
+  if(phone.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return}
+  if(!school){alert(isKz?'Мектепті жазыңыз!':'Укажите школу!');return}
+  if(!grade){alert(isKz?'Сыныпты таңдаңыз!':'Выберите класс!');return}
+  S.grantUser={name,phone:$("gphone").value.trim(),school,grade};
+  S.iopStep=1;S.iopSpecs=[];S.iopFilter='all';
+  S.screen="grant";render();
+}
+
+function rGrantScreen(a){
+  a.innerHTML=`<div style="margin-top:24px">
+    <div id="iop-sec"></div>
+  </div>`;
 }
 
 // ── QUIZ ──
