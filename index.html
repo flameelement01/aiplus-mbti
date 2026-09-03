@@ -84,6 +84,10 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
   border-radius:12px;font-family:'Inter',sans-serif;font-size:15px;color:var(--dark);
   margin-bottom:10px;transition:border .2s}
 .inp:focus{outline:none;border-color:var(--dark);background:#fff}
+.inp.inp-error{border-color:#e53935;background:#fdecea}
+.form-error{display:none;color:#e53935;font-size:12.5px;font-weight:700;text-align:left;
+  margin:-4px 0 10px;padding-left:2px}
+.form-error.show{display:block}
 
 /* WELCOME */
 .hero{padding:44px 0 28px;text-align:center}
@@ -1760,7 +1764,7 @@ function rRegister(a){
     <h2 class="reg-title">${t('regTitle')}</h2>
     <p class="reg-sub">${t('regSub')}</p>
     <input class="inp" id="rname" placeholder="${t('regName')}" autocomplete="name">
-    <input class="inp" id="rphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" maxlength="18">
+    <input class="inp" id="rphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" onkeydown="phoneKeydown(event,this)" maxlength="18">
     <input class="inp" id="rschool" placeholder="${t('regSchool')}">
     <select class="inp" id="rgrade" style="cursor:pointer">
       <option value="">${S.lang==='kz'?'Сынып — 9 / 10 / 11':'Класс — 9 / 10 / 11'}</option>
@@ -1768,6 +1772,7 @@ function rRegister(a){
       <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
       <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
     </select>
+    <div class="form-error" id="rerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="rbtn" onclick="submitReg()">${t('regBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
   </div>`;
@@ -1779,10 +1784,12 @@ function submitReg(){
   const school=$("rschool").value.trim();
   const grade=$("rgrade").value.trim();
   const isKz=S.lang==='kz';
-  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return}
-  if(phone.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return}
-  if(!school){alert(isKz?'Мектепті жазыңыз!':'Укажите школу!');return}
-  if(!grade){alert(isKz?'Сыныпты таңдаңыз!':'Выберите класс!');return}
+  clearFormErrors(['rname','rphone','rschool','rgrade'],'rerr');
+  const errMsg=isKz?'Ақпараттарды дұрыс енгізіңіз':'Заполните информацию корректно';
+  if(!name||isFakeName(name)){showFormError(['rname'],'rerr',errMsg);return}
+  if(phone.length<11||isFakePhone(phone)){showFormError(['rphone'],'rerr',errMsg);return}
+  if(!school){showFormError(['rschool'],'rerr',errMsg);return}
+  if(!grade){showFormError(['rgrade'],'rerr',errMsg);return}
   S.user={name,phone:$("rphone").value.trim(),school,grade};
   S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};S.answers=[];
   S.screen="quiz";render();
@@ -1795,7 +1802,7 @@ function rGrantReg(a){
     <h2 class="reg-title">${t('grantRegTitle')}</h2>
     <p class="reg-sub">${t('grantRegSub')}</p>
     <input class="inp" id="gname" placeholder="${t('regName')}" autocomplete="name">
-    <input class="inp" id="gphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" maxlength="18">
+    <input class="inp" id="gphone" placeholder="+7 (___) ___-__-__" type="tel" autocomplete="tel" oninput="phoneMask(this)" onkeydown="phoneKeydown(event,this)" maxlength="18">
     <input class="inp" id="gschool" placeholder="${t('regSchool')}">
     <select class="inp" id="ggrade" style="cursor:pointer">
       <option value="">${S.lang==='kz'?'Сынып — 9 / 10 / 11':'Класс — 9 / 10 / 11'}</option>
@@ -1803,6 +1810,7 @@ function rGrantReg(a){
       <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
       <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
     </select>
+    <div class="form-error" id="gerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="gbtn" onclick="submitGrantReg()">${t('grantRegBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
   </div>`;
@@ -1814,10 +1822,12 @@ function submitGrantReg(){
   const school=$("gschool").value.trim();
   const grade=$("ggrade").value.trim();
   const isKz=S.lang==='kz';
-  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return}
-  if(phone.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return}
-  if(!school){alert(isKz?'Мектепті жазыңыз!':'Укажите школу!');return}
-  if(!grade){alert(isKz?'Сыныпты таңдаңыз!':'Выберите класс!');return}
+  clearFormErrors(['gname','gphone','gschool','ggrade'],'gerr');
+  const errMsg=isKz?'Ақпараттарды дұрыс енгізіңіз':'Заполните информацию корректно';
+  if(!name||isFakeName(name)){showFormError(['gname'],'gerr',errMsg);return}
+  if(phone.length<11||isFakePhone(phone)){showFormError(['gphone'],'gerr',errMsg);return}
+  if(!school){showFormError(['gschool'],'gerr',errMsg);return}
+  if(!grade){showFormError(['ggrade'],'gerr',errMsg);return}
   S.grantUser={name,phone:$("gphone").value.trim(),school,grade};
   S.iopStep=1;S.iopSpecs=[];S.iopFilter='all';
   S.screen="grant";render();
@@ -2410,8 +2420,10 @@ function submitGcReg(){
   var rawPhone=(document.getElementById('gc-reg-phone')||{}).value||'';
   name=name.trim();
   var digits=rawPhone.replace(/\D/g,'');
-  if(!name){alert(isKz?'Атыңызды жазыңыз!':'Введите ваше имя!');return;}
-  if(digits.length<11){alert(isKz?'Телефон нөмірін толық енгізіңіз!':'Введите полный номер телефона!');return;}
+  clearFormErrors(['gc-reg-name','gc-reg-phone'],'gc-reg-err');
+  var errMsg=isKz?'Ақпараттарды дұрыс енгізіңіз':'Заполните информацию корректно';
+  if(!name||isFakeName(name)){showFormError(['gc-reg-name'],'gc-reg-err',errMsg);return;}
+  if(digits.length<11||isFakePhone(digits)){showFormError(['gc-reg-phone'],'gc-reg-err',errMsg);return;}
   S.user={name:name,phone:rawPhone.trim()};
   calcGrant();
 }
@@ -2433,7 +2445,8 @@ function calcGrant(){
       '<div class="gc-reg-icon">🔒</div>'+
       '<div class="gc-reg-title">'+(isKz?'Грантқа түсу мүмкіндігіңізді анықтау үшін жеке деректеріңізді толтырыңыз':'Заполните личные данные, чтобы узнать свои шансы на получение гранта')+'</div>'+
       '<input class="inp" id="gc-reg-name" placeholder="'+(isKz?'Аты-жөніңіз':'Ваше имя')+'" style="margin-bottom:8px">'+
-      '<input class="inp" id="gc-reg-phone" placeholder="+7 (___) ___-__-__" type="tel" style="margin-bottom:8px" oninput="phoneMask(this)" maxlength="18">'+
+      '<input class="inp" id="gc-reg-phone" placeholder="+7 (___) ___-__-__" type="tel" style="margin-bottom:8px" oninput="phoneMask(this)" onkeydown="phoneKeydown(event,this)" maxlength="18">'+
+      '<div class="form-error" id="gc-reg-err"></div>'+
       '<button class="gc-btn" onclick="submitGcReg()">'+(isKz?'Жалғастыру →':'Продолжить →')+'</button>'+
     '</div>';
     return;
@@ -2744,18 +2757,77 @@ var UNI_LIST=[
 var MONTHS_RU=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 
 // ── PHONE MASK ──
-function phoneMask(el){
-  var v=el.value.replace(/\D/g,'');
-  if(v.startsWith('8'))v='7'+v.slice(1);
-  if(!v.startsWith('7'))v='7'+v;
-  v=v.slice(0,11);
-  var d=v.slice(1);
+// Форма қателерін inline (қызыл) көрсету
+function clearFormErrors(fieldIds,errId){
+  fieldIds.forEach(function(id){var el=$(id);if(el)el.classList.remove('inp-error');});
+  var errEl=$(errId);
+  if(errEl){errEl.classList.remove('show');errEl.textContent='';}
+}
+function showFormError(fieldIds,errId,msg){
+  fieldIds.forEach(function(id){var el=$(id);if(el)el.classList.add('inp-error');});
+  var errEl=$(errId);
+  if(errEl){errEl.textContent=msg;errEl.classList.add('show');}
+}
+
+function renderPhoneValue(el,raw){
+  raw=raw.slice(0,11);
+  var d=raw.slice(1);
   var r='+7';
   if(d.length>0)r+=' ('+d.slice(0,3);
   if(d.length>=3)r+=') '+d.slice(3,6);
   if(d.length>=6)r+='-'+d.slice(6,8);
   if(d.length>=8)r+='-'+d.slice(8,10);
   el.value=r;
+}
+function phoneMask(el){
+  var v=el.value.replace(/\D/g,'');
+  if(v.startsWith('8'))v='7'+v.slice(1);
+  if(!v.startsWith('7'))v='7'+v;
+  renderPhoneValue(el,v);
+}
+// Backspace/Delete басқанда маска (жақша, сызықша) кедергі жасамай, əрқашан соңғы санды өшіреді
+function phoneKeydown(e,el){
+  if(e.key==='Backspace'||e.key==='Delete'){
+    e.preventDefault();
+    var raw=el.value.replace(/\D/g,'');
+    if(raw.length<=1){el.value='';return;}
+    raw=raw.slice(0,-1);
+    renderPhoneValue(el,raw);
+  }
+}
+
+// Телефон нөмірінің шындыққа сай екенін тексеру (толық растау емес, тек анық жалғандарды сүзу)
+function isFakePhone(digits){
+  // digits: тек сандар, "7" операторлардан кейінгі, ұзындығы 11 (7XXXXXXXXXX)
+  if(digits.length!==11) return true;
+  var op=digits.slice(1,4); // операторлар коды, мыс. 701,747,777...
+  var rest=digits.slice(4); // қалған 7 сан
+  // Қазақстанның ұялы операторлар коды 700-778 аралығында басталуы керек
+  var opNum=parseInt(op,10);
+  if(!(opNum>=700&&opNum<=778)) return true;
+  // Бірдей цифрдан тұратын қалған бөлік (мыс. 0000000, 1111111)
+  if(/^(\d)\1{6}$/.test(rest)) return true;
+  // Кезекті өсу/кему тізбегі (мыс. 1234567, 7654321, 0123456)
+  var asc='01234567890123456789'; // 20 ұзын, ішінде барлық 7-таңбалы өсу тізбектерін қамтиды
+  var desc='98765432109876543210';
+  if(asc.indexOf(rest)!==-1) return true;
+  if(desc.indexOf(rest)!==-1) return true;
+  return false;
+}
+
+// Есім/аты-жөнінің шындыққа сай екенін тексеру (қатаң емес, тек анық жалғандарды сүзу)
+function isFakeName(name){
+  var s=(name||'').trim();
+  if(s.length<2) return true;
+  if(/\d/.test(s)) return true; // цифр болса
+  var letters=s.replace(/[\s'’ -]/g,'');
+  if(letters.length<2) return true;
+  // Бірдей əріп қайталанса (мыс. jjjj, аааа)
+  if(/^(.)\1+$/i.test(letters)) return true;
+  // Кемінде бір дауысты дыбыс болуы керек (латын + орыс + қазақ əріптері)
+  var vowels=/[aeiouyAEIOUYаәеёиіоөуұүыэюяАӘЕЁИІОӨУҰҮЫЭЮЯ]/;
+  if(!vowels.test(letters)) return true;
+  return false;
 }
 
 // ── IOP MODULE v2 ──
