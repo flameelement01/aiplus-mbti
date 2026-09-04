@@ -365,9 +365,11 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
 .spec-ent-block:last-child{margin-bottom:0}
 .spec-ent-block-lbl{font-size:9px;color:var(--muted);font-weight:700;margin-bottom:3px}
 .spec-ent-block-rural .spec-ent-block-lbl{color:#8a6d1f}
-.spec-ent-score{font-size:13px;display:flex;justify-content:center;gap:10px}
-.spec-ent-score .sc-max{color:#1B5E20;font-weight:800}
-.spec-ent-score .sc-min{color:#B71C1C;font-weight:800}
+.spec-ent-score{font-size:13px;display:flex;justify-content:center;gap:8px}
+.sc-badge{display:inline-flex;align-items:center;gap:3px;border-radius:20px;padding:3px 9px;
+  font-size:12px;font-weight:800}
+.sc-badge.sc-max{color:#1B5E20;background:#e6f4ea}
+.sc-badge.sc-min{color:#B71C1C;background:#fbe9e7}
 .spec-ent-block-rural{background:#fdf7ea;border-radius:8px;padding:5px 4px}
 /* UNI BROWSER */
 .uni-browser-search{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;
@@ -2564,7 +2566,7 @@ function openSpecPopup(code,group){
     var rsc=ent.ruralScores||{};
     function scoreCell(sObj){
       return sObj&&(sObj.max!=null||sObj.min!=null)?
-        '<span class="sc-max">▲'+(sObj.max!=null?sObj.max:'—')+'</span><span class="sc-min">▼'+(sObj.min!=null?sObj.min:'—')+'</span>':
+        '<span class="sc-badge sc-max">▲<b>'+(sObj.max!=null?sObj.max:'—')+'</b></span><span class="sc-badge sc-min">▼<b>'+(sObj.min!=null?sObj.min:'—')+'</b></span>':
         '—';
     }
     var yearsHtml=['y24','y25','y26'].map(function(y){
