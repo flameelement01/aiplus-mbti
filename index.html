@@ -2635,6 +2635,8 @@ function initUniBrowser(){
   var html='<input class="uni-browser-search" placeholder="'+(isKz?'Мамандықты іздеңіз...':'Поиск специальности...')+'" oninput="filterUniBrowser(this.value)">';
   html+='<div id="uni-browser-list" class="uni-browser-list">';
   html+=UNI_DATA.map(function(d,i){
+    var hasData=(d.u&&d.u.length)||(typeof UNI_THRESHOLDS!=='undefined'&&UNI_THRESHOLDS[d.c]&&UNI_THRESHOLDS[d.c].length);
+    if(!hasData)return '';
     return '<div class="uni-browser-item" onclick="showUniDetail('+i+')">'+
       '<div class="ub-code">'+d.c+'</div>'+
       '<div class="ub-name">'+d.n+'</div>'+
@@ -2660,15 +2662,24 @@ function showUniDetail(idx){
   var html='<button class="uni-detail-back" onclick="initUniBrowser()">← '+(isKz?'Артқа':'Назад')+'</button>';
   html+='<div class="uni-detail-title">'+d.n+'</div>';
   html+='<div class="uni-detail-code">'+d.c+'</div>';
+  var thUnis=(typeof UNI_THRESHOLDS!=='undefined')?UNI_THRESHOLDS[d.c]:null;
   if(d.u&&d.u.length){
     html+='<div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600">'+(isKz?'ЖОО-лар: '+d.u.length:'ВУЗов: '+d.u.length)+'</div>';
     html+=d.u.map(function(u){
       return '<div class="uni-card"><b>'+u.n+'</b> <small>📍 '+u.c+'</small></div>';
     }).join('');
+  }else if(thUnis&&thUnis.length){
+    var sorted=thUnis.slice().sort(function(a,b){return (a.min||0)-(b.min||0);});
+    html+='<div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600">'+(isKz?'ЖОО-лар: '+sorted.length:'ВУЗов: '+sorted.length)+'</div>';
+    html+=sorted.map(function(u){
+      return '<div class="uni-card"><b>'+u.n+'</b>'+(u.c?' <small>📍 '+u.c+'</small>':'')+
+        (u.min!=null?' <span class="sc-badge sc-min" style="margin-left:6px">'+(isKz?'шекті балл: ':'порог: ')+'<b>'+u.min+'</b></span>':'')+
+      '</div>';
+    }).join('');
   }else{
     html+='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">'
-      +(isKz?'Мәліметтер жүктелуде...':'Данные загружаются...')
-      +'<br><a href="https://univision.kz/kk/edu-program/group/degree/bachelor.html" target="_blank" style="color:var(--dark)">univision.kz</a></div>';
+      +(isKz?'Бұл мамандық бойынша ЖОО тізімі әзірге қолжетімсіз.':'Список ВУЗов по этой специальности пока недоступен.')
+      +'</div>';
   }
   container.innerHTML=html;
 }
