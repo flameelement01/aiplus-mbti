@@ -25630,8 +25630,8 @@ function rResult(a){
 
 
   <div class="sec" id="uni-browser-sec">
-    <div class="sec-title">${S.lang==='kz'?'🏛 Бакалавриат мамандықтары мен ЖОО-лар':'🏛 Специальности бакалавриата и ВУЗы'}</div>
-    <div class="sec-sub">${S.lang==='kz'?'Мамандықты таңдаңыз — сол мамандық бойынша оқытатын ЖОО-лар тізімін көріңіз':'Выберите специальность — увидите список ВУЗов, где её преподают'}</div>
+    <div class="sec-title">${S.lang==='kz'?'🏛 Бакалавриат мамандықтары мен ЖОО-лар':'🏛️ Специальности бакалавриата и вузы'}</div>
+    <div class="sec-sub">${S.lang==='kz'?'Мамандықты таңдаңыз — сол мамандық бойынша оқытатын ЖОО-лар тізімін көріңіз':'Выберите специальность — увидите список вузов, где можно по ней обучаться'}</div>
     <div id="uni-browser-content"></div>
   </div>
 
@@ -26030,7 +26030,7 @@ function renderGrantCalc(){
     }).join('');
   return '<div class="gc-wrap" id="grant-calc">'+
     '<div class="gc-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігіңді анықта':'Калькулятор шансов на грант')+'</div>'+
-    '<div class="gc-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз — 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ — покажем шансы по статистике 2024–2026 гг.')+'</div>'+
+    '<div class="gc-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз — 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери профильные предметы и укажи свой балл ЕНТ — покажем твои шансы по статистике 2024–2026 гг.')+'</div>'+
     '<div class="gc-form">'+
       '<div class="gc-field"><label>'+(isKz?'Бейіндік пәндер':'Профильные предметы')+'</label><select id="gc-pair">'+opts+'</select></div>'+
       '<div class="gc-field"><label>'+(isKz?'Қазіргі ҰБТ балы (50–140)':'Текущий балл ЕНТ (50–140)')+'</label><input type="number" id="gc-score" min="50" max="140" placeholder="'+(isKz?'Мысалы: 70':'Например: 70')+'"></div>'+
@@ -26608,7 +26608,7 @@ function iopStep1(sec){
   var prefScore=S.iopScore||'';
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">🎯 '+(isKz?'Грантқа түсу мүмкіндігіңді анықта. 4 таңдау жаса!':'Определи шанс на грант. Сделай 4 выбора!')+'</div>'+
-    '<div class="iop-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз – 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери предметы и введи балл ЕНТ – покажем шанс по статистике 2024–2026 гг.')+'</div>'+
+    '<div class="iop-sub">'+(isKz?'Пәндерді таңда және ҰБТ балыңды енгіз – 2024–2026 жж. статистикасы бойынша мүмкіндігіңді көрсетеміз':'Выбери профильные предметы и укажи свой балл ЕНТ — покажем твои шансы по статистике 2024–2026 гг.')+'</div>'+
     iopStepBar(1)+
     '<div class="iop-field"><label>'+(isKz?'Аты-жөні':'ФИО')+'</label>'+
       '<input id="iop-name" type="text" placeholder="'+(isKz?'Толық атыңызды енгізіңіз':'Введите полное имя')+'" value="'+escHtml(prefName)+'"></div>'+
@@ -27226,17 +27226,17 @@ function genIOPpdf(){
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
     '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000;width:180px">'+(isKz?'Ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных Топ-100 учащимися, набравшими самый высокий балл')+'</th>'+
-    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000">'+(isKz?'Бөлінген грант саны':'Выделено грантов')+'</th>'+
-    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Грантқа түсудің max/min балдары':'max/min баллы гранта')+'</th>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Таңдалған университет':'Выбранный ВУЗ')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000;width:180px">'+(isKz?'Ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных 100 абитуриентами, набравшими самые высокие баллы')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000">'+(isKz?'Бөлінген грант саны':'Количество выделенных грантов')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Грантқа түсудің max/min балдары':'Максимальный/минимальный балл на грант')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Таңдалған университет':'Выбранный вуз')+'</th>'+
     '</tr><tr>'+
     ['2024','2025','2026','2024','2025','2026'].map(function(h){
       return '<th style="background:#1976D2;color:#fff;padding:5px;font-size:8px;border:1px solid #000">'+h+'</th>';
     }).join('')+
     '</tr></thead><tbody>'+tableRows+'</tbody></table>'+
     '<div style="margin-top:10px;font-size:9px;color:#3C3C50;margin-bottom:4px">'+
-      '<b>'+(isKz?'Таңдау пәндері: ':'Предметы: ')+'</b>'+(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join(' + '));})()+'</div>'+
+      '<b>'+(isKz?'Таңдау пәндері: ':'Профильные предметы: ')+'</b>'+(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join(' + '));})()+'</div>'+
     '<div style="background:rgba(255,255,255,.85);border-radius:6px;padding:6px 10px;font-size:9px;display:inline-block">'+
       '<b>'+(isKz?'Сіздің балыңыз: ':'Ваш балл: ')+score+'</b>'+
     '</div>'+
