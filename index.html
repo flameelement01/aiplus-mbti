@@ -27242,7 +27242,12 @@ function genIOPpdf(){
     specCards+
     '</div></div>';
 
-  // БЕТ 4: Құттықтау сөзі + А→Б жол картасы (12 ай)
+  // БЕТ 4: Құттықтау сөзі (кестесіз, таза)
+  var p4='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:fill;display:block" crossorigin="anonymous">'+
+    nameInPill+'</div>';
+
+  // БЕТ 5: Мақсатқа жету жол картасы (А→Б, бөлек бет)
   var pointA=score;
   var pointB=pointA;
   specs.forEach(function(sp){
@@ -27256,7 +27261,6 @@ function genIOPpdf(){
     }
     if(selMin!=null&&selMin>pointB)pointB=selMin;
   });
-  if(pointB<=pointA)pointB=pointA+10; // əрдайым өсу үрдісі көрінуі үшін
   var MONTHS_KZ=['Қыркүйек','Қазан','Қараша','Желтоқсан','Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз'];
   var MONTHS_RU=['Сентябрь','Октябрь','Ноябрь','Декабрь','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август'];
   var ALL_MONTHS=isKz?MONTHS_KZ:MONTHS_RU;
@@ -27265,15 +27269,17 @@ function genIOPpdf(){
   if(endIdx<=startIdx)endIdx=Math.min(startIdx+1,11); // аяқтау айы бастаудан кейін болуы керек
   var MONTHS=[];
   for(var mi=startIdx; mi<=endIdx; mi++)MONTHS.push(ALL_MONTHS[mi]);
-  // Айлар бойынша болжалды балл (соңғысы дəл pointB-ге тең болады)
-  var monthVals=MONTHS.map(function(mLbl,i){
-    return Math.round(pointA+(pointB-pointA)*(i/(MONTHS.length-1)));
-  });
-  monthVals[monthVals.length-1]=pointB; // дəлдік үшін соңғысын тура pointB-ге теңестіреміз
-  // Айлық өсім: ағымдағы айдан келесі айға (немесе Б нүктесіне) дейінгі айырма
-  var growthVals=monthVals.map(function(v,i){
-    return i<monthVals.length-1 ? (monthVals[i+1]-v) : (pointB-v);
-  });
+  var nSteps=MONTHS.length; // əр айдан кейінгі өсім қадамдарының саны (соңғысы — Б нүктесіне жету қадамы)
+  if(pointB-pointA<nSteps)pointB=pointA+nSteps; // əр айда кемінде +1 балл өсім болуы үшін
+  var totalDiff=pointB-pointA;
+  var base=Math.floor(totalDiff/nSteps);
+  var rem=totalDiff%nSteps;
+  // Өсімді бірінші rem қадамға +1 қосып, барлық қадамға теңдей бөлеміз (ешбір қадам 0 болмайды)
+  var growthVals=[];
+  for(var gi=0; gi<nSteps; gi++)growthVals.push(base+(gi<rem?1:0));
+  var monthVals=[pointA];
+  for(var vi=0; vi<nSteps-1; vi++)monthVals.push(monthVals[vi]+growthVals[vi]);
+  // тексеру: соңғы қадам monthVals[last]+growthVals[last] === pointB болуы керек
   var headerCells='<th style="background:#faa318;color:#1a1a2e;padding:8px 10px;font-size:9px;font-weight:800;border:1px solid #e0921a;white-space:nowrap">'+
     (isKz?'Бастапқы А нүктесі':'Начальная точка А')+'</th>'+
     MONTHS.map(function(m){return '<th style="background:#faa318;color:#1a1a2e;padding:8px 6px;font-size:9px;font-weight:800;border:1px solid #e0921a;white-space:nowrap">'+m+'</th>';}).join('')+
@@ -27284,23 +27290,25 @@ function genIOPpdf(){
   var row2='<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:700;color:#1a1a2e;background:#f5f7fa">'+(isKz?'Айлық өсім':'Месячный рост')+'</td>'+
     growthVals.map(function(v){return '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:800;color:#1a2a3a">+'+v+'</td>';}).join('')+
     '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:900;color:#1B5E20;background:#e8f5e0">'+pointB+'</td>';
-  var roadmapTable='<div style="position:absolute;left:40px;right:40px;bottom:60px;z-index:5">'+
-    '<div style="background:rgba(255,255,255,.96);border-radius:10px;padding:16px 20px;box-shadow:0 2px 10px rgba(0,0,0,.08)">'+
-      '<div style="font-size:14px;font-weight:900;color:#1a1a2e;text-align:center;margin-bottom:4px">'+
-        (isKz?'Мақсатқа жетудің қадамдары':'Шаги к достижению цели')+
-      '</div>'+
-      '<table style="width:100%;border-collapse:collapse;margin-top:10px">'+
-        '<tr>'+headerCells+'</tr>'+
-        '<tr>'+row1+'</tr>'+
-        '<tr>'+row2+'</tr>'+
-      '</table>'+
-      '<div style="margin-top:12px;font-size:11px;color:#1a1a2e">'+(isKz?'Дата: ':'Дата: ')+dateStr+'</div>'+
+  var roadmapTable=
+    '<table style="width:100%;border-collapse:collapse;margin-top:10px">'+
+      '<tr>'+headerCells+'</tr>'+
+      '<tr>'+row1+'</tr>'+
+      '<tr>'+row2+'</tr>'+
+    '</table>'+
+    '<div style="margin-top:14px;font-size:11px;color:#1a1a2e">'+(isKz?'Дата: ':'Дата: ')+dateStr+'</div>';
+  var p5='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
+    nameInPill+aiplusBadge+
+    '<div style="position:absolute;top:18px;left:182px;width:606px;z-index:3;line-height:44px;text-align:center">'+
+    '<div style="font-size:15px;font-weight:900;color:#1565C0;letter-spacing:.8px;text-align:center;">'+
+      (isKz?'МАҚСАТҚА ЖЕТУДІҢ ҚАДАМДАРЫ':'ШАГИ К ДОСТИЖЕНИЮ ЦЕЛИ')+'</div>'+
+    '</div>'+
+    '<div style="position:absolute;top:140px;left:60px;right:60px;z-index:1">'+
+    roadmapTable+
     '</div></div>';
-  var p4='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
-    '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:fill;display:block" crossorigin="anonymous">'+
-    nameInPill+roadmapTable+'</div>';
 
-  var pages=[p1,p2,p3,p4];
+  var pages=[p1,p2,p3,p5,p4];
   var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
   var sc=Math.min(Math.max(window.devicePixelRatio||2,2),3);
 
