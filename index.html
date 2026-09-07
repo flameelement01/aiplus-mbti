@@ -27293,11 +27293,16 @@ function genIOPpdf(){
     growthVals.map(function(v){return '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:800;color:#1a2a3a">+'+v+'</td>';}).join('')+
     '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:900;color:#1B5E20;background:#e8f5e0">'+pointB+'</td>';
   var roadmapTable=
-    '<table style="width:100%;border-collapse:collapse;margin-top:10px;border:3px solid #1a1a2e">'+
+    '<div style="border:3px solid #1a1a2e;display:inline-block;width:100%;box-sizing:border-box">'+
+    '<table style="width:100%;border-collapse:collapse">'+
       '<tr>'+headerCells+'</tr>'+
       '<tr>'+row1+'</tr>'+
       '<tr>'+row2+'</tr>'+
     '</table>'+
+    '</div>'+
+    '<div style="margin-top:20px;font-size:14px;font-weight:700;color:#1a1a2e;text-align:center;line-height:1.5">'+
+      (isKz?'Үздіксіз білім мен табандылық - мақсатқа жеткізеді.':'Непрерывное обучение и упорство ведут к цели.')+
+    '</div>'+
     '<div style="margin-top:14px;font-size:11px;color:#1a1a2e">'+(isKz?'Дата: ':'Дата: ')+dateStr+'</div>';
   var p5='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
