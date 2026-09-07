@@ -27193,7 +27193,6 @@ function genIOPpdf(){
     '</div>'+
     '<div style="position:absolute;top:122px;left:30px;right:30px;bottom:16px;z-index:1">'+
 
-    '<div style="border:1px solid #000">'+
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
     '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
@@ -27206,7 +27205,6 @@ function genIOPpdf(){
       return '<th style="background:#1976D2;color:#fff;padding:5px;font-size:8px;border:1px solid #000">'+h+'</th>';
     }).join('')+
     '</tr></thead><tbody>'+tableRows+'</tbody></table>'+
-    '</div>'+
     '<div style="margin-top:10px;font-size:9px;color:#3C3C50;margin-bottom:4px">'+
       '<b>'+(isKz?'Таңдау пәндері: ':'Предметы: ')+'</b>'+(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join(' + '));})()+'</div>'+
     '<div style="background:rgba(255,255,255,.85);border-radius:6px;padding:6px 10px;font-size:9px;display:inline-block">'+
@@ -27214,35 +27212,62 @@ function genIOPpdf(){
     '</div>'+
     '</div></div>';
 
-  // БЕТ 3: Таңдалған мамандықтар туралы ақпарат
-  var specCards=specs.map(function(sp,i){
-    var sd=specDatas[i];
+  // БЕТ 3 (жəне қажет болса, БЕТ 3б): Таңдалған мамандықтар туралы ақпарат
+  // Əр мамандықтың мəтіні тігінен (Мақсаты, Жұмыс орны бір-бірінің астында) жазылады
+  function buildSpecCard(sp,sd,idx){
     var nm=escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name);
     var maqsat=escHtml(sd?(isKz?sd.m:sd.mr)||'—':'—');
     var jumys=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
-    return '<div style="display:flex;gap:10px;margin-bottom:8px;background:rgba(255,255,255,.93);border-radius:10px;padding:10px 12px;border-left:4px solid #1565C0">'+
-      '<div style="background:#1565C0;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;flex-shrink:0;margin-top:1px">'+(i+1)+'</div>'+
-      '<div style="flex:1;min-width:0">'+
-        '<div style="font-size:12px;font-weight:bold;color:#1565C0;margin-bottom:4px">'+nm+
-          '<span style="font-size:9px;color:#888;font-weight:normal;margin-left:8px">'+sp.code+'</span></div>'+
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-          '<div><div style="font-size:8px;font-weight:bold;color:#1565C0;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">'+(isKz?'МАҚСАТЫ':'ЦЕЛЬ')+'</div>'+
-            '<div style="font-size:9px;color:#333;line-height:1.5">'+maqsat+'</div></div>'+
-          '<div><div style="font-size:8px;font-weight:bold;color:#1565C0;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px">'+(isKz?'ЖҰМЫС ОРНЫ':'МЕСТО РАБОТЫ')+'</div>'+
-            '<div style="font-size:9px;color:#333;line-height:1.5">'+jumys+'</div></div>'+
-        '</div>'+
+    var pairLbl=(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join('-'));})();
+    return '<div style="margin-bottom:14px;background:rgba(255,255,255,.94);border-radius:10px;padding:14px 18px;border-left:4px solid #1565C0;box-shadow:0 1px 4px rgba(0,0,0,.05)">'+
+      '<div style="font-size:13px;font-weight:900;color:#1565C0;margin-bottom:8px">'+sp.code+' «'+nm+'»</div>'+
+      '<div style="font-size:10px;color:#1a1a2e;margin-bottom:6px;line-height:1.6"><b>'+(isKz?'Таңдау пəндері:':'Профильные предметы:')+'</b> '+pairLbl+'</div>'+
+      '<div style="font-size:10px;color:#1a1a2e;margin-bottom:6px;line-height:1.6"><b>'+(isKz?'Мақсаты:':'Цель:')+'</b> '+maqsat+'</div>'+
+      '<div style="font-size:10px;color:#1a1a2e;line-height:1.6"><b>'+(isKz?'Жұмыс орны:':'Место работы:')+'</b> '+jumys+'</div>'+
+    '</div>';
+  }
+  function buildSpecPage(cardsHtml){
+    return '<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
+      '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
+      nameInPill+aiplusBadge+
+      '<div style="position:absolute;top:18px;left:182px;width:606px;z-index:3;line-height:44px;text-align:center">'+
+      '<div style="font-size:15px;font-weight:900;color:#1565C0;letter-spacing:.8px;text-align:center;">'+
+        (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
+      '</div>'+
+      '<div style="position:absolute;top:122px;left:30px;right:30px;bottom:16px;z-index:1">'+
+      cardsHtml+
       '</div></div>';
-  }).join('');
-  var p3='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
-    '<img src="'+imgBg+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill" crossorigin="anonymous">'+
-    nameInPill+aiplusBadge+
-    '<div style="position:absolute;top:18px;left:182px;width:606px;z-index:3;line-height:44px;text-align:center">'+
-    '<div style="font-size:15px;font-weight:900;color:#1565C0;letter-spacing:.8px;text-align:center;">'+
-      (isKz?'ТАҢДАЛҒАН МАМАНДЫҚТАР ТУРАЛЫ АҚПАРАТ':'ИНФОРМАЦИЯ О ВЫБРАННЫХ СПЕЦИАЛЬНОСТЯХ')+'</div>'+
-    '</div>'+
-    '<div style="position:absolute;top:122px;left:30px;right:30px;bottom:16px;z-index:1">'+
-    specCards+
-    '</div></div>';
+  }
+  // Мəтін ұзындығына қарай əр карточканың биіктігін болжап, беттерге "сиятынынша" тарқатамыз
+  function estimateCardHeight(sp,sd){
+    var maqsat=(sd?(isKz?sd.m:sd.mr):'')||'—';
+    var jumys=(sd?(isKz?sd.j:sd.jr):'')||'—';
+    var charsPerLine=150; // ~10px Arial, line-height 1.6, ені ~991px карточка ішінде
+    function linesFor(text,labelLen){
+      return Math.max(1,Math.ceil((labelLen+text.length)/charsPerLine));
+    }
+    var maqLines=linesFor(maqsat,9);   // "Мақсаты: "
+    var jumLines=linesFor(jumys,13);   // "Жұмыс орны: "
+    var lineHeight=16; // 10px × line-height:1.6
+    return 18+8+16+6+(maqLines*lineHeight)+6+(jumLines*lineHeight)+28+14;
+  }
+  // Мақсатқа жету жол картасы (p5) мамандық беттерінен кейін əрдайым ЖАҢА бетте басталады.
+  var PAGE_BUDGET=600; // беттің мазмұнға бөлінген биіктігі (px) — тым тығыз болмас үшін сақтық қормен
+  var specPages=[];
+  var curChunk=[];
+  var curHeight=0;
+  specs.forEach(function(sp,i){
+    var h=estimateCardHeight(sp,specDatas[i]);
+    if(curChunk.length>0 && curHeight+h>PAGE_BUDGET){
+      specPages.push(buildSpecPage(curChunk.map(function(item){return buildSpecCard(item.sp,item.sd,item.idx);}).join('')));
+      curChunk=[];curHeight=0;
+    }
+    curChunk.push({sp:sp,sd:specDatas[i],idx:i});
+    curHeight+=h;
+  });
+  if(curChunk.length){
+    specPages.push(buildSpecPage(curChunk.map(function(item){return buildSpecCard(item.sp,item.sd,item.idx);}).join('')));
+  }
 
   // БЕТ 4: Құттықтау сөзі (кестесіз, таза)
   var p4='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
@@ -27331,7 +27356,7 @@ function genIOPpdf(){
     roadmapTable+
     '</div></div>';
 
-  var pages=[p1,p2,p3,p5,p4];
+  var pages=[p1,p2].concat(specPages).concat([p5,p4]);
   var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
   var sc=Math.min(Math.max(window.devicePixelRatio||2,2),3);
 
