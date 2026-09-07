@@ -27054,6 +27054,12 @@ function iopGoStep4(){
   iopStep4(document.getElementById('iop-sec'));
 }
 
+function monthOptionsHtml(selectedIdx){
+  var isKz=S.lang==='kz';
+  var MONTHS=isKz?['Қыркүйек','Қазан','Қараша','Желтоқсан','Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз']:
+    ['Сентябрь','Октябрь','Ноябрь','Декабрь','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август'];
+  return MONTHS.map(function(m,i){return '<option value="'+i+'"'+(i===selectedIdx?' selected':'')+'>'+m+'</option>';}).join('');
+}
 function iopStep4(sec){
   var isKz=S.lang==='kz';
   var specRows=(S.iopSpecs||[]).map(function(code,i){
@@ -27061,6 +27067,8 @@ function iopStep4(sec){
     return '<div class="iop-sum-row"><span class="iop-sum-key">#'+(i+1)+'</span>'+
       '<span class="iop-sum-val" style="font-size:12px">'+escHtml(sp?(isKz&&sp.nameKz?sp.nameKz:sp.name)+' ('+sp.code+')':'—')+'</span></div>';
   }).join('');
+  if(S.iopStartMonth==null)S.iopStartMonth=0; // əдепкі: Қыркүйек
+  if(S.iopEndMonth==null)S.iopEndMonth=8; // əдепкі: Мамыр
   sec.innerHTML='<div class="iop-wrap">'+
     '<div class="iop-title">'+(isKz?'📄 4 таңдау жоспары':'📄 План 4 выборов')+'</div>'+
     '<div class="iop-sub">'+(isKz?'4-қадам: PDF жүктеу':'Шаг 4: скачать PDF')+'</div>'+
@@ -27070,6 +27078,15 @@ function iopStep4(sec){
       '<div class="iop-sum-row"><span class="iop-sum-key">'+(isKz?'Пәндер':'Предметы')+'</span><span class="iop-sum-val">'+escHtml((function(){var p=S.iopPair||'';if(!isKz)return p;var pts=p.split(' + ');return pts.map(function(s){return localizeSubj(s.trim());}).join(' + ');})())+'</span></div>'+
       '<div class="iop-sum-row"><span class="iop-sum-key">'+(isKz?'ҰБТ балы':'Балл ЕНТ')+'</span><span class="iop-sum-val">'+(S.iopScore||'—')+'</span></div>'+
       specRows+
+    '</div>'+
+    '<div class="iop-summary" style="margin-top:12px">'+
+      '<div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px">'+(isKz?'🗺️ Мақсатқа жету жол картасы':'🗺️ Дорожная карта к цели')+'</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
+        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Бастапқы ай':'Месяц начала')+'</label>'+
+          '<select class="inp" id="iop-start-month" style="margin-bottom:0" onchange="S.iopStartMonth=parseInt(this.value)">'+monthOptionsHtml(S.iopStartMonth)+'</select></div>'+
+        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Қорытынды ай':'Месяц окончания')+'</label>'+
+          '<select class="inp" id="iop-end-month" style="margin-bottom:0" onchange="S.iopEndMonth=parseInt(this.value)">'+monthOptionsHtml(S.iopEndMonth)+'</select></div>'+
+      '</div>'+
     '</div>'+
     '<button class="iop-btn iop-btn-dl" onclick="genIOPpdf()" id="iop-dl-btn">'+
       (isKz?'&#128229; PDF жүктеу — 4 таңдау жоспары':'&#128229; Скачать PDF — План 4 выборов')+'</button>'+
@@ -27225,10 +27242,63 @@ function genIOPpdf(){
     specCards+
     '</div></div>';
 
-  // БЕТ 4: Құттықтау сөзі
+  // БЕТ 4: Құттықтау сөзі + А→Б жол картасы (12 ай)
+  var pointA=score;
+  var pointB=pointA;
+  specs.forEach(function(sp){
+    var selMin=S.iopUnis&&S.iopUnis[sp.code]&&S.iopUnis[sp.code].min!=null?S.iopUnis[sp.code].min:null;
+    if(selMin==null){
+      // таңдалған университет жоқ болса — сол мамандықтың UNI_DATA-дағы ең жоғары шекті балын аламыз
+      var ud=(typeof UNI_DATA!=='undefined')?UNI_DATA.find(function(u){return u.c===sp.code;}):null;
+      if(ud&&ud.u&&ud.u.length){
+        selMin=ud.u.reduce(function(mx,u){return u.min!=null&&u.min>mx?u.min:mx;},0);
+      }
+    }
+    if(selMin!=null&&selMin>pointB)pointB=selMin;
+  });
+  if(pointB<=pointA)pointB=pointA+10; // əрдайым өсу үрдісі көрінуі үшін
+  var MONTHS_KZ=['Қыркүйек','Қазан','Қараша','Желтоқсан','Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз'];
+  var MONTHS_RU=['Сентябрь','Октябрь','Ноябрь','Декабрь','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август'];
+  var ALL_MONTHS=isKz?MONTHS_KZ:MONTHS_RU;
+  var startIdx=(S.iopStartMonth!=null?S.iopStartMonth:0);
+  var endIdx=(S.iopEndMonth!=null?S.iopEndMonth:8);
+  if(endIdx<=startIdx)endIdx=Math.min(startIdx+1,11); // аяқтау айы бастаудан кейін болуы керек
+  var MONTHS=[];
+  for(var mi=startIdx; mi<=endIdx; mi++)MONTHS.push(ALL_MONTHS[mi]);
+  // Айлар бойынша болжалды балл (соңғысы дəл pointB-ге тең болады)
+  var monthVals=MONTHS.map(function(mLbl,i){
+    return Math.round(pointA+(pointB-pointA)*(i/(MONTHS.length-1)));
+  });
+  monthVals[monthVals.length-1]=pointB; // дəлдік үшін соңғысын тура pointB-ге теңестіреміз
+  // Айлық өсім: ағымдағы айдан келесі айға (немесе Б нүктесіне) дейінгі айырма
+  var growthVals=monthVals.map(function(v,i){
+    return i<monthVals.length-1 ? (monthVals[i+1]-v) : (pointB-v);
+  });
+  var headerCells='<th style="background:#faa318;color:#1a1a2e;padding:8px 10px;font-size:9px;font-weight:800;border:1px solid #e0921a;white-space:nowrap">'+
+    (isKz?'Бастапқы А нүктесі':'Начальная точка А')+'</th>'+
+    MONTHS.map(function(m){return '<th style="background:#faa318;color:#1a1a2e;padding:8px 6px;font-size:9px;font-weight:800;border:1px solid #e0921a;white-space:nowrap">'+m+'</th>';}).join('')+
+    '<th style="background:#faa318;color:#1a1a2e;padding:8px 10px;font-size:9px;font-weight:800;border:1px solid #e0921a;white-space:nowrap">'+(isKz?'Б нүктесі':'Точка Б')+'</th>';
+  var row1='<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:700;color:#1a1a2e;background:#f5f7fa">'+(isKz?'Сынақ тесті':'Пробный тест')+'</td>'+
+    monthVals.map(function(v){return '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:800;color:#1a2a3a">'+v+'</td>';}).join('')+
+    '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:900;color:#1B5E20;background:#e8f5e0">'+pointB+'</td>';
+  var row2='<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:700;color:#1a1a2e;background:#f5f7fa">'+(isKz?'Айлық өсім':'Месячный рост')+'</td>'+
+    growthVals.map(function(v){return '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:800;color:#1a2a3a">+'+v+'</td>';}).join('')+
+    '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:900;color:#1B5E20;background:#e8f5e0">'+pointB+'</td>';
+  var roadmapTable='<div style="position:absolute;left:40px;right:40px;bottom:60px;z-index:5">'+
+    '<div style="background:rgba(255,255,255,.96);border-radius:10px;padding:16px 20px;box-shadow:0 2px 10px rgba(0,0,0,.08)">'+
+      '<div style="font-size:14px;font-weight:900;color:#1a1a2e;text-align:center;margin-bottom:4px">'+
+        (isKz?'Мақсатқа жетудің қадамдары':'Шаги к достижению цели')+
+      '</div>'+
+      '<table style="width:100%;border-collapse:collapse;margin-top:10px">'+
+        '<tr>'+headerCells+'</tr>'+
+        '<tr>'+row1+'</tr>'+
+        '<tr>'+row2+'</tr>'+
+      '</table>'+
+      '<div style="margin-top:12px;font-size:11px;color:#1a1a2e">'+(isKz?'Дата: ':'Дата: ')+dateStr+'</div>'+
+    '</div></div>';
   var p4='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
     '<img src="'+imgCongrats+'" style="width:100%;height:100%;object-fit:fill;display:block" crossorigin="anonymous">'+
-    nameInPill+'</div>';
+    nameInPill+roadmapTable+'</div>';
 
   var pages=[p1,p2,p3,p4];
   var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
