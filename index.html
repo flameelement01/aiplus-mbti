@@ -25123,13 +25123,13 @@ const app=()=>$("app");
 const T = {
   ru:{
     heroTag:"🧠 Международная методика MBTI",
-    heroTitle:'Узнай кем<br>тебе стать<br>и <span class="hl">куда поступить</span>',
+    heroTitle:'Узнай, кем<br>тебе стать<br>и <span class="hl">куда поступить</span>',
     heroSub:"70 вопросов · 16 типов личности · Профессии + профильные предметы ЕНТ + вузы РК с баллами",
     slogan:"ВМЕСТЕ С АЙПЛЮС ПОЗНАЙ СВОЮ ЛИЧНОСТЬ, РАСКРОЙ СВОИ СПОСОБНОСТИ И ОСОЗНАННО ВЫБЕРИ БУДУЩУЮ ПРОФЕССИЮ",
     s1:"70",s1l:"Вопросов",s2:"16",s2l:"Типов",s3:"~12",s3l:"Минут",s4:"30+",s4l:"Профессий",s5:"РК",s5l:"Базы ЕНТ",
     startBtn:"Пройти тест →",
-    t1t:"Сделай шаг ближе к своей цели!",t1d:"Отправь результат родителям.",
-    t2t:"Статистические данные ЕНТ",t2d:"По выбранной вами специальности за последние 3 года:",t2items:["Количество грантов","Проходные баллы на грант (max/min)"],
+    t1t:"Сделай шаг ближе к своей цели!",t1d:"Отправь результаты родителям.",
+    t2t:"Статистические данные ЕНТ",t2d:"По выбранной специальности за последние 3 года:",t2items:["Количество грантов","Проходные баллы на грант (max/min)"],
     t3t:"Профильные предметы ЕНТ",t3d:"Информация о специальностях по выбранным профильным предметам",
     t4t:"Твой шанс на грант",t4d:"Сделай 4 выбора и узнай шанс",
     grantBtn:"🎯 Узнай свой шанс на грант",
@@ -25139,15 +25139,14 @@ const T = {
     grantRegBtn:"Продолжить →",
     grantBack:"← На главную",
     t4t:"ИИ-анализ Aiplus",t4d:"Персональные рекомендации нейросети",
-    whyTitle:"Почему 70 вопросов — это точно?",
-    w1:"MBTI измеряет 4 шкалы — 10–20 вопросов на каждую. Это научный стандарт для надёжного результата",
-    w2:"Тест создан на основе методологии Карла Юнга и доказал эффективность на миллионах людей",
-    w3:"MBTI используют Google, Apple и McKinsey для подбора команд",
+    whyTitle:"Почему именно 70 вопросов?",
+    w1:"Тест оценивает предпочтения по 4 шкалам. 70 вопросов помогают получить более детальный результат.",
+    w2:"Типология MBTI основана на идеях психологических типов Карла Юнга.",
     w4:"Результат сохраняется по ссылке — всегда можно вернуться или отправить родителям",
     langTitle:"Тілді таңдаңыз / Выберите язык",langSub:"",
     regTag:"📋 Регистрация",regTitle:"Заполните данные",
-    regSub:"Чтобы начать тест — укажите ваши данные. Aiplus свяжется для бесплатной консультации.",
-    regName:"Ваше имя",regPhone:"+7 (___) ___-__-__",regSchool:"Школа (например: СОШ №45)",regGrade:"Класс (например: 10)",
+    regSub:"Чтобы начать тест — укажите свои данные. Aiplus свяжется с вами для бесплатной консультации.",
+    regName:"Ваше имя",regPhone:"+7 (___) ___-__-__",regSchool:"Школа (например, СОШ № 45)",regGrade:"Класс (например: 10)",
     regBtn:"Начать тест →",
     testDone:"✅ Тест завершён!",analyzing:"Нейросеть Aiplus анализирует...",analyzingSub:"Подбираем профессии, предметы и вузы",
     shareLabel:'🔗 <span>Уникальная ссылка</span> — отправь родителям!',
@@ -25325,7 +25324,6 @@ function rWelcome(a){
       <h3>${t('whyTitle')}</h3>
       <div class="why-item"><div class="why-dot"></div>${t('w1')}</div>
       <div class="why-item"><div class="why-dot"></div>${t('w2')}</div>
-      <div class="why-item"><div class="why-dot"></div>${t('w3')}</div>
     </div>
   </div>`;
 }
@@ -27179,8 +27177,9 @@ function genIOPpdf(){
   }).join('');
   var aiplusBadge='<div style="position:absolute;bottom:10px;right:16px;z-index:3;'+
     'background:rgba(20,50,90,.82);border-radius:8px;padding:5px 13px;display:flex;align-items:center;gap:4px">'+
-    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#faa318;letter-spacing:.5px">Ai</span>'+
-    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;color:#fff;letter-spacing:.5px">Plus</span>'+
+    '<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:900;letter-spacing:.5px">'+
+      '<span style="color:#faa318">Ai</span><span style="color:#fff">plus</span>'+
+    '</span>'+
     '<span style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:rgba(255,255,255,.7);margin-left:3px">ent.aiplus.kz</span>'+
     '</div>';
   var p2='<div style="'+PS+'width:1123px;height:794px;position:relative;overflow:hidden">'+
