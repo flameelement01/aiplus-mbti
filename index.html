@@ -656,7 +656,7 @@ body{background:var(--bg);color:var(--dark);font-family:'Inter',sans-serif;
       <button data-lang="kz" onclick="setLang('kz')">KZ</button>
       <button data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
-    <div class="badge">MBTI × ЕНТ 2026</div>
+    <div class="badge" id="topbar-badge">MBTI × ЕНТ 2026</div>
   </div>
 </div>
 
@@ -25253,6 +25253,8 @@ function updateTopbarBack(){
   if(!btn)return;
   var lbl=document.getElementById('topbar-back-lbl');
   if(lbl)lbl.textContent=S.lang==='kz'?'Артқа':'Назад';
+  var badge=document.getElementById('topbar-badge');
+  if(badge)badge.textContent=S.lang==='kz'?'MBTI × ҰБТ 2026':'MBTI × ЕНТ 2026';
   var showOn={lang:1,register:1,quiz:1,grantReg:1,grant:1};
   if(showOn[S.screen]){btn.classList.remove('hidden');}
   else{btn.classList.add('hidden');}
