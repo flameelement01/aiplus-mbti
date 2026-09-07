@@ -27214,16 +27214,39 @@ function genIOPpdf(){
 
   // БЕТ 3 (жəне қажет болса, БЕТ 3б): Таңдалған мамандықтар туралы ақпарат
   // Əр мамандықтың мəтіні тігінен (Мақсаты, Жұмыс орны бір-бірінің астында) жазылады
+  function renderJumysHtml(jumysRaw){
+    // ";" арқылы бөлінген тізім болса — интро сөйлемін параграф ретінде,
+    // қалғанын • тізім ретінде көрсетеміз (түпнұсқа Word құжатындағыдай)
+    var parts=jumysRaw.split(';').map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
+    if(parts.length<2){
+      return '<div style="font-size:10px;color:#1a1a2e;line-height:1.6">'+jumysRaw+'</div>';
+    }
+    var introEnd=-1;
+    for(var pi=0;pi<parts.length;pi++){
+      if(/:$/.test(parts[pi])){introEnd=pi;break;}
+    }
+    if(introEnd===-1){
+      return '<div style="font-size:10px;color:#1a1a2e;line-height:1.6">'+jumysRaw+'</div>';
+    }
+    var intro=parts.slice(0,introEnd+1).join(' ');
+    var items=parts.slice(introEnd+1);
+    var html='<div style="font-size:10px;color:#1a1a2e;line-height:1.6;margin-bottom:4px">'+intro+'</div>';
+    html+='<ul style="margin:0;padding-left:16px">'+items.map(function(it){
+      return '<li style="font-size:10px;color:#1a1a2e;line-height:1.5;margin-bottom:2px">'+it.replace(/\.$/,'')+'</li>';
+    }).join('')+'</ul>';
+    return html;
+  }
   function buildSpecCard(sp,sd,idx){
     var nm=escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name);
     var maqsat=escHtml(sd?(isKz?sd.m:sd.mr)||'—':'—');
-    var jumys=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
+    var jumysRaw=escHtml(sd?(isKz?sd.j:sd.jr)||'—':'—');
     var pairLbl=(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join('-'));})();
     return '<div style="margin-bottom:14px;background:rgba(255,255,255,.94);border-radius:10px;padding:14px 18px;border-left:4px solid #1565C0;box-shadow:0 1px 4px rgba(0,0,0,.05)">'+
       '<div style="font-size:13px;font-weight:900;color:#1565C0;margin-bottom:8px">'+sp.code+' «'+nm+'»</div>'+
       '<div style="font-size:10px;color:#1a1a2e;margin-bottom:6px;line-height:1.6"><b>'+(isKz?'Таңдау пəндері:':'Профильные предметы:')+'</b> '+pairLbl+'</div>'+
       '<div style="font-size:10px;color:#1a1a2e;margin-bottom:6px;line-height:1.6"><b>'+(isKz?'Мақсаты:':'Цель:')+'</b> '+maqsat+'</div>'+
-      '<div style="font-size:10px;color:#1a1a2e;line-height:1.6"><b>'+(isKz?'Жұмыс орны:':'Место работы:')+'</b> '+jumys+'</div>'+
+      '<div style="font-size:10px;color:#1a1a2e;line-height:1.6;margin-bottom:4px"><b>'+(isKz?'Жұмыс орны:':'Место работы:')+'</b></div>'+
+      renderJumysHtml(jumysRaw)+
     '</div>';
   }
   function buildSpecPage(cardsHtml){
@@ -27246,8 +27269,24 @@ function genIOPpdf(){
     function linesFor(text,labelLen){
       return Math.max(1,Math.ceil((labelLen+text.length)/charsPerLine));
     }
-    var maqLines=linesFor(maqsat,9);   // "Мақсаты: "
-    var jumLines=linesFor(jumys,13);   // "Жұмыс орны: "
+    var maqLines=linesFor(maqsat,9);   // "Мақсаты: " (мəтінмен бір жолда)
+    // Жұмыс орны тізім түрінде болуы мүмкін — əр тармақ өз жолында, сондықтан
+    // жалпы ұзындықты бағалаудың орнына бөлшектерге бөліп есептейміз
+    var parts=jumys.split(';').map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
+    var jumLines;
+    if(parts.length>=2){
+      var introEnd=-1;
+      for(var pi=0;pi<parts.length;pi++){ if(/:$/.test(parts[pi])){introEnd=pi;break;} }
+      if(introEnd!==-1){
+        var introText=parts.slice(0,introEnd+1).join(' ');
+        var items=parts.slice(introEnd+1);
+        jumLines=1+linesFor(introText,0)+items.length; // əр тізім тармағы — жеке жол
+      }else{
+        jumLines=1+linesFor(jumys,0);
+      }
+    }else{
+      jumLines=1+linesFor(jumys,0); // "Жұмыс орны:" бөлек жол + мəтін
+    }
     var lineHeight=16; // 10px × line-height:1.6
     return 18+8+16+6+(maqLines*lineHeight)+6+(jumLines*lineHeight)+28+14;
   }
