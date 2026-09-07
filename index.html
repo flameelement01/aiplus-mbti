@@ -27140,19 +27140,19 @@ function genIOPpdf(){
     var t3Arr=isKz?(sp.top3||[]):(sp.top3Ru||sp.top3||[]);
     var t3=t3Arr.slice(0,3).map(function(u){return '<div style="font-size:7.5px;line-height:1.3;margin-bottom:1px">'+u+'</div>';}).join('');
     var mainRow='<tr style="background:'+(si%2===0?'#f0f4f8':'#fff')+'">'+
-      '<td style="padding:7px 8px;font-size:9px;border:1px solid #d0dce8;width:120px">'+
+      '<td style="padding:7px 8px;font-size:9px;border:1px solid #000;width:120px">'+
         '<div style="color:#1565C0;font-weight:bold;margin-bottom:2px">'+sp.code+'</div>'+
         '<div style="font-weight:600;line-height:1.3;color:#1a2a3a">'+escHtml(isKz&&sp.nameKz?sp.nameKz:sp.name)+'</div>'+
         (sp.targeted&&sp.targeted.length?'<div style="font-size:7px;color:#5a6b7d;margin-top:2px">'+(isKz?'жалпы конкурс':'общий конкурс')+'</div>':'')+
       '</td>'+
-      '<td style="padding:6px 8px;border:1px solid #d0dce8;width:200px">'+t3+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y24||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px">'+(sp.grants.y25||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:10px;font-weight:bold">'+(sp.grants.y26||'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y24&&y24.max&&y24.min?y24.max+'/'+y24.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(y25&&y25.max&&y25.min?y25.max+'/'+y25.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:bold">'+(y26&&y26.max&&y26.min?y26.max+'/'+y26.min:'—')+'</td>'+
-      '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px;max-width:120px">'+
+      '<td style="padding:6px 8px;border:1px solid #000;width:200px">'+t3+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:10px">'+(sp.grants.y24||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:10px">'+(sp.grants.y25||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:10px;font-weight:bold">'+(sp.grants.y26||'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px">'+(y24&&y24.max&&y24.min?y24.max+'/'+y24.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px">'+(y25&&y25.max&&y25.min?y25.max+'/'+y25.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px;font-weight:bold">'+(y26&&y26.max&&y26.min?y26.max+'/'+y26.min:'—')+'</td>'+
+      '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px;max-width:120px">'+
         (S.iopUnis&&S.iopUnis[sp.code]?'<div style="font-weight:600;line-height:1.3">'+escHtml(S.iopUnis[sp.code].name)+'</div>':'—')+
       '</td>'+
     '</tr>';
@@ -27162,17 +27162,17 @@ function genIOPpdf(){
         var ty24=t.scores.y24,ty25=t.scores.y25,ty26=t.scores.y26;
         var uniLbl=(isKz&&t.unisKz?t.unisKz:t.unis||[]).join(', ');
         return '<tr style="background:'+(si%2===0?'#f0f4f8':'#fff')+'">'+
-          '<td style="padding:5px 8px;font-size:8px;border:1px solid #d0dce8;color:#5a6b7d;font-style:italic">'+
+          '<td style="padding:5px 8px;font-size:8px;border:1px solid #000;color:#5a6b7d;font-style:italic">'+
             (isKz?'— нысаналы грант':'— целевой грант')+
           '</td>'+
-          '<td style="padding:5px 8px;border:1px solid #d0dce8;font-size:7.5px;line-height:1.3">'+escHtml(uniLbl)+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(t.grants.y24!=null?t.grants.y24:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">'+(t.grants.y25!=null?t.grants.y25:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px;font-weight:bold">'+(t.grants.y26!=null?t.grants.y26:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:8.5px">'+(ty24&&ty24.max&&ty24.min?ty24.max+'/'+ty24.min:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:8.5px">'+(ty25&&ty25.max&&ty25.min?ty25.max+'/'+ty25.min:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:8.5px;font-weight:bold">'+(ty26&&ty26.max&&ty26.min?ty26.max+'/'+ty26.min:'—')+'</td>'+
-          '<td style="padding:5px;text-align:center;border:1px solid #d0dce8;font-size:9px">—</td>'+
+          '<td style="padding:5px 8px;border:1px solid #000;font-size:7.5px;line-height:1.3">'+escHtml(uniLbl)+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px">'+(t.grants.y24!=null?t.grants.y24:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px">'+(t.grants.y25!=null?t.grants.y25:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px;font-weight:bold">'+(t.grants.y26!=null?t.grants.y26:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:8.5px">'+(ty24&&ty24.max&&ty24.min?ty24.max+'/'+ty24.min:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:8.5px">'+(ty25&&ty25.max&&ty25.min?ty25.max+'/'+ty25.min:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:8.5px;font-weight:bold">'+(ty26&&ty26.max&&ty26.min?ty26.max+'/'+ty26.min:'—')+'</td>'+
+          '<td style="padding:5px;text-align:center;border:1px solid #000;font-size:9px">—</td>'+
         '</tr>';
       }).join('');
     }
@@ -27193,18 +27193,20 @@ function genIOPpdf(){
     '</div>'+
     '<div style="position:absolute;top:122px;left:30px;right:30px;bottom:16px;z-index:1">'+
 
+    '<div style="border:1px solid #000">'+
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #0d47a1;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #0d47a1;width:180px">'+(isKz?'Ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных Топ-100 учащимися, набравшими самый высокий балл')+'</th>'+
-    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #0d47a1">'+(isKz?'Бөлінген грант саны':'Выделено грантов')+'</th>'+
-    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #0d47a1">'+(isKz?'Грантқа түсудің max/min балдары':'max/min баллы гранта')+'</th>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #0d47a1">'+(isKz?'Таңдалған университет':'Выбранный ВУЗ')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000;width:180px">'+(isKz?'Ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных Топ-100 учащимися, набравшими самый высокий балл')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000">'+(isKz?'Бөлінген грант саны':'Выделено грантов')+'</th>'+
+    '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Грантқа түсудің max/min балдары':'max/min баллы гранта')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Таңдалған университет':'Выбранный ВУЗ')+'</th>'+
     '</tr><tr>'+
     ['2024','2025','2026','2024','2025','2026'].map(function(h){
-      return '<th style="background:#1976D2;color:#fff;padding:5px;font-size:8px;border:1px solid #0d47a1">'+h+'</th>';
+      return '<th style="background:#1976D2;color:#fff;padding:5px;font-size:8px;border:1px solid #000">'+h+'</th>';
     }).join('')+
     '</tr></thead><tbody>'+tableRows+'</tbody></table>'+
+    '</div>'+
     '<div style="margin-top:10px;font-size:9px;color:#3C3C50;margin-bottom:4px">'+
       '<b>'+(isKz?'Таңдау пәндері: ':'Предметы: ')+'</b>'+(function(){var pts=(S.iopPair||'').split(' + ');return escHtml(pts.map(function(s){return localizeSubj(s.trim());}).join(' + '));})()+'</div>'+
     '<div style="background:rgba(255,255,255,.85);border-radius:6px;padding:6px 10px;font-size:9px;display:inline-block">'+
@@ -27250,18 +27252,31 @@ function genIOPpdf(){
   // БЕТ 5: Мақсатқа жету жол картасы (А→Б, бөлек бет)
   var pointA=score;
   var pointB=pointA;
-  // 4 мамандықтың əр қайсысының ең жоғары шекті балын жинап, ортақ (орташа) баллды аламыз
+  // 4 мамандықтың əр қайсысының ЕҢ ТӨМЕНГІ жəне ЕҢ ЖОҒАРЫ шекті балдарын жинаймыз
+  var specMinMins=[];
   var specMaxMins=[];
   specs.forEach(function(sp){
     var ud=(typeof UNI_DATA!=='undefined')?UNI_DATA.find(function(u){return u.c===sp.code;}):null;
     if(ud&&ud.u&&ud.u.length){
       var maxMin=ud.u.reduce(function(mx,u){return u.min!=null&&u.min>mx?u.min:mx;},0);
+      var minMin=ud.u.reduce(function(mn,u){return u.min!=null&&u.min<mn?u.min:mn;},999);
       if(maxMin>0)specMaxMins.push(maxMin);
+      if(minMin<999)specMinMins.push(minMin);
     }
   });
-  if(specMaxMins.length){
-    var avgMin=Math.round(specMaxMins.reduce(function(a,b){return a+b;},0)/specMaxMins.length);
-    if(avgMin>pointB)pointB=avgMin;
+  // 1-деңгей: негізгі мақсат = ең төменгі шекті балдардың ортақ (орташа) мəні + 10 балл қор
+  var baselineTarget=null;
+  if(specMinMins.length){
+    var avgOfMins=specMinMins.reduce(function(a,b){return a+b;},0)/specMinMins.length;
+    baselineTarget=Math.round(avgOfMins)+10;
+  }
+  // 2-деңгей: егер оқушының баллы негізгі мақсаттан асып кетсе — ең қиын университеттің
+  // (ең жоғары шекті балл) талабын мақсат етіп аламыз
+  var maxAcrossSpecs=specMaxMins.length?Math.max.apply(null,specMaxMins):null;
+  if(baselineTarget!=null&&pointA<baselineTarget){
+    pointB=baselineTarget;
+  }else if(maxAcrossSpecs!=null&&pointA<maxAcrossSpecs){
+    pointB=maxAcrossSpecs;
   }
   var MONTHS_KZ=['Қыркүйек','Қазан','Қараша','Желтоқсан','Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз'];
   var MONTHS_RU=['Сентябрь','Октябрь','Ноябрь','Декабрь','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август'];
@@ -27272,6 +27287,7 @@ function genIOPpdf(){
   var MONTHS=[];
   for(var mi=startIdx; mi<=endIdx; mi++)MONTHS.push(ALL_MONTHS[mi]);
   var nSteps=MONTHS.length; // əр айдан кейінгі өсім қадамдарының саны (соңғысы — Б нүктесіне жету қадамы)
+  // 3-деңгей (соңғы сақтандыру): екі мақсат та жетпесе — А+айлар санын қолданамыз
   if(pointB-pointA<nSteps)pointB=pointA+nSteps; // əр айда кемінде +1 балл өсім болуы үшін
   var totalDiff=pointB-pointA;
   var base=Math.floor(totalDiff/nSteps);
