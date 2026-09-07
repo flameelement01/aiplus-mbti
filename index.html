@@ -27250,17 +27250,19 @@ function genIOPpdf(){
   // БЕТ 5: Мақсатқа жету жол картасы (А→Б, бөлек бет)
   var pointA=score;
   var pointB=pointA;
+  // 4 мамандықтың əр қайсысының ең жоғары шекті балын жинап, ортақ (орташа) баллды аламыз
+  var specMaxMins=[];
   specs.forEach(function(sp){
-    var selMin=S.iopUnis&&S.iopUnis[sp.code]&&S.iopUnis[sp.code].min!=null?S.iopUnis[sp.code].min:null;
-    if(selMin==null){
-      // таңдалған университет жоқ болса — сол мамандықтың UNI_DATA-дағы ең жоғары шекті балын аламыз
-      var ud=(typeof UNI_DATA!=='undefined')?UNI_DATA.find(function(u){return u.c===sp.code;}):null;
-      if(ud&&ud.u&&ud.u.length){
-        selMin=ud.u.reduce(function(mx,u){return u.min!=null&&u.min>mx?u.min:mx;},0);
-      }
+    var ud=(typeof UNI_DATA!=='undefined')?UNI_DATA.find(function(u){return u.c===sp.code;}):null;
+    if(ud&&ud.u&&ud.u.length){
+      var maxMin=ud.u.reduce(function(mx,u){return u.min!=null&&u.min>mx?u.min:mx;},0);
+      if(maxMin>0)specMaxMins.push(maxMin);
     }
-    if(selMin!=null&&selMin>pointB)pointB=selMin;
   });
+  if(specMaxMins.length){
+    var avgMin=Math.round(specMaxMins.reduce(function(a,b){return a+b;},0)/specMaxMins.length);
+    if(avgMin>pointB)pointB=avgMin;
+  }
   var MONTHS_KZ=['Қыркүйек','Қазан','Қараша','Желтоқсан','Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз'];
   var MONTHS_RU=['Сентябрь','Октябрь','Ноябрь','Декабрь','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август'];
   var ALL_MONTHS=isKz?MONTHS_KZ:MONTHS_RU;
@@ -27291,7 +27293,7 @@ function genIOPpdf(){
     growthVals.map(function(v){return '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:800;color:#1a2a3a">+'+v+'</td>';}).join('')+
     '<td style="padding:7px;text-align:center;border:1px solid #d0dce8;font-size:11px;font-weight:900;color:#1B5E20;background:#e8f5e0">'+pointB+'</td>';
   var roadmapTable=
-    '<table style="width:100%;border-collapse:collapse;margin-top:10px">'+
+    '<table style="width:100%;border-collapse:collapse;margin-top:10px;border:3px solid #1a1a2e">'+
       '<tr>'+headerCells+'</tr>'+
       '<tr>'+row1+'</tr>'+
       '<tr>'+row2+'</tr>'+
