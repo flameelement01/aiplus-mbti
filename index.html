@@ -25197,7 +25197,7 @@ const T = {
     entTitle:"📚 ЕНТ бейінді пәндері",entSub:"Бейінді пәндер жұппен таңдалады — екеуі де түсу үшін қажет",
     obligText:'<b>📌 Барлығына 3 міндетті:</b> Оқу сауаттылығы · Математикалық сауаттылық · ҚР тарихы<br><span style="color:#555">+ Таңдау бойынша 2 бейінді пән</span>',
     scaleTitle:"🎯 ҰБТ 2026 балл шкаласы",scaleSub:"2024 жылғы түсу нәтижелері бойынша",
-    uniTitle:"🎓 Ұсынылатын ҚР ЖОО-лары",uniSub:"Тұлғалық типіңізге сай әр мамандық бойынша ең жоғары шекті балды қабылдайтын ЖОО",
+    uniTitle:"🎓 Ұсынылатын ҚР ЖОО-лары",uniSub:"Тұлғалық типіңізге сәйкес, әр мамандық бойынша оқытатын ЖОО және шекті балы",
     aiTitle:"🤖 Aiplus жеке талдауы",
     ctaTitle:"ҰБТ 2026-ға дайынсың ба? 🚀",ctaSub:'Aiplus-та <b>тегін диагностикаға</b> жазылыңыз — дайындық жоспарын құрамыз',ctaBtn:"📱 WhatsApp-қа жазылу",
     restart:"← Тестті қайта тапсыру",
@@ -25606,7 +25606,7 @@ function rResult(a){
         ?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:'
         :'Изучи данные за последние 3 года по выбранной специальности:'}
       <div class="ent-features">${S.lang==='kz'
-        ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
+        ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 50 оқушы таңдаған ТОП-3 ЖОО</span>'
         :'<span>📊 Количество грантов</span><span>📈 Максимальный и минимальный баллы на грант</span><span>🏆 ТОП-3 вуза, выбранных 50 лучшими абитуриентами 2026 года</span>'
       }</div>
     </div>
@@ -25942,7 +25942,7 @@ function initENTSearch(){
       ?'Таңдаған мамандығың бойынша соңғы 3 жылдың мәліметтеріне талдау жаса:'
       :'Изучи данные за последние 3 года по выбранной специальности:')
       +'<div class="ent-features">'+(lang==='kz'
-      ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 ЖОО</span>'
+      ?'<span>📊 Грант саны</span><span>📈 Грантқа түсудің max/min балдары</span><span>🏆 2026ж. ең жоғары балл жинаған 50 оқушы таңдаған ТОП-3 ЖОО</span>'
       :'<span>📊 Количество грантов</span><span>📈 Максимальный и минимальный баллы на грант</span><span>🏆 ТОП-3 вуза, выбранных 50 лучшими абитуриентами 2026 года</span>')+'</div>';
   }
   if(inp)inp.placeholder=lang==='kz'?'Мамандықты іздеңіз...':'Введите название специальности...';
@@ -27111,9 +27111,9 @@ function iopStep4(sec){
     '<div class="iop-summary" style="margin-top:12px">'+
       '<div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px">'+(isKz?'🗺️ Мақсатқа жету жол картасы':'🗺️ Дорожная карта к цели')+'</div>'+
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
-        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Бастапқы ай':'Месяц начала')+'</label>'+
+        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Бастапқы ай':'С месяца')+'</label>'+
           '<select class="inp" id="iop-start-month" style="margin-bottom:0" onchange="S.iopStartMonth=parseInt(this.value)">'+monthOptionsHtml(S.iopStartMonth)+'</select></div>'+
-        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Қорытынды ай':'Месяц окончания')+'</label>'+
+        '<div><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">'+(isKz?'Қорытынды ай':'По месяц')+'</label>'+
           '<select class="inp" id="iop-end-month" style="margin-bottom:0" onchange="S.iopEndMonth=parseInt(this.value)">'+monthOptionsHtml(S.iopEndMonth)+'</select></div>'+
       '</div>'+
     '</div>'+
@@ -27226,7 +27226,7 @@ function genIOPpdf(){
     '<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif">'+
     '<thead><tr>'+
     '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000;width:120px">'+(isKz?'Мамандық':'Специальность')+'</th>'+
-    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000;width:180px">'+(isKz?'Ең жоғары балл жинаған 100 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных 100 абитуриентами, набравшими самые высокие баллы')+'</th>'+
+    '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000;width:180px">'+(isKz?'Ең жоғары балл жинаған 50 оқушы таңдаған ТОП-3 университет':'Топ-3 университета, выбранных 50 абитуриентами, набравшими самые высокие баллы')+'</th>'+
     '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:8px;border:1px solid #000">'+(isKz?'Бөлінген грант саны':'Количество выделенных грантов')+'</th>'+
     '<th colspan="3" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Грантқа түсудің max/min балдары':'Максимальный/минимальный балл на грант')+'</th>'+
     '<th rowspan="2" style="background:#1565C0;color:#fff;padding:6px;font-size:7px;border:1px solid #000">'+(isKz?'Таңдалған университет':'Выбранный вуз')+'</th>'+
