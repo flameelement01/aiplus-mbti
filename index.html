@@ -27347,15 +27347,16 @@ function genIOPpdf(){
   var pointA=score;
   var pointB=pointA;
   // 4 мамандықтың əр қайсысының ЕҢ ТӨМЕНГІ жəне ЕҢ ЖОҒАРЫ шекті балдарын жинаймыз
+  // (статистика кестесіндегі жалпы конкурстың соңғы қолжетімді жылдың max/min балы негізінде)
   var specMinMins=[];
   var specMaxMins=[];
   specs.forEach(function(sp){
-    var ud=(typeof UNI_DATA!=='undefined')?UNI_DATA.find(function(u){return u.c===sp.code;}):null;
-    if(ud&&ud.u&&ud.u.length){
-      var maxMin=ud.u.reduce(function(mx,u){return u.min!=null&&u.min>mx?u.min:mx;},0);
-      var minMin=ud.u.reduce(function(mn,u){return u.min!=null&&u.min<mn?u.min:mn;},999);
-      if(maxMin>0)specMaxMins.push(maxMin);
-      if(minMin<999)specMinMins.push(minMin);
+    var latest=sp.scores&&sp.scores.y26&&(sp.scores.y26.max!=null||sp.scores.y26.min!=null)?sp.scores.y26:
+      (sp.scores&&sp.scores.y25&&(sp.scores.y25.max!=null||sp.scores.y25.min!=null)?sp.scores.y25:
+      (sp.scores?sp.scores.y24:null));
+    if(latest){
+      if(latest.min!=null)specMinMins.push(latest.min);
+      if(latest.max!=null)specMaxMins.push(latest.max);
     }
   });
   // 1-деңгей: негізгі мақсат = ең төменгі шекті балдардың ортақ (орташа) мəні + 10 балл қор
