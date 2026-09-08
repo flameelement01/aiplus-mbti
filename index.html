@@ -25359,6 +25359,11 @@ function rRegister(a){
       <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
       <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
     </select>
+    <select class="inp" id="risaiplus" style="cursor:pointer">
+      <option value="">${S.lang==='kz'?'Aiplus оқушысысыз ба?':'Вы ученик Aiplus?'}</option>
+      <option value="Иә">${S.lang==='kz'?'Иә':'Да'}</option>
+      <option value="Жоқ">${S.lang==='kz'?'Жоқ':'Нет'}</option>
+    </select>
     <div class="form-error" id="rerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="rbtn" onclick="submitReg()">${t('regBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
@@ -25370,14 +25375,16 @@ function submitReg(){
   const phone=$("rphone").value.replace(/\D/g,'');
   const school=$("rschool").value.trim();
   const grade=$("rgrade").value.trim();
+  const isAiplus=$("risaiplus").value.trim();
   const isKz=S.lang==='kz';
-  clearFormErrors(['rname','rphone','rschool','rgrade'],'rerr');
+  clearFormErrors(['rname','rphone','rschool','rgrade','risaiplus'],'rerr');
   const errMsg=isKz?'Ақпараттарды дұрыс енгізіңіз':'Заполните информацию корректно';
   if(!name||isFakeName(name)){showFormError(['rname'],'rerr',errMsg);return}
   if(phone.length<11||isFakePhone(phone)){showFormError(['rphone'],'rerr',errMsg);return}
   if(!school){showFormError(['rschool'],'rerr',errMsg);return}
   if(!grade){showFormError(['rgrade'],'rerr',errMsg);return}
-  S.user={name,phone:$("rphone").value.trim(),school,grade};
+  if(!isAiplus){showFormError(['risaiplus'],'rerr',errMsg);return}
+  S.user={name,phone:$("rphone").value.trim(),school,grade,isAiplus};
   S.idx=0;S.scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};S.answers=[];
   S.screen="quiz";render();
 }
@@ -25397,6 +25404,11 @@ function rGrantReg(a){
       <option value="10">10 ${S.lang==='kz'?'сынып':'класс'}</option>
       <option value="11">11 ${S.lang==='kz'?'сынып':'класс'}</option>
     </select>
+    <select class="inp" id="gisaiplus" style="cursor:pointer">
+      <option value="">${S.lang==='kz'?'Aiplus оқушысысыз ба?':'Вы ученик Aiplus?'}</option>
+      <option value="Иә">${S.lang==='kz'?'Иә':'Да'}</option>
+      <option value="Жоқ">${S.lang==='kz'?'Жоқ':'Нет'}</option>
+    </select>
     <div class="form-error" id="gerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="gbtn" onclick="submitGrantReg()">${t('grantRegBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
@@ -25408,16 +25420,27 @@ function submitGrantReg(){
   const phone=$("gphone").value.replace(/\D/g,'');
   const school=$("gschool").value.trim();
   const grade=$("ggrade").value.trim();
+  const isAiplus=$("gisaiplus").value.trim();
   const isKz=S.lang==='kz';
-  clearFormErrors(['gname','gphone','gschool','ggrade'],'gerr');
+  clearFormErrors(['gname','gphone','gschool','ggrade','gisaiplus'],'gerr');
   const errMsg=isKz?'Ақпараттарды дұрыс енгізіңіз':'Заполните информацию корректно';
   if(!name||isFakeName(name)){showFormError(['gname'],'gerr',errMsg);return}
   if(phone.length<11||isFakePhone(phone)){showFormError(['gphone'],'gerr',errMsg);return}
   if(!school){showFormError(['gschool'],'gerr',errMsg);return}
   if(!grade){showFormError(['ggrade'],'gerr',errMsg);return}
-  S.grantUser={name,phone:$("gphone").value.trim(),school,grade};
+  if(!isAiplus){showFormError(['gisaiplus'],'gerr',errMsg);return}
+  S.grantUser={name,phone:$("gphone").value.trim(),school,grade,isAiplus};
   S.iopStep=1;S.iopSpecs=[];S.iopFilter='all';
   S.screen="grant";render();
+  // Google Sheets-ке фондық сақтау (бұрын мұнда мүлдем сақталмайтын еді)
+  const saveUrl=SHEETS_URL+"?type=save&name="+encodeURIComponent(S.grantUser.name)+
+    "&phone="+encodeURIComponent(S.grantUser.phone.replace(/\D/g,''))+
+    "&school="+encodeURIComponent(S.grantUser.school||'')+
+    "&grade="+encodeURIComponent(S.grantUser.grade||'')+
+    "&lang="+S.lang+
+    "&isAiplus="+encodeURIComponent(isAiplus)+
+    "&source=grant";
+  fetch(saveUrl).catch(()=>{});
 }
 
 function rGrantScreen(a){
@@ -25476,11 +25499,12 @@ function finishTest(){
 
   // Сохраняем в фоне
   const saveUrl=SHEETS_URL+"?type=save&name="+encodeURIComponent(S.user.name)+
-    "&phone="+encodeURIComponent(S.user.phone)+
+    "&phone="+encodeURIComponent(S.user.phone.replace(/\D/g,''))+
     "&school="+encodeURIComponent(S.user.school||'')+
     "&grade="+encodeURIComponent(S.user.grade||'')+
     "&lang="+S.lang+
     "&mbti="+encodeURIComponent(type)+
+    "&isAiplus="+encodeURIComponent(S.user.isAiplus||'')+
     "&scores="+encodeURIComponent(JSON.stringify(S.scores));
 
   // Фоновые запросы — не влияют на отображение
