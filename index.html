@@ -25425,6 +25425,27 @@ function onCityChange(prefix){
   populateMentorSelect($(prefix+"mentor"),cityKey);
 }
 
+function aiplusExtraHTML(prefix){
+  return `<div id="${prefix}AiplusExtra" style="display:none">
+      <input class="inp" id="${prefix}idcode" placeholder="${S.lang==='kz'?'ID кодыңызды енгізіңіз':'Введите ваш ID-код'}">
+      <select class="inp" id="${prefix}city" style="cursor:pointer" onchange="onCityChange('${prefix}')">
+        <option value="">${S.lang==='kz'?'Қалаңызды таңдаңыз':'Выберите город'}</option>
+      </select>
+      <select class="inp" id="${prefix}mentor" style="cursor:pointer" disabled>
+        <option value="">${S.lang==='kz'?'Алдымен қаланы таңдаңыз':'Сначала выберите город'}</option>
+      </select>
+      <label style="display:block;text-align:left;font-size:13px;font-weight:700;color:var(--dark);margin:2px 0 8px">
+        ${S.lang==='kz'?'Консультация түрі':'Тип консультации'}
+      </label>
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <input type="radio" class="consult-radio" name="${prefix}consulttype" id="${prefix}consult_group" value="Топтық">
+        <label class="consult-pill" for="${prefix}consult_group">${S.lang==='kz'?'Топтық':'Групповая'}</label>
+        <input type="radio" class="consult-radio" name="${prefix}consulttype" id="${prefix}consult_indiv" value="Жеке">
+        <label class="consult-pill" for="${prefix}consult_indiv">${S.lang==='kz'?'Жеке':'Индивидуальная'}</label>
+      </div>
+    </div>`;
+}
+
 function rRegister(a){
   a.innerHTML=`<div class="card reg-card" style="margin-top:32px;text-align:center">
     <div class="reg-tag">${t('regTag')}</div>
@@ -25444,24 +25465,7 @@ function rRegister(a){
       <option value="Иә">${S.lang==='kz'?'Иә':'Да'}</option>
       <option value="Жоқ">${S.lang==='kz'?'Жоқ':'Нет'}</option>
     </select>
-    <div id="rAiplusExtra" style="display:none">
-      <input class="inp" id="ridcode" placeholder="${S.lang==='kz'?'ID кодыңызды енгізіңіз':'Введите ваш ID-код'}">
-      <select class="inp" id="rcity" style="cursor:pointer" onchange="onCityChange('r')">
-        <option value="">${S.lang==='kz'?'Қалаңызды таңдаңыз':'Выберите город'}</option>
-      </select>
-      <select class="inp" id="rmentor" style="cursor:pointer" disabled>
-        <option value="">${S.lang==='kz'?'Алдымен қаланы таңдаңыз':'Сначала выберите город'}</option>
-      </select>
-      <label style="display:block;text-align:left;font-size:13px;font-weight:700;color:var(--dark);margin:2px 0 8px">
-        ${S.lang==='kz'?'Консультация түрі':'Тип консультации'}
-      </label>
-      <div style="display:flex;gap:10px;margin-bottom:10px">
-        <input type="radio" class="consult-radio" name="rconsulttype" id="rconsult_group" value="Топтық">
-        <label class="consult-pill" for="rconsult_group">${S.lang==='kz'?'Топтық':'Групповая'}</label>
-        <input type="radio" class="consult-radio" name="rconsulttype" id="rconsult_indiv" value="Жеке">
-        <label class="consult-pill" for="rconsult_indiv">${S.lang==='kz'?'Жеке':'Индивидуальная'}</label>
-      </div>
-    </div>
+    ${aiplusExtraHTML('r')}
     <div class="form-error" id="rerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="rbtn" onclick="submitReg()">${t('regBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
@@ -25523,24 +25527,7 @@ function rGrantReg(a){
       <option value="Иә">${S.lang==='kz'?'Иә':'Да'}</option>
       <option value="Жоқ">${S.lang==='kz'?'Жоқ':'Нет'}</option>
     </select>
-    <div id="gAiplusExtra" style="display:none">
-      <input class="inp" id="gidcode" placeholder="${S.lang==='kz'?'ID кодыңызды енгізіңіз':'Введите ваш ID-код'}">
-      <select class="inp" id="gcity" style="cursor:pointer" onchange="onCityChange('g')">
-        <option value="">${S.lang==='kz'?'Қалаңызды таңдаңыз':'Выберите город'}</option>
-      </select>
-      <select class="inp" id="gmentor" style="cursor:pointer" disabled>
-        <option value="">${S.lang==='kz'?'Алдымен қаланы таңдаңыз':'Сначала выберите город'}</option>
-      </select>
-      <label style="display:block;text-align:left;font-size:13px;font-weight:700;color:var(--dark);margin:2px 0 8px">
-        ${S.lang==='kz'?'Консультация түрі':'Тип консультации'}
-      </label>
-      <div style="display:flex;gap:10px;margin-bottom:10px">
-        <input type="radio" class="consult-radio" name="gconsulttype" id="gconsult_group" value="Топтық">
-        <label class="consult-pill" for="gconsult_group">${S.lang==='kz'?'Топтық':'Групповая'}</label>
-        <input type="radio" class="consult-radio" name="gconsulttype" id="gconsult_indiv" value="Жеке">
-        <label class="consult-pill" for="gconsult_indiv">${S.lang==='kz'?'Жеке':'Индивидуальная'}</label>
-      </div>
-    </div>
+    ${aiplusExtraHTML('g')}
     <div class="form-error" id="gerr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="gbtn" onclick="submitGrantReg()">${t('grantRegBtn')}</button>
     <div class="privacy">🔒 ${S.lang==='kz'?'Деректер тек байланыс үшін қолданылады · Aiplus':'Данные используются только для связи · Aiplus'}</div>
@@ -25661,6 +25648,7 @@ function finishTest(){
     "&city="+encodeURIComponent(S.user.city||'')+
     "&mentor="+encodeURIComponent(S.user.mentor||'')+
     "&consultType="+encodeURIComponent(S.user.consultType||'')+
+    "&source=mbti"+
     "&scores="+encodeURIComponent(JSON.stringify(S.scores));
 
   // Фоновые запросы — не влияют на отображение
