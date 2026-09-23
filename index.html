@@ -25949,12 +25949,12 @@ function rpdfPages(o){
     '<img src="'+RPDF_BG.logo+'" style="position:absolute;left:52px;top:44px;height:92px">'+
     '<div class="rp-name">'+name+'</div>'+
     '<div style="position:absolute;left:54px;top:222px;font-weight:900;font-size:'+(kz?76:70)+'px;line-height:1.02;letter-spacing:-2px">'+
-      (kz?'Болашағыңа<br><span class="rp-y">бастар жол...</span>':'Путь в твоё<br><span class="rp-y">будущее...</span>')+'</div>'+
+      (kz?'Болашағыңа<br><span class="rp-y">бастар жол...</span>':'Путь к вашему<br><span class="rp-y">будущему...</span>')+'</div>'+
     '<div style="position:absolute;left:56px;top:422px;width:360px;font-size:17.5px;line-height:1.5;color:#44557c">'+
-      (kz?'Мамандық таңдау және өзіңді тану бағытындағы маңызды қадамдар көрсетілген саған арналған жеке нұсқаулық.':'Персональное руководство с важными шагами на пути к выбору профессии и познанию себя.')+'</div>'+
+      (kz?'Мамандық таңдау және өзіңді тану бағытындағы маңызды қадамдар көрсетілген саған арналған жеке нұсқаулық.':'Ваше персональное руководство, которое поможет лучше узнать себя и сделать важные шаги к осознанному выбору профессии.')+'</div>'+
     '<div style="position:absolute;left:57px;top:578px;width:46px;height:3px;background:#fbb614"></div>'+
     '<div style="position:absolute;left:56px;top:610px;width:340px;font-size:20px;font-weight:800;line-height:1.3">'+
-      (kz?'Армандаған мамандығыңа бүгін қадам бас.':'Сделай шаг к профессии мечты уже сегодня.')+'</div>'+
+      (kz?'Армандаған мамандығыңа бүгін қадам бас.':'Сделайте первый шаг к профессии своей мечты уже сегодня.')+'</div>'+
   '</div>');
 
   // 2 — тип
@@ -25980,7 +25980,7 @@ function rpdfPages(o){
       o.type.split('').map(function(c){return '<span>'+c+'</span>';}).join('')+'</div>'+
     '<div class="rp-card" style="margin:14px 54px 0;padding:16px 30px;font-size:15px;line-height:1.6;color:#1c2440;text-align:center">'+rpdfEsc(kz?info.desc_kz:info.desc_ru)+'</div>'+
     '<div style="text-align:center;margin-top:24px;font-size:28px;font-weight:900;letter-spacing:-.5px">'+(kz?'Бұл әріптер нені білдіреді?':'Что означают эти буквы?')+'</div>'+
-    '<div style="text-align:center;margin:4px 40px 16px;font-size:14px;color:#5c6e95">'+(kz?'Әр әріп сіздің ойлау, шешім қабылдау және әрекет ету ерекшеліктеріңіздің бір қырын көрсетеді.':'Каждая буква отражает одну из особенностей вашего мышления, принятия решений и действий.')+'</div>'+
+    '<div style="text-align:center;margin:4px 20px 16px;font-size:14px;color:#5c6e95">'+(kz?'Әр әріп сіздің ойлау, шешім қабылдау және әрекет ету ерекшеліктеріңіздің бір қырын көрсетеді.':'Каждая буква отражает одну из особенностей Вашего мышления, принятия решений и образа действий.')+'</div>'+
     '<div style="margin:0 46px">'+rows+'</div>'+
   '</div></div>');
 
@@ -25997,8 +25997,8 @@ function rpdfPages(o){
   pages.push('<div class="rp-page">'+deco+'<div style="position:relative;z-index:1">'+
     '<div class="rp-h" style="margin-top:84px">'+(kz?'Сіздің<br><span class="rp-y">мықты тұстарыңыз</span>':'Ваши<br><span class="rp-y">сильные стороны</span>')+'</div>'+
     '<div style="text-align:center;margin:26px 60px 34px;font-size:15.5px;line-height:1.6;color:#5c6e95">'+
-      (kz?'Бұл қасиеттерді қолданғанда сіз энергияны жоғалтпайсыз — керісінше, аласыз. Соларға сүйеніп, мамандық таңдау — әлеуетіңізді толық жүзеге асырудың ең қысқа жолы.':
-          'Используя эти качества, вы не теряете энергию — наоборот, получаете её. Выбор профессии с опорой на них — кратчайший путь к полному раскрытию вашего потенциала.')+'</div>'+
+      (kz?'Мықты тұстарыңызды тану — өз мүмкіндіктеріңізді ашудың маңызды қадамы. Қабілеттеріңіз бен қызығушылықтарыңызды ұштастыру өзіңізге жақын кәсіби бағыттарды анықтауға көмектеседі.':
+          'Понимание своих сильных сторон — важный шаг к раскрытию собственного потенциала. Сочетание ваших способностей и интересов поможет определить профессиональные направления, которые могут быть вам близки.')+'</div>'+
     '<div style="margin:0 46px">'+sRows+'</div>'+
   '</div></div>');
 
@@ -26012,12 +26012,12 @@ function rpdfPages(o){
       '<div style="flex:1"><div class="rp-ttl">'+rpdfEsc(p.name)+'</div><div class="rp-dsc">'+rpdfEsc(d)+'</div></div></div>';
   }).join('');
   pages.push('<div class="rp-page">'+deco+'<div style="position:relative;z-index:1">'+
-    '<div class="rp-h" style="margin-top:62px">'+(kz?'Сізге жақын<br><span class="rp-y">кәсіби бағыттар</span>':'Близкие вам<br><span class="rp-y">профессиональные направления</span>')+'</div>'+
+    '<div class="rp-h" style="margin-top:62px'+(kz?'':';font-size:38px')+'">'+(kz?'Сізге жақын<br><span class="rp-y">кәсіби бағыттар</span>':'Профессиональные направления,<br><span class="rp-y">которые могут вам подойти</span>')+'</div>'+
     '<div style="margin:30px 46px 0">'+dRows+'</div>'+
     '<div style="margin:6px 46px 0;display:flex;align-items:center;background:#fdf1dc;border-radius:14px;padding:16px 22px">'+
       '<img src="'+rpdfIcon('bulb','#fbb614')+'" style="width:34px;height:34px;margin-right:16px"><div class="rp-sep" style="margin:0 16px 0 0;background:#f3d9a6"></div>'+
       '<div style="font-size:13px;line-height:1.5;color:#1c2440">'+(kz?'Бұл бағыттар — сіздің тұлғалық ерекшеліктеріңізге сай келуі мүмкін салалар. Нақты мамандықты таңдау кезінде өз қызығушылығыңыз, қабілеттеріңіз және ЖОО талаптарын да ескеру маңызды.':
-        'Эти направления — сферы, которые могут подходить вашим личностным особенностям. При выборе конкретной профессии также учитывайте свои интересы, способности и требования вузов.')+'</div></div>'+
+        'Эти направления могут соответствовать особенностям вашей личности. При выборе конкретной профессии важно также учитывать ваши интересы, способности и требования вузов.')+'</div></div>'+
   '</div></div>');
 
   // 5 — құттықтау
@@ -26025,9 +26025,9 @@ function rpdfPages(o){
     '<img src="'+RPDF_BG.logo+'" style="position:absolute;left:52px;top:44px;height:92px">'+
     '<div class="rp-name" style="right:164px">'+name+'</div>'+
     '<div style="position:absolute;left:0;right:0;top:196px;text-align:center;font-weight:900;font-size:'+(kz?50:46)+'px;line-height:1.08;letter-spacing:-1px">'+
-      (kz?'Өз мамандығыңды<br>анықтаудағы<br><span class="rp-y">алғашқы қадамың<br>құтты болсын!</span>':'Поздравляем<br>с первым шагом<br><span class="rp-y">к своей<br>профессии!</span>')+'</div>'+
+      (kz?'Өз мамандығыңды<br>анықтаудағы<br><span class="rp-y">алғашқы қадамың<br>құтты болсын!</span>':'Поздравляем<br>с первым шагом<br><span class="rp-y">на пути к выбору<br>профессии!</span>')+'</div>'+
     '<div style="position:absolute;left:0;right:0;top:458px;text-align:center;font-size:17.5px;line-height:1.5;color:#4a64a4">'+
-      (kz?'Таңдаған мамандығың — сенің болашағыңның кілті.<br>Осы жолда еңбектенуден ешқашан шаршама!':'Выбранная профессия — ключ к твоему будущему.<br>Никогда не уставай трудиться на этом пути!')+'</div>'+
+      (kz?'Таңдаған мамандығың — сенің болашағыңның кілті.<br>Осы жолда еңбектенуден ешқашан шаршама!':'Профессия, которую вы выберете, станет ключом<br>к вашему будущему. Продолжайте трудиться<br>и уверенно двигаться к своей цели!')+'</div>'+
   '</div>');
   return pages;
 }
