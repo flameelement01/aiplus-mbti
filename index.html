@@ -27285,7 +27285,7 @@ function iopStep2(sec){
     var ch=specChance(sp,score);
     // ЖОО таңдалса — мүмкіндік сол ЖОО-ның шекті балы бойынша
     var su=S.iopUnis&&S.iopUnis[sp.code];
-    if(su&&su.min>0){var lmS=iopLatestMin(sp),gS=lmS?iopPad(lmS.min):0,uS=Math.max(iopPad(su.min),gS);ch=score>=uS?'high':(lmS&&score>=gS?'mid':'low');}
+    if(su&&su.min>0){var lmS=iopLatestMin(sp),gS=lmS?iopPad(lmS.min):0,uS=Math.max(su.min,gS);ch=score>=uS?'high':(lmS&&score>=gS?'mid':'low');}
     var noGrant=(sp.grants&&(sp.grants.y26==null||sp.grants.y26===0));
     var chLbl=noGrant?(isKz?'Мемлекеттік грант бөлінбеген':'Государственный грант не выделен'):
               ch==='high'?(isKz?'Грант алудың жоғары мүмкіндігі':'Высокая возможность гранта'):
@@ -27860,7 +27860,7 @@ function iopStep3(sec,noScroll){
     // Таңдалған ЖОО-ның өз шекті балы болса — соны негізге аламыз
     // Келесі жылы балл өсуі мүмкін — барлық шекті балға +10 қор (140-тан аспайды)
     var gMin=lm?iopPad(lm.min):null;
-    var uMin=uni&&uni.min>0?iopPad(uni.min):null;
+    var uMin=uni&&uni.min>0?uni.min:null; // ЖОО шекті балы — нақты, қорсыз
     // Мақсат — екеуінің жоғарысы (әдетте ЖОО шекті балы)
     var tgt=uMin!=null?(gMin!=null?Math.max(uMin,gMin):uMin):gMin;
     var ch=tgt==null?specChance(sp,score):(score>=tgt?'high':(gMin!=null&&score>=gMin?'mid':'low'));
@@ -27873,8 +27873,7 @@ function iopStep3(sec,noScroll){
     var gapTxt=tgt==null?'':gap===0?
       '':
       '<span class="gr-need">+'+gap+' '+(isKz?'балл керек':(gap%10===1&&gap%100!==11?'балл нужен':'балла нужно'))+'</span>';
-    var thr=gMin!=null?'<div class="gr-thr">'+(isKz?'Грантқа ең төменгі: ':'Минимум на грант: ')+'<b>'+gMin+'</b>'+
-      (uMin!=null?' · '+(isKz?'ЖОО шекті балы: ':'Проходной балл вуза: ')+'<b>'+uMin+'</b>':'')+'</div>':'';
+    var thr=uMin!=null?'<div class="gr-thr">'+(isKz?'Таңдалған ЖОО шекті балы: ':'Проходной балл выбранного вуза: ')+'<b>'+uMin+'</b></div>':'';
     var jobs=sd?(isKz?sd.j:sd.jr):'';
     var jobsHtml=jobs?'<details class="gr-more"><summary>'+(isKz?'Қайда жұмыс істейді?':'Где работать?')+'</summary><ul>'+
       jobs.split(';').map(function(t){t=t.trim();return t?'<li>'+escHtml(t)+'</li>':'';}).join('')+'</ul></details>':'';
